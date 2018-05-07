@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 
-from core.forms import SignUpForm, ItemForm
-from core.models import Item
+from core.forms import SignUpForm, ItemForm, UserItemForm
+from core.models import Item, User_Item
 
 
 def home(request):
@@ -46,3 +46,27 @@ def create_item(request):
     else:
         form = ItemForm()
     return render(request, 'create_item.html', {'form': form})
+
+def item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+
+    if request.method == 'POST':
+        form = UserItemForm(request.POST)
+        if form.is_valid():
+            user = request.user
+
+            if User_Item.objects.filter(user=user, item=item).count() > 0:
+                user_item = User_Item.objects.filter(user=user, item=item).first()
+                user_item.rating = form.cleaned_data['rating']
+                user_item.interest = form.cleaned_data['interest']
+
+            else:
+                user_item = form.save(commit=False)
+                user_item.user = user
+                user_item.item = item
+
+            user_item.save()
+            return redirect('item', item_id)
+    else:
+        form = UserItemForm()
+    return render(request, 'item.html', {'item':item, 'form': form, })

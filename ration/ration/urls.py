@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     path('user/<str:username>', views.user, name='user'),
     path('create_item', views.create_item, name='create_item'),
+    path('item/<int:item_id>', views.item, name='item'),
 
 ]
