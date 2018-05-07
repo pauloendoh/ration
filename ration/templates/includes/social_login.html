@@ -1,0 +1,10 @@
+{% load staticfiles %}
+
+<div class="pt-3">
+    <a class="no-underline" href="{% url 'social:begin' 'google-oauth2' %}">
+        <button type="button" class="btn btn-light btn-block border">
+            <img class="pr-5" src="{% static 'images/new-google-favicon-512.png' %}" height="25px"/>
+            <b class="text-dark pr-5">Enter with Google</b>
+        </button>
+    </a>
+</div>

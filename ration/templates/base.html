@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Title{% endblock %}</title>
+    <title>{% block title %}Ration{% endblock %}</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -33,13 +33,52 @@
 <nav class="navbar navbar-expand-sm bg-white navbar-light">
     <div class="container">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="">First item</a>
+
+            <!-- Logo -->
+            <li class="nav-item ">
+                <a class="navbar-brand font-weight-bold" href="{% url 'home' %}">Ration</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="">Second item</a>
-            </li>
+
+            <!-- Create item -->
+            {% if request.user.is_authenticated %}
+            <div class="pl-3 align-self-center">
+                <a class="" href="{% url 'create_item' %}">
+                    <button type="button" class="btn btn-primary rounded font-weight-bold">Create Item</button>
+                </a>
+            </div>
+            {% endif %}
+
         </ul>
+
+        <ul class="navbar-nav">
+            {% if request.user.is_authenticated %}
+
+            <!-- Dropdown menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-primary" href="#" id="navbardrop"
+                   data-toggle="dropdown">{{ request.user.username }}</a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </li>
+
+            {% else %}
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">Sign in </a>
+            </li>
+            <li>
+                <div class="pl-2 align-self-center">
+                    <a href="{% url 'signup' %}">
+                        <button type="button" class="btn btn-primary">Get Started</button>
+                    </a>
+                </div>
+            </li>
+
+            {% endif %}
+        </ul>
+
+
     </div>
 </nav>
 
