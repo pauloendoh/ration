@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="mt-3 pb-2 container bg-white">
+    <h1>All items</h1>
+    <table class="table">
+        <tr>
+            <th class="align-middle">Name</th>
+            <th class="align-middle">Tag</th>
+            <th class="align-middle">Site Rating</th>
+        </tr>
+        {% for item in items %}
+        <tr>
+            <td class="align-middle">
+                <a href="{% url 'item' item.id %}">{{ item.name }}</a>
+                {% if item.url %}
+                <a href="{{ item.url }}" target="_blank"><i class="material-icons">link</i></a>
+                {% endif %}
+            </td>
+            <td class="align-middle">{{ item.tag }}</td>
+            <td class="align-middle">{{ item.avg_rating|floatformat }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

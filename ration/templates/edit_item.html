@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="mt-3 pb-2 container bg-white">
+    <h1>Edit Item</h1>
+    <form method="POST" id="edit_item" enctype="multipart/form-data">
+        {% csrf_token %}
+        <span>Name: <input type="text" name="name" value="{{ item.name }}" required></span><br>
+        <span>Tag: <input type="text" name="tag" value="{{ item.tag }}"/></span><br>
+        <span>URL: <input type="text" name="url" value="{{ item.url }}"></span><br>
+        <span>Description:
+            <br>
+            <textarea name="description" form="edit_item" cols="100" rows="5">{{ item.description }}</textarea>
+        </span><br>
+        <p>Image: <input type="file" name="image"></p>
+
+        <button type="submit" class="mr-3 mb-3 btn btn-primary">Save</button>
+    </form>
+
+</div>
+
+{% endblock %}

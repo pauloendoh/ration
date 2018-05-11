@@ -15,11 +15,9 @@ class SignUpForm(UserCreationForm):
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['name', 'description']
+        fields = ['name', 'tag', 'url', 'description', 'image']
 
 class UserItemForm(forms.ModelForm):
-    rating = forms.FloatField(widget=forms.NumberInput(attrs={'max': '5', 'min':'1'}))
-    interest = forms.FloatField(widget=forms.NumberInput(attrs={'max': '3', 'min':'1'}))
 
     class Meta:
         model = User_Item

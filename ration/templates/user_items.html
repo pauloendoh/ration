@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="mt-3 pb-2 container bg-white">
+    <h1>{{ user.username }}'s items</h1>
+    <table class="table">
+        <tr>
+            <th class="align-middle">Name</th>
+            <th class="align-middle">Rating</th>
+            <th class="align-middle">Interest</th>
+        </tr>
+        {% for user_item in user_item_list %}
+        <tr>
+            <td class="align-middle">
+                <a href="{% url 'item' user_item.item.id %}">{{ user_item.item.name }}</a>
+                {% if user_item.item.url %}
+                <a href="{{ user_item.item.url }}" target="_blank"><i class="material-icons">link</i></a>
+                {% endif %}
+            </td>
+            <td class="align-middle">{{ user_item.rating|floatformat }}</td>
+            <td class="align-middle">{{ user_item.interest|floatformat }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

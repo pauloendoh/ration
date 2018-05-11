@@ -24,7 +24,10 @@
     <!-- My custom css -->
     <link href="{% static 'styles/main.css' %}" rel="stylesheet">
 
-    <link rel="shortcut icon" href="">
+    <!--Google icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+</head>
+
 
 </head>
 
@@ -39,6 +42,21 @@
                 <a class="navbar-brand font-weight-bold" href="{% url 'home' %}">Ration</a>
             </li>
 
+            <!-- Search box -->
+            <li class="nav-item">
+                <form method="get" action="{% url 'search' %}">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="q" placeholder="Search"
+                               {% if request.GET.q %}
+                               value="{{ request.GET.q}}"
+                               {% endif %}/>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary"><i class="material-icons align-middle">search</i></button>
+                        </div>
+                    </div>
+                </form>
+            </li>
+
             <!-- Create item -->
             {% if request.user.is_authenticated %}
             <div class="pl-3 align-self-center">
@@ -48,16 +66,24 @@
             </div>
             {% endif %}
 
+            <!-- All items-->
+            <li class="nav-item">
+                <a class="nav-link " href="{% url 'items' %}">Items</a>
+            </li>
+
         </ul>
 
         <ul class="navbar-nav">
-            {% if request.user.is_authenticated %}
 
+            {% if request.user.is_authenticated %}
             <!-- Dropdown menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-primary" href="#" id="navbardrop"
                    data-toggle="dropdown">{{ request.user.username }}</a>
                 <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="{% url 'user' request.user.username %}">
+                        Profile
+                    </a>
                     <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                 </div>
             </li>
