@@ -1,4 +1,4 @@
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
@@ -10,6 +10,7 @@ from core.models import Item, User_Item, User_Item_Log
 def home(request):
     return render(request, 'home.html')
 
+
 def signup(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -17,16 +18,20 @@ def signup(request):
         if request.method == 'POST':
             form = SignUpForm(request.POST)
             if form.is_valid():
-                user = form.save()
+                form.save()
+
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+
+                user = authenticate(username=username, password=password)
                 auth_login(request, user)
+
                 return redirect('home')
+
         else:
             form = SignUpForm()
         return render(request, 'signup.html', {'form': form})
 
-def login(request):
-    #TODO
-    pass
 
 def user(request, username):
     user = get_object_or_404(User, username=username)
@@ -39,13 +44,13 @@ def user(request, username):
 
     return render(request, 'user.html', {'user': user, 'logs': logs})
 
+
 def user_items(request, username):
     user = get_object_or_404(User, username=username)
 
     user_item_list = User_Item.objects.filter(user=user)
 
     return render(request, 'user_items.html', {'user': user, 'user_item_list': user_item_list})
-
 
 
 @login_required
@@ -61,9 +66,10 @@ def create_item(request):
         form = ItemForm()
     return render(request, 'create_item.html', {'form': form})
 
+
 def item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
-    user_item= ''
+    user_item = ''
 
     if request.user.is_authenticated:
         user = request.user
@@ -91,14 +97,22 @@ def item(request, item_id):
             user_item.save()
             item.calc_average()
 
-            message = user.username + " updated '" + item.name + "' (Rating: " + str(int(user_item.rating)) + "; Interest: " + str(int(user_item.interest)) + ")"
+            rating_long = ""
+            if not user_item.rating == None:
+                rating_log = "Rating: " + str(int(user_item.rating)) + "; "
+
+            interest_log = ""
+            if not user_item.interest == None:
+                interest_log = "Interest: " + str(int(user_item.interest))
+
+            message = user.username + " updated '" + item.name + "' (" + rating_log + interest_log + ")"
             User_Item_Log.objects.create(user_item=user_item, message=message)
 
             return redirect('item', item_id)
     else:
         form = UserItemForm()
 
-    return render(request, 'item.html', {'item':item, 'form': form, 'user_item': user_item})
+    return render(request, 'item.html', {'item': item, 'form': form, 'user_item': user_item})
 
 
 def edit_item(request, item_id):
@@ -114,9 +128,11 @@ def edit_item(request, item_id):
     else:
         return render(request, 'edit_item.html', {'item': item})
 
+
 def items(request):
     items = Item.objects.all().order_by('-created_at')
     return render(request, 'items.html', {'items': items})
+
 
 def search(request):
     query = request.GET.get('q')
