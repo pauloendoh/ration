@@ -43,7 +43,7 @@
             <li class="nav-item">
                 <form method="get" action="{% url 'search' %}">
                     <div class="input-group">
-                        <input type="text" class="form-control" name="q" placeholder="Search"
+                        <input id='search-box' type="text" class="form-control" name="q" placeholder="Search"
                                {% if request.GET.q %}
                                value="{{ request.GET.q}}"
                                {% endif %}/>
@@ -63,11 +63,6 @@
             </div>
             {% endif %}
 
-            <!-- All items-->
-            <li class="nav-item">
-                <a class="nav-link " href="{% url 'items' %}">Items</a>
-            </li>
-
         </ul>
 
         <ul class="navbar-nav">
@@ -81,6 +76,7 @@
                     <a class="dropdown-item" href="{% url 'user' request.user.username %}">
                         Profile
                     </a>
+                    <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
                     <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                 </div>
             </li>

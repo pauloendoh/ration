@@ -23,9 +23,7 @@
 
                     <!-- Username  -->
                     {% for error in form.username.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
+                    {% include 'includes/form_error.html' %}
                     {% endfor %}
                     <div class="form-group">
                         <input class="form-control" type="text" name="username" placeholder="Username"

@@ -3,8 +3,67 @@
 
 {% block content %}
 
-<div class="mt-3 pb-2 container bg-white">
-    <h1>Your timeline</h1>
+<div class="mt-3 pb-2 container">
+
+    <div class="row">
+
+        <!-- Left container -->
+        <div class="col-2 bg-white">
+            <div class="mt-3 ml-1">
+                <!-- User information -->
+                {% if user.is_authenticated %}
+
+                <div class="d-block">
+                    <img class="rounded-circle" src="/media/{{ request.user.profile.picture }}" width="50px"/>
+
+                    <a href="{% url 'user' request.user.username %}" class="text-dark no-underline">
+                        <b>{{ user.profile.fullname }}</b>
+                        <br>
+                        <small class="text-muted d-inline">@{{ user.username }}</small>
+                    </a>
+                </div>
+
+                <nav class="navbar navbar-expand-sm">
+                    <ul class="navbar-nav">
+                        <li class="align-self-center">
+                            <a class="nav-link text-center" href="{% url 'user_item_list' user.username %}">
+                                Items<br>
+                                <b>{{ user.user_items.all|length }}</b>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Middle container -->
+        <div class="col-7 ">
+            <div class="container bg-white">
+                <h1>Your timeline</h1>
+            </div>
+
+        </div>
+
+        <!-- Right container -->
+        <div class="col-3 bg-white">
+            <!-- 10 latest items -->
+            <div class="list-group p-3">
+                <h3>Latest items</h3>
+                <ul>
+                    {% for item in latest_items %}
+                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="mt-1"><a href="{% url 'about' %}" class="text-muted">
+                <small>About</small>
+            </a></div>
+        </div>
+
+    </div>
+
 
 </div>
 

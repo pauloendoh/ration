@@ -1,3 +1,7 @@
 .no-underline:link{
     text-decoration:none;
 }
+
+#search-box{
+width:300px;
+}

@@ -3,6 +3,19 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
 
+class Profile(models.Model):
+    user = models.OneToOneField(
+        User,
+        related_name='profile',
+        on_delete=models.CASCADE,
+        primary_key=True
+    )
+    fullname = models.CharField(max_length=100)
+    picture = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+    bio = models.TextField(null=True, blank=True)
+    location = models.TextField(null=True, blank=True)
+    website = models.TextField(null=True, blank=True)
+
 
 class Item(models.Model):
     name = models.CharField(max_length=255)

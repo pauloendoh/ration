@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="mt-3 pb-2 container bg-white">
+    <h1>@{{ user.username }} and @{{ their_user.username }}</h1>
+    <table class="table">
+        <tr>
+            <th class="align-middle">Item</th>
+            <th class="align-middle">Your Rating</th>
+            <th class="align-middle">Your Interest</th>
+            <th class="align-middle">Their Rating</th>
+            <th class="align-middle">Their Interest</th>
+        </tr>
+        {% for comparison in comparison_list %}
+        <tr>
+            <td class="align-middle">
+                <a href="{% url 'item' comparison.item.id %}">{{ comparison.item.name }}</a>
+            </td>
+            <td class="align-middle">{{ comparison.your_rating|floatformat }}</td>
+            <td class="align-middle">{{ comparison.your_interest|floatformat }}</td>
+            <td class="align-middle">{{ comparison.their_rating|floatformat }}</td>
+            <td class="align-middle">{{ comparison.their_interest|floatformat }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

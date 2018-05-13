@@ -5,18 +5,49 @@
 
 <div class="mt-3 pb-2 container bg-white">
     <h1>Edit Item</h1>
-    <form method="POST" id="edit_item" enctype="multipart/form-data">
+    <form method="POST"  enctype="multipart/form-data">
         {% csrf_token %}
-        <span>Name: <input type="text" name="name" value="{{ item.name }}" required></span><br>
-        <span>Tag: <input type="text" name="tag" value="{{ item.tag }}"/></span><br>
-        <span>URL: <input type="text" name="url" value="{{ item.url }}"></span><br>
-        <span>Description:
-            <br>
-            <textarea name="description" form="edit_item" cols="100" rows="5">{{ item.description }}</textarea>
-        </span><br>
-        <p>Image: <input type="file" name="image"></p>
 
+        <!-- Errors -->
+        {% for field in form %}
+        {% for error in field.errors %}
+        {% include 'includes/form_error.html' %}
+        {% endfor %}
+        {% endfor %}
+
+        <!-- Name -->
+        <div class="form-group">
+            <label for="name">Name (required)</label>
+            <input id="name" name='name' type="text" class="form-control" value="{{ item.name }}" required>
+        </div>
+
+        <!-- Tag -->
+        <div class="form-group">
+            <label for="tag">Tag (required)</label>
+            <input id="tag" name='tag' type="text" class="form-control" value="{{ item.tag }}" required>
+        </div>
+
+        <!-- URL -->
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input id="url" name='url' type="text" class="form-control" value="{{ item.url|default_if_none:'' }}">
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" class="form-control" rows="3">{{ item.description }}</textarea>
+        </div>
+
+        <!-- Image -->
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" class="form-control-file">
+        </div>
+
+        <!-- Save -->
         <button type="submit" class="mr-3 mb-3 btn btn-primary">Save</button>
+
     </form>
 
 </div>
