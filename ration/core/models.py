@@ -3,6 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
 
+
 class Profile(models.Model):
     user = models.OneToOneField(
         User,
@@ -35,13 +36,32 @@ class Item(models.Model):
         self.avg_interest = self.user_items.all().aggregate(Avg('interest')).get('interest__avg')
         self.save()
 
+
 class User_Item(models.Model):
     user = models.ForeignKey(User, related_name='user_items', on_delete=models.CASCADE)
     item = models.ForeignKey(Item, related_name='user_items', on_delete=models.CASCADE)
     rating = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
     interest = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(3)], null=True, blank=True)
 
+
 class User_Item_Log(models.Model):
     user_item = models.ForeignKey(User_Item, related_name='logs', on_delete=models.CASCADE)
     message = models.CharField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+
+class Tag(models.Model):
+    name = models.TextField()
+
+
+class Taglist(models.Model):
+    user = models.ForeignKey(User, related_name='taglists', on_delete=models.CASCADE)
+    name = models.TextField(max_length=100)
+    tags = models.ManyToManyField(Tag)
+    is_private = models.BooleanField()
+    is_main = models.BooleanField()
+
+class Log(models.Model):
+    taglist = models.ForeignKey(Taglist, related_name='logs', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    message = models.TextField()

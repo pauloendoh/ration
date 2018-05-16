@@ -5,3 +5,7 @@
 #search-box{
 width:300px;
 }
+
+.no-bullets{
+list-style-type: none;
+}

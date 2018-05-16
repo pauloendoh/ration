@@ -1,0 +1,29 @@
+<div class="bg-white pl-3 pr-3">
+    <div class="pt-3 ml-1">
+        <!-- User information -->
+        {% if user.is_authenticated %}
+
+        <div class="d-block">
+            <img class="rounded-circle" src="/media/{{ request.user.profile.picture }}" width="50px"/>
+
+            <a href="{% url 'user' request.user.username %}" class="text-dark no-underline">
+                <b>{{ user.profile.fullname }}</b>
+                <br>
+                <small class="text-muted d-inline">@{{ user.username }}</small>
+            </a>
+        </div>
+
+        <nav class="navbar navbar-expand-sm">
+            <ul class="navbar-nav">
+                <li class="align-self-center">
+                    <a class="nav-link text-center" href="{% url 'user_item_list' user.username %}">
+                        Items<br>
+                        <b>{{ user.user_items.all|length }}</b>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        {% endif %}
+    </div>
+</div>

@@ -29,8 +29,10 @@
 </head>
 
 <body class="bg-light">
+<div class="pt-5"></div>
+<div class="pt-2"></div>
 
-<nav class="navbar navbar-expand-sm bg-white navbar-light">
+<nav class="navbar fixed-top navbar-expand-sm bg-white navbar-light">
     <div class="container">
         <ul class="navbar-nav mr-auto">
 
@@ -43,7 +45,7 @@
             <li class="nav-item">
                 <form method="get" action="{% url 'search' %}">
                     <div class="input-group">
-                        <input id='search-box' type="text" class="form-control" name="q" placeholder="Search"
+                        <input id='search-box' type="text" class="form-control text-italic" name="q" placeholder="Search item, user or tag" required
                                {% if request.GET.q %}
                                value="{{ request.GET.q}}"
                                {% endif %}/>
@@ -77,6 +79,9 @@
                         Profile
                     </a>
                     <a class="dropdown-item" href="{% url 'settings' %}">Settings</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'about' %}">About</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                 </div>
             </li>
@@ -102,6 +107,7 @@
 </nav>
 
 {% block content %}{% endblock %}
+
 
 </body>
 </html>

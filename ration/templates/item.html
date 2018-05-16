@@ -4,54 +4,153 @@
 
 {% block content %}
 
-<div class="mt-3 pt-3 pb-3 pl-4 container bg-white">
-    <h1>
-        {{ item.name }}
+<div class="mt-3 pb-2 container">
 
-        <!-- Edit -->
-        {% if request.user == item.creator %}
-        <a class="ml-3" href="{% url 'edit_item' item.id %}"><i
-                class="material-icons align-middle text-primary">edit</i></a>
-        <a class="ml-3" href="{% url 'delete_item' item.id %}"><i
-                class="material-icons align-middle text-danger">delete_forever</i></a>
-        {% endif %}
-    </h1>
+    <div class="row">
 
-    <!-- Tag -->
-    <h3>#{{ item.tag }}</h3>
+        <!-- Middle container -->
+        <div class="col-9 ">
+            <div class="container bg-white">
 
-    <!-- Image -->
-    {% ifnotequal item.image None %}
-    {% ifnotequal item.image '' %}
-    <img src="/media/{{ item.image }}" width="250px"/>
-    {% endifnotequal %}
-    {% endifnotequal %}
+                <div class="row">
 
-    <!-- Creator and timestamp -->
-    <h5>
-        <a href="{% url 'user' item.creator.username %}">@{{ item.creator.username }}</a>
-        <small class="text-muted"> • {{item.created_at|naturaltime}}</small>
-    </h5>
+                    <div class="col-3 mt-3">
+                        <!-- Image -->
+                        {% ifnotequal item.image None %}
+                        {% ifnotequal item.image '' %}
+                        <img width="175" height="175px" src="/media/{{ item.image }}"/>
+                        {% endifnotequal %}
+                        {% endifnotequal %}
+                    </div>
+
+                    <div class="col-9 mt-3">
+
+                        <div class="row">
+
+                            <div class="col-9">
+
+                                <!-- Creator and timestamp -->
+                                <p class="mb-1">
+                                    <a href="{% url 'user' item.creator.username %}">@{{ item.creator.username }}</a>
+                                    <small class="text-muted"> • {{item.created_at|naturaltime}}</small>
+                                </p>
+
+                                <!-- Item name -->
+                                <h3 class="mb-1">{{ item.name }}</h3>
+
+                                <!-- Tag -->
+                                <a class="no-underline" href="">
+                                <span class="badge badge-light font-weight-normal">
+                                    #{{ item.tag }}
+                                </span>
+                                </a>
+
+                            </div>
+
+                            <div class="col-3">
+
+                                <!-- Edit and delete -->
+                                {% if request.user == item.creator %}
+                                <div class="vol-ctr d-flex justify-content-around">
+                                    <a class="no-underline" href="{% url 'edit_item' item.id %}">
+                                        <button class="btn btn-secondary btn-sm">Edit</button>
+                                    </a>
+                                    <a class="no-underline" href="{% url 'delete_item' item.id %}">
+                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                    </a>
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                            <!-- Rating and interest section -->
+                            <div class="container mt-2">
+                                <div class="row">
+
+                                    <!-- Site rating -->
+                                    <div class="col-4 align-self-center">
+                                        {% ifnotequal item.avg_rating None %}
+                                        <p class="text-center">
+                                            <b>RATION</b>
+                                            <br>
+                                            {{ item.avg_rating|floatformat }}/5
+                                        </p>
+                                        {% endifnotequal %}
+                                    </div>
+                                    {% if request.user.is_authenticated %}
+                                    <div class="col-8">
+                                        <form method="POST">
+                                            {% csrf_token %}
+
+                                            <div class="row">
+                                                <div class="col-6 align-self-center">
+                                                    <p class="text-center">
+                                                        <b>YOUR RATING</b>
+                                                        <br>
+                                                        <input type="number" id="your-rating" min="1"
+                                                               max="5"
+                                                               name="rating"
+                                                               value="{{  user_item.rating|floatformat }}"/>
+                                                        / 5
+                                                    </p>
+                                                </div>
+                                                <div class="col-6 align-self-center">
+                                                    <p class="text-center">
+                                                        <b>YOUR INTEREST</b>
+                                                        <br>
+                                                        <input type="number" id="your-interest"
+                                                               name="interest"
+                                                               max="3"
+                                                               min="1"
+                                                               value="{{ user_item.interest|floatformat}}"/>
+                                                        / 3
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <input type="submit" hidden>
+
+                                        </form>
+                                    </div>
+
+                                    {% endif %}
+
+                                </div>
+                            </div>
 
 
-    {% ifnotequal item.avg_rating None %}
-    <h5>Site rating: {{ item.avg_rating|floatformat }}</h5>
-    {% endifnotequal %}
-    <p>{{ item.description }}</p>
+                        </div>
 
-    {% if request.user.is_authenticated %}
-    <form method="POST">
-        {% csrf_token %}
-        <p>
-            YOUR RATING: <input type="number" id="your-rating" min="1" max="5" name="rating"
-                                value="{{  user_item.rating|floatformat }}"/> / 5
-        </p>
-        <p>YOUR INTEREST: <input type="number" id="your-interest" name="interest" max="3" min="1"
-                                 value="{{ user_item.interest|floatformat}}"/> / 3</p>
+                    </div>
 
-        <button type="submit" class="mr-3 mb-3 btn btn-primary">Save</button>
-    </form>
-    {% endif %}
+                    <div class="container pt-3 pb-3">
+                        <p class="text-justify">{{ item.description }}</p>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <!-- Right container -->
+        <div class="col-3 bg-white">
+            <!-- 10 latest items -->
+            <div class="list-group p-3">
+                <h3>Latest items</h3>
+                <ul>
+                    {% for item in latest_items %}
+                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
 
 </div>
 

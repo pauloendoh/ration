@@ -3,41 +3,51 @@
 
 {% block content %}
 
-{% include 'includes/user_navbar.html' %}
 
-<div class="mt-3 pb-2 container ">
+<div class="mt-3 pb-2 container">
 
     <div class="row">
-        <div class="col-sm-8 mr-3 bg-white">
 
-            <!-- Profile picture -->
-            {% ifnotequal user.profile.picture None %}
-            {% ifnotequal user.profile.picture '' %}
-            <img src="/media/{{ user.profile.picture }}" width="250px"/>
-            {% endifnotequal %}
-            {% endifnotequal %}
-
-            <h1>{{ user.username }}'s last updates</h1>
-            <table class="table">
-                <tr>
-                    <th class="align-middle">Timestamp</th>
-                    <th class="align-middle">Message</th>
-                </tr>
-                {% for log in logs %}
-                <tr>
-                    <td class="align-middle">{{ log.timestamp }}</td>
-                    <td class="align-middle">{{ log.message }}</td>
-                </tr>
-                {% endfor %}
-            </table>
+        <!-- Left container -->
+        <div class="col-2 pl-0 pr-0">
+            {% include 'includes/your_user_left_container.html' %}
         </div>
-        <div class="col-sm-3  bg-white">
-            <!-- All items-->
-            <div class="list-group mt-3">
-                <a class="list-group-item list-group-item-action " href="{% url 'items' %}">All Items</a>
+
+        <!-- Middle container -->
+        <div class="col-7 ">
+            <div class="container bg-white">
+                <h1>{{ user.username }}'s last updates</h1>
+                <table class="table">
+                    <tr>
+                        <th class="align-middle">Timestamp</th>
+                        <th class="align-middle">Message</th>
+                    </tr>
+                    {% for log in logs %}
+                    <tr>
+                        <td class="align-middle">{{ log.timestamp }}</td>
+                        <td class="align-middle">{{ log.message }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </div>
 
         </div>
+
+        <!-- Right container -->
+        <div class="col-3 bg-white">
+            <!-- 10 latest items -->
+            <div class="list-group p-3">
+                <h3>Latest items</h3>
+                <ul>
+                    {% for item in latest_items %}
+                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+        </div>
+
+
     </div>
 
 

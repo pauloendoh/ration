@@ -39,37 +39,7 @@ def signup(request):
 def user(request, username):
     user = get_object_or_404(User, username=username)
     logs = get_logs_by_user(user)
-
     return render(request, 'user.html', {'user': user, 'logs': logs})
-
-
-def user_item_list(request, username):
-    user = get_object_or_404(User, username=username)
-    user_item_list = User_Item.objects.filter(user=user)
-
-    return render(request, 'user_items.html', {'user': user, 'user_item_list': user_item_list})
-
-
-@login_required
-def compare_items(request, username):
-    your_user = request.user
-    their_user = User.objects.get(username=username)
-
-    comparison_list = get_comparison_list(your_user, their_user)
-
-    return render(request, 'compare_items.html', {'their_user': their_user, 'comparison_list': comparison_list})
-
-
-@login_required
-def create_item(request):
-    if not request.method == 'POST':
-        form = ItemForm()
-    else:
-        form = ItemForm(request.POST, request.FILES)
-        if form.is_valid():
-            return save_item_and_redirect(request)
-
-    return render(request, 'edit_item.html', {'form': form})
 
 
 def item(request, item_id):
@@ -93,12 +63,40 @@ def item(request, item_id):
         return render(request, 'item.html', {'item': item, 'form': form, 'user_item': user_item})
 
 
+def items(request):
+    if request.GET.get('tag'):
+        tag = request.GET.get('tag')
+        items = Item.objects.filter(tag=tag)
+    else:
+        items = Item.objects.all().order_by('-created_at')
+    return render(request, 'items.html', {'items': items})
+
+
+def user_item_list(request, username):
+    user = get_object_or_404(User, username=username)
+    user_item_list = User_Item.objects.filter(user=user)
+
+    return render(request, 'user_items.html', {'user': user, 'user_item_list': user_item_list})
+
+
+@login_required
+def create_item(request):
+    if not request.method == 'POST':
+        form = ItemForm()
+    else:
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            return save_item_and_redirect(request)
+
+    return render(request, 'edit_item.html', {'form': form})
+
+
 @login_required
 def edit_item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     user = request.user
 
-    if not Item.objects.filter(creator=user, id=item_id).count() > 0:
+    if Item.objects.filter(creator=user, id=item_id).count() == 0:
         return redirect('item', item_id)
 
     if request.method == 'POST':
@@ -123,15 +121,21 @@ def delete_item(request, item_id):
     return redirect('home')
 
 
-def items(request):
-    items = Item.objects.all().order_by('-created_at')
-    return render(request, 'items.html', {'items': items})
+@login_required
+def compare_items(request, username):
+    your_user = request.user
+    their_user = User.objects.get(username=username)
+
+    comparison_list = get_comparison_list(your_user, their_user)
+
+    return render(request, 'compare_items.html', {'their_user': their_user, 'comparison_list': comparison_list})
 
 
 def search(request):
     query = request.GET.get('q')
 
-    item_results = Item.objects.filter(Q(name__icontains=query) | Q(tag__icontains=query) | Q(description__icontains=query))
+    item_results = Item.objects.filter(
+        Q(name__icontains=query) | Q(tag__icontains=query) | Q(description__icontains=query))
 
     user_results = User.objects.filter(Q(username__icontains=query) | Q(profile__fullname__icontains=query))
 

@@ -3,66 +3,86 @@
 
 {% block content %}
 
-{% include 'includes/user_navbar.html' %}
 
 <div class="mt-3 pb-2 container">
 
     <div class="row">
-        <div class="col-sm-3  bg-white">
+
+        <!-- Left container -->
+        <div class="col-2 pl-0 pr-0">
+            {% include 'includes/your_user_left_container.html' %}
+        </div>
+
+        <!-- Middle container -->
+        <div class="col-7 ">
+            <div class="container bg-white">
+                <h1>Settings </h1>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Errors -->
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    {% include 'includes/form_error.html' %}
+                    {% endfor %}
+                    {% endfor %}
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label for="fullname">Fullname (required)</label>
+                        <input id="fullname" name='fullname' type="text" class="form-control"
+                               value="{{ request.user.profile.fullname }}" required>
+                    </div>
+
+                    <!-- Profile picture -->
+                    <div class="form-group">
+                        <label for="profile_picture">Profile picture</label>
+                        <input type="file" id="profile_picture" name="picture" class="form-control-file">
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" class="form-control"
+                                  rows="3">{{ request.user.profile.bio }}</textarea>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input id="location" name='location' type="text" class="form-control"
+                               value="{{ request.user.profile.location }}">
+                    </div>
+
+                    <!-- Website -->
+                    <div class="form-group">
+                        <label for="website">Website</label>
+                        <input id="website" name='website' type="text" class="form-control"
+                               value="{{ request.user.profile.website }}">
+                    </div>
+
+                    <!-- Save -->
+                    <button type="submit" class="mr-3 mb-3 btn btn-primary">Save</button>
+
+                </form>
+            </div>
 
         </div>
-        <div class="col-sm-5 ml-3 mr-3 bg-white">
-            <h1 class="mt-3">Settings </h1>
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
 
-                <!-- Errors -->
-                {% for field in form %}
-                {% for error in field.errors %}
-                {% include 'includes/form_error.html' %}
-                {% endfor %}
-                {% endfor %}
-
-                <!-- Full Name -->
-                <div class="form-group">
-                    <label for="fullname">Fullname (required)</label>
-                    <input id="fullname" name='fullname' type="text" class="form-control"
-                           value="{{ request.user.profile.fullname }}" required>
-                </div>
-
-                <!-- Profile picture -->
-                <div class="form-group">
-                    <label for="profile_picture">Profile picture</label>
-                    <input type="file" id="profile_picture" name="picture" class="form-control-file">
-                </div>
-
-                <!-- Bio -->
-                <div class="form-group">
-                    <label for="bio">Bio</label>
-                    <textarea id="bio" name="bio" class="form-control"
-                              rows="3">{{ request.user.profile.bio }}</textarea>
-                </div>
-
-                <!-- Location -->
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input id="location" name='location' type="text" class="form-control"
-                           value="{{ request.user.profile.location }}" >
-                </div>
-
-                <!-- Website -->
-                <div class="form-group">
-                    <label for="website">Website</label>
-                    <input id="website" name='website' type="text" class="form-control"
-                           value="{{ request.user.profile.website }}" >
-                </div>
-
-                <!-- Save -->
-                <button type="submit" class="mr-3 mb-3 btn btn-primary">Save</button>
-
-            </form>
+        <!-- Right container -->
+        <div class="col-3 bg-white">
+            <!-- 10 latest items -->
+            <div class="list-group p-3">
+                <h3>Latest items</h3>
+                <ul>
+                    {% for item in latest_items %}
+                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
 
         </div>
+
     </div>
 
 
