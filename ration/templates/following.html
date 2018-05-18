@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="mt-3 pb-2 container">
+    <div class="row">
+        <!-- Left container -->
+        <div class="col-2 pl-0 pr-0">
+            {% include 'includes/your_user_left_container.html' %}
+        </div>
+
+        <!-- Middle container -->
+        <div class="col-10">
+            <h1>Following: </h1>
+            <ul>
+                {% for following in following_list %}
+                <li>{{ following.taglist.name }} (
+                    <a href="{% url 'user' following.taglist.user.username %}">@{{ following.taglist.user.username }}</a>
+                    )</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% load humanize %}
 
 {% block content %}
 
@@ -16,16 +17,16 @@
         <!-- Middle container -->
         <div class="col-7 ">
             <div class="container bg-white">
-                <h1>{{ user.username }}'s last updates</h1>
+                <h1>{{ taglist.name }}</h1>
                 <table class="table">
                     <tr>
                         <th class="align-middle">Timestamp</th>
                         <th class="align-middle">Message</th>
                     </tr>
-                    {% for log in logs %}
+                    {% for update in update_list %}
                     <tr>
-                        <td class="align-middle">{{ log.timestamp }}</td>
-                        <td class="align-middle">{{ log.message }}</td>
+                        <td class="align-middle">{{ update.timestamp|naturaltime}}</td>
+                        <td class="align-middle">{{ update.message }}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -35,16 +36,7 @@
 
         <!-- Right container -->
         <div class="col-3 bg-white">
-            <!-- 10 latest items -->
-            <div class="list-group p-3">
-                <h3>Latest items</h3>
-                <ul>
-                    {% for item in latest_items %}
-                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-
+            {% include 'includes/right_container_new_items.html' %}
         </div>
 
 

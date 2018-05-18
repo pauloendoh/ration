@@ -71,16 +71,7 @@
 
         <!-- Right container -->
         <div class="col-3 bg-white">
-            <!-- 10 latest items -->
-            <div class="list-group p-3">
-                <h3>Latest items</h3>
-                <ul>
-                    {% for item in latest_items %}
-                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-
+            {% include 'includes/right_container_new_items.html' %}
         </div>
 
     </div>

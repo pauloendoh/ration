@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
+from django.utils.safestring import mark_safe
+from markdown import markdown
 
 
 class Profile(models.Model):
@@ -18,11 +20,15 @@ class Profile(models.Model):
     website = models.TextField(null=True, blank=True)
 
 
+class Tag(models.Model):
+    name = models.TextField()
+
+
 class Item(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     url = models.CharField(max_length=255, null=True, blank=True)
-    tag = models.CharField(max_length=30, )
+    tags = models.ManyToManyField(Tag, related_name='items')
 
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -50,18 +56,28 @@ class User_Item_Log(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
-class Tag(models.Model):
-    name = models.TextField()
-
-
 class Taglist(models.Model):
     user = models.ForeignKey(User, related_name='taglists', on_delete=models.CASCADE)
-    name = models.TextField(max_length=100)
+    name = models.CharField(max_length=100)
     tags = models.ManyToManyField(Tag)
+    description = models.TextField(blank=True, null=True)
     is_private = models.BooleanField()
     is_main = models.BooleanField()
+
+
+class Following(models.Model):
+    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
+    taglist = models.ForeignKey(Taglist, related_name='following', on_delete=models.CASCADE)
+
 
 class Log(models.Model):
     taglist = models.ForeignKey(Taglist, related_name='logs', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     message = models.TextField()
+
+
+class Update(models.Model):
+    user = models.ForeignKey(User, related_name='updates', on_delete=models.CASCADE)
+    interaction = models.ForeignKey(User_Item, related_name='updates', on_delete=models.CASCADE, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=255)

@@ -1,28 +1,84 @@
 <div class="bg-white pl-3 pr-3">
-    <div class="pt-3 ml-1">
-        <!-- User information -->
+    <div class="pt-3">
+
         {% if user.is_authenticated %}
 
-        <div class="d-block">
-            <img class="rounded-circle" src="/media/{{ user.profile.picture }}" width="50px"/>
-
-            <a href="{% url 'user' user.username %}" class="text-dark no-underline">
-                <b>{{ user.profile.fullname }}</b>
-                <br>
-                <small class="text-muted d-inline">@{{ user.username }}</small>
-            </a>
+        <div class="row">
+            <div class="col-5 pl-3 pr-0">
+                <a href="{% url 'user' user.username %}">
+                    <img class="rounded-circle w-100" src="/media/{{ user.profile.picture }}"/>
+                </a>
+            </div>
+            <div class="col-7 pl-1 pr-2">
+                <p>
+                    <a href="{% url 'user' user.username %}" class="text-dark no-underline">
+                        <b>{{ user.profile.fullname }}</b>
+                        <br>
+                        <small class="text-muted d-inline">@{{ user.username }}</small>
+                    </a>
+                </p>
+            </div>
         </div>
 
-        <nav class="navbar navbar-expand-sm">
-            <ul class="navbar-nav">
-                <li class="align-self-center">
-                    <a class="nav-link text-center" href="{% url 'user_item_list' user.username %}">
-                        Items<br>
-                        <b>{{ user.user_items.all|length }}</b>
+        <div class="row">
+
+            <!-- Items -->
+            <div class="col-6">
+                <div class="align-self-center">
+                    <a class="nav-link text-center pl-0 pr-0"
+                       href="{% url 'user_item_list' user.username %}">Items<br><b>{{ user.user_items.all|length }}</b>
                     </a>
-                </li>
-            </ul>
-        </nav>
+                </div>
+            </div>
+
+            <!-- Followers -->
+            <div class="col-6">
+                <div class="align-self-center">
+                    <a class="nav-link text-center pl-0 pr-0"
+                       href="{% url 'follower_list' user.username %}">Followers<br><b>x</b>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <!-- Following  -->
+            <div class="col-6">
+                <div class="align-self-center">
+                    <a class="nav-link text-center pl-0 pr-0" href="{% url 'following_list' user.username %}">Following
+                        <br><b>x</b>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="mt-2 mb-3 container border-top"></div>
+
+        <div class="row ">
+            <div class="col-9">
+                <ul>
+                    {% for taglist in user.taglists.all %}
+                    <li>
+                        <a href="{% url 'taglist' taglist.id %}">{{ taglist.name }}</a>
+                        {% if taglist.is_main %}
+                        ★
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                    <li><a href="{% url 'create_taglist' %}">CREATE TAGLIST</a></li>
+                </ul>
+
+            </div>
+            <div class="col-3">
+
+            </div>
+        </div>
+
 
         {% endif %}
     </div>

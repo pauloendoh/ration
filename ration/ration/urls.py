@@ -41,6 +41,13 @@ urlpatterns = [
     path('items', views.items, name='items'),
     path('search', views.search, name='search'),
     path('settings', views.settings, name='settings'),
+    path('create_taglist/', views.create_taglist, name='create_taglist'),
+    path('edit_taglist/<int:taglist_id>', views.edit_taglist, name='edit_taglist'),
+    path('taglist/<int:taglist_id>', views.taglist, name='taglist'),
+    path('follow/<int:taglist_id>', views.follow, name='follow'),
+    path('user/<str:username>/following', views.following_list, name="following_list"),
+    path('user/<str:username>/followers', views.follower_list, name='follower_list'),
+    path('delete_taglist/<int:taglist_id>', views.delete_taglist, name='delete_taglist'),
 
 ]
 

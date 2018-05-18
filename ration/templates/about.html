@@ -17,20 +17,12 @@
                 Se você não tá no jogo do longo prazo, então seu futuro é estar fora do jogo. Pra chegar ao next level você precisa de comprometimento e muito hardwork. Ninguém lembra do médio, foque no excelente. Não adianta ter conhecimento se você não tem action. Se você não vê a oportunidade, ela passa. O segredo do sucesso é começar antes de estar pronto. Você tá realmente obcecado pelos seus sonhos? Você nunca vai estar pronto então comece agora. Não adianta ter conhecimento se você não tem action. Ninguém lembra do médio, foque no excelente. Genialidade é fruto de muito hardwork. Menos desculpas e mais action. O segredo do sucesso é começar antes de estar pronto. Bora pra action. Genialidade é fruto de muito hardwork. Bora pra action. Pra chegar ao next level você precisa de comprometimento e muito hardwork. Não adianta ter conhecimento se você não tem action.
             </p>
         </div>
-        <div class="col-sm-3 bg-white no-gutters">
 
-            <!-- 10 latest items -->
-            <div class="list-group mt-3">
-                <h3>Latest items</h3>
-                <ul>
-                    {% for item in latest_items %}
-                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-
+        <!-- Right container -->
+        <div class="col-3 bg-white">
+            {% include 'includes/right_container_new_items.html' %}
         </div>
+
     </div>
 
 

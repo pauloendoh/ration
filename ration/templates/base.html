@@ -23,9 +23,12 @@
 
     <!-- My custom css -->
     <link href="{% static 'styles/main.css' %}" rel="stylesheet">
+    {% block stylesheet %}{% endblock %}
 
     <!--Google icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+
 </head>
 
 <body class="bg-light">
@@ -45,7 +48,8 @@
             <li class="nav-item">
                 <form method="get" action="{% url 'search' %}">
                     <div class="input-group">
-                        <input id='search-box' type="text" class="form-control text-italic" name="q" placeholder="Search item, user or tag" required
+                        <input id='search-box' type="text" class="form-control text-italic" name="q"
+                               placeholder="Search item, user or tag" required
                                {% if request.GET.q %}
                                value="{{ request.GET.q}}"
                                {% endif %}/>
@@ -108,6 +112,8 @@
 
 {% block content %}{% endblock %}
 
+<!-- Custom JS -->
+{% block javascript %}{% endblock %}
 
 </body>
 </html>

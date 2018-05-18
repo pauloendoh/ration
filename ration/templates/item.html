@@ -16,18 +16,18 @@
 
                     <div class="col-3 mt-3">
                         <!-- Image -->
-                        {% ifnotequal item.image None %}
-                        {% ifnotequal item.image '' %}
+                        {% ifequal item.image '' %}
+                        <img width="175" height="175" src="/media/{{ item.creator.profile.picture }}">
+                        {% else %}
                         <img width="175" height="175px" src="/media/{{ item.image }}"/>
-                        {% endifnotequal %}
-                        {% endifnotequal %}
+                        {% endifequal %}
                     </div>
 
                     <div class="col-9 mt-3">
 
                         <div class="row">
 
-                            <div class="col-9">
+                            <div class="col-11">
 
                                 <!-- Creator and timestamp -->
                                 <p class="mb-1">
@@ -36,30 +36,38 @@
                                 </p>
 
                                 <!-- Item name -->
-                                <h3 class="mb-1">{{ item.name }}</h3>
+                                <h3 class="mb-1">
+                                    {{ item.name }}
+                                    {% if item.url %}
+                                    <a href="{{ item.url }}" target="_blank"><i
+                                            class="material-icons">link</i></a>
+                                    {% endif %}
+                                </h3>
 
                                 <!-- Tag -->
-                                <a class="no-underline" href="">
+                                {% for tag in item.tags.all %}
+                                <a class="no-underline" href="{% url 'items' %}?tag={{ tag.name }}">
                                 <span class="badge badge-light font-weight-normal">
-                                    #{{ item.tag }}
+                                    #{{ tag.name }}
                                 </span>
                                 </a>
+                                {% endfor %}
+
 
                             </div>
 
-                            <div class="col-3">
+                            <div class="col-1">
 
                                 <!-- Edit and delete -->
                                 {% if request.user == item.creator %}
-                                <div class="vol-ctr d-flex justify-content-around">
-                                    <a class="no-underline" href="{% url 'edit_item' item.id %}">
-                                        <button class="btn btn-secondary btn-sm">Edit</button>
-                                    </a>
-                                    <a class="no-underline" href="{% url 'delete_item' item.id %}">
-                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                    </a>
-                                </div>
+                                <a class="dropdown-toggle " href="#" id="navbardrop"
+                                   data-toggle="dropdown">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="{% url 'edit_item' item.id %}">Edit item</a>
+                                    <a class="dropdown-item" href="{% url 'delete_item' item.id %}">Delete item</a>
 
+                                </div>
                                 {% endif %}
 
                             </div>
@@ -137,16 +145,7 @@
 
         <!-- Right container -->
         <div class="col-3 bg-white">
-            <!-- 10 latest items -->
-            <div class="list-group p-3">
-                <h3>Latest items</h3>
-                <ul>
-                    {% for item in latest_items %}
-                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-
+            {% include 'includes/right_container_new_items.html' %}
         </div>
 
     </div>

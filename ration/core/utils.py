@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import redirect
 
 from core.forms import SignUpForm, ItemForm, UserItemForm
-from core.models import User_Item, User_Item_Log, Item
+from core.models import User_Item, User_Item_Log, Item, Tag, Taglist, Log, Update
 
 
 def create_and_authenticate_user(request):
@@ -31,15 +31,25 @@ def get_logs_by_user(user):
     return logs
 
 
-def save_item_and_redirect(request):
-    form = ItemForm(request.POST, request.FILES)
+def get_tag(name):
+    if Tag.objects.filter(name=name).count() > 0:
+        tag = Tag.objects.filter(name=name).first()
+        return tag
+    else:
+        tag = Tag.objects.create(name=name)
+        return tag
 
-    item = form.save(commit=False)
 
-    item.creator = request.user
-    item.save()
+def generate_taglist_logs(user, item, tag_name):
+    if Taglist.objects.filter(user=user).count() > 0:
+        user_taglists = Taglist.objects.filter(user=user)
+        for user_taglist in user_taglists:
+            for tag in user_taglist.tags.all():
+                if tag.name == tag_name:
+                    message = "@" + user.username + "  -> item: " + item.name
+                    Log.objects.create(taglist=user_taglist, message=message)
+                    break
 
-    return redirect('item', item.id)
 
 
 def update_user_item(user, item, form):
@@ -55,12 +65,19 @@ def update_user_item(user, item, form):
     user_item.save()
     item.calc_average()
 
-    user_item.save()
-    item.calc_average()
+    message = "Updated an item's ratings: " + item.name + " ( Score: "+ str(user_item.rating) +\
+              " | Interest: " + str(user_item.interest) + " )"
+    Update.objects.create(user=user, message=message, interaction=user_item)
 
-    message = get_log_message(user_item)
-
-    User_Item_Log.objects.create(user_item=user_item, message=message)
+    user_taglists = user.taglists.all()
+    for user_taglist in user_taglists:
+        for tag in user_taglist.tags.all():
+            if tag in user_item.item.tags.all():
+                message = "@" + user.username + "  -> item: " + item.name + \
+                          " (rating: " + str(user_item.rating) + \
+                          " | interest: " + str(user_item.interest) + ")"
+                Log.objects.create(taglist=user_taglist, message=message)
+                break
 
     return redirect('item', item.id)
 
@@ -128,3 +145,23 @@ def get_comparison_list(your_user, their_user):
             comparison_list.append(comparison)
 
     return comparison_list
+
+def get_updates_by_taglist(taglist):
+    user = taglist.user
+    tags = taglist.tags.all()
+    user_updates = Update.objects.filter(user=user)
+
+    updates = []
+
+    for update in user_updates:
+        for tag in tags:
+            try:
+                if tag in update.interaction.item.tags.all():
+                    updates.append(update)
+            except:
+                pass
+
+    updates.sort(key=lambda x: x.timestamp, reverse=True)
+
+    return updates
+
