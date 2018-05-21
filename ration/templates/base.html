@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Ration{% endblock %}</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Bootstrap and Google Fonts-->
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Nunito:400,700" rel="stylesheet">
 
     <!-- Javascript -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -31,12 +30,12 @@
 
 </head>
 
-<body class="bg-light">
+<body class="body">
 <div class="pt-5"></div>
 <div class="pt-2"></div>
 
-<nav class="navbar fixed-top navbar-expand-sm bg-white navbar-light">
-    <div class="container">
+<nav class="navbar fixed-top navbar-expand-sm bg-white navbar-light shadow-sm">
+    <div class="container ">
         <ul class="navbar-nav mr-auto">
 
             <!-- Logo -->

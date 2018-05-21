@@ -8,10 +8,7 @@
 
     <div class="row">
 
-        <!-- Left container -->
-        <div class="col-2 pl-0 pr-0">
-            {% include 'includes/your_user_left_container.html' %}
-        </div>
+        {% include 'includes/left_container.html' %}
 
         <!-- Middle container -->
         <div class="col-7 ">
@@ -28,10 +25,30 @@
                 <table class="table table-striped border border-top-0 ">
                     <tr class="thead-dark">
                         <th class="align-middle text-center">#</th>
-                        <th class="align-middle">Name</th>
-                        <th class="align-middle">Tag</th>
-                        <th class="align-middle text-center">Rat</th>
-                        <th class="align-middle text-center">Int</th>
+                        <th class="align-middle">
+                            <a class="text-white "
+                               href="{% url 'user_item_list' user.username %}?order=name">
+                                Name
+                            </a>
+                        </th>
+                        <th class="align-middle text-center">
+                            <a class="text-white "
+                               href="{% url 'user_item_list' user.username %}?order=ration&sort=desc">
+                                Ration
+                            </a>
+                        </th>
+                        <th class="align-middle text-center">
+                            <a class="text-white "
+                               href="{% url 'user_item_list' user.username %}?order=score&sort=desc">
+                                Sco
+                            </a>
+                        </th>
+                        <th class="align-middle text-center">
+                            <a class="text-white "
+                               href="{% url 'user_item_list' user.username %}?order=interest&sort=desc">
+                                Int
+                            </a>
+                        </th>
                     </tr>
 
                     {% for user_item in user_item_list %}
@@ -48,10 +65,8 @@
                                     class="material-icons">link</i></a>
                             {% endif %}
                         </td>
-                        <td>
-                            <a href="{% url 'items'%}?tag={{ user_item.item.tag }}">
-                                {{ user_item.item.tag }}
-                            </a>
+                        <td class="align-middle text-center">
+                            {{ user_item.item.avg_rating|floatformat }}
                         </td>
                         <td class="text-center align-middle">{{ user_item.rating|floatformat }}</td>
                         <td class="text-center align-middle">{{ user_item.interest|floatformat }}</td>

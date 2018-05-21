@@ -9,3 +9,17 @@ width:300px;
 .no-bullets{
 list-style-type: none;
 }
+
+.body{
+background-color: #E6ECF0;
+}
+
+.update-card-user-pic{
+position: absolute;
+z-index:1;
+top: 10px;
+}
+
+.saved-message{
+
+}

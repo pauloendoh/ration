@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import redirect
 
 from core.forms import SignUpForm, ItemForm, UserItemForm
-from core.models import User_Item, User_Item_Log, Item, Tag, Taglist, Log, Update
+from core.models import User_Item, Item, Tag, Taglist, Log, Update
 
 
 def create_and_authenticate_user(request):
@@ -146,22 +146,19 @@ def get_comparison_list(your_user, their_user):
 
     return comparison_list
 
-def get_updates_by_taglist(taglist):
-    user = taglist.user
-    tags = taglist.tags.all()
-    user_updates = Update.objects.filter(user=user)
+def get_follower_list_by_user(user):
+    follower_list = []
 
-    updates = []
+    for taglist in user.taglists.all():
+        for following in taglist.followings.all():
 
-    for update in user_updates:
-        for tag in tags:
-            try:
-                if tag in update.interaction.item.tags.all():
-                    updates.append(update)
-            except:
-                pass
+            inside_list = False
 
-    updates.sort(key=lambda x: x.timestamp, reverse=True)
+            for follower in follower_list:
+                if follower.id == following.follower.id:
+                    inside_list = True
 
-    return updates
+            if not inside_list:
+                follower_list.append(following.follower)
 
+    return follower_list

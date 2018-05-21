@@ -14,7 +14,7 @@ class Profile(models.Model):
         primary_key=True
     )
     fullname = models.CharField(max_length=100)
-    picture = models.ImageField(upload_to='profile_pics', null=True, blank=True)
+    picture = models.ImageField(upload_to='profile_pics', blank=True, default="profile_pics/default.png")
     bio = models.TextField(null=True, blank=True)
     location = models.TextField(null=True, blank=True)
     website = models.TextField(null=True, blank=True)
@@ -32,7 +32,7 @@ class Item(models.Model):
 
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='item_icons', null=True, blank=True)
+    image = models.ImageField(upload_to='item_icons', blank=True, default="item_icons/default.png")
 
     avg_rating = models.FloatField(null=True)
     avg_interest = models.FloatField(null=True)
@@ -50,12 +50,6 @@ class User_Item(models.Model):
     interest = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(3)], null=True, blank=True)
 
 
-class User_Item_Log(models.Model):
-    user_item = models.ForeignKey(User_Item, related_name='logs', on_delete=models.CASCADE)
-    message = models.CharField(max_length=255)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-
 class Taglist(models.Model):
     user = models.ForeignKey(User, related_name='taglists', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
@@ -64,10 +58,29 @@ class Taglist(models.Model):
     is_private = models.BooleanField()
     is_main = models.BooleanField()
 
+    def get_update_list(self):
+        user = self.user
+        user_update_list = Update.objects.filter(user=user)
+        update_list = []
+
+        for update in user_update_list:
+            try:
+                item = update.interaction.item
+                for tag in item.tags.all():
+                    if tag in self.tags.all():
+                        update_list.append(update)
+            except:
+                pass
+
+        update_list.sort(key=lambda x: x.timestamp, reverse=True)
+
+        return update_list
+
+
 
 class Following(models.Model):
-    follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)
-    taglist = models.ForeignKey(Taglist, related_name='following', on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, related_name='followings', on_delete=models.CASCADE)
+    taglist = models.ForeignKey(Taglist, related_name='followings', on_delete=models.CASCADE)
 
 
 class Log(models.Model):
@@ -81,3 +94,4 @@ class Update(models.Model):
     interaction = models.ForeignKey(User_Item, related_name='updates', on_delete=models.CASCADE, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=255)
+

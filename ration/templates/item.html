@@ -1,6 +1,11 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% load humanize %}
+
+{% block javascript %}
+{% include 'includes/rating.html' %}
+{% endblock %}
 
 {% block content %}
 
@@ -15,12 +20,14 @@
                 <div class="row">
 
                     <div class="col-3 mt-3">
+
                         <!-- Image -->
                         {% ifequal item.image '' %}
-                        <img width="175" height="175" src="/media/{{ item.creator.profile.picture }}">
+                        <img width="175" height="175" src="/media/item_icons/default.png"/>
                         {% else %}
                         <img width="175" height="175px" src="/media/{{ item.image }}"/>
                         {% endifequal %}
+
                     </div>
 
                     <div class="col-9 mt-3">
@@ -72,7 +79,7 @@
 
                             </div>
 
-                            <!-- Rating and interest section -->
+                            <!-- Rating section -->
                             <div class="container mt-2">
                                 <div class="row">
 
@@ -88,7 +95,8 @@
                                     </div>
                                     {% if request.user.is_authenticated %}
                                     <div class="col-8">
-                                        <form method="POST">
+                                        <form class="rating-form"
+                                              method="POST">
                                             {% csrf_token %}
 
                                             <div class="row">
@@ -96,7 +104,8 @@
                                                     <p class="text-center">
                                                         <b>YOUR RATING</b>
                                                         <br>
-                                                        <input type="number" id="your-rating" min="1"
+                                                        <input type="number"
+                                                               class="your-rating" min="1"
                                                                max="5"
                                                                name="rating"
                                                                value="{{  user_item.rating|floatformat }}"/>
@@ -107,7 +116,8 @@
                                                     <p class="text-center">
                                                         <b>YOUR INTEREST</b>
                                                         <br>
-                                                        <input type="number" id="your-interest"
+                                                        <input type="number"
+                                                               class="your-interest"
                                                                name="interest"
                                                                max="3"
                                                                min="1"
@@ -116,8 +126,7 @@
                                                     </p>
                                                 </div>
                                             </div>
-
-                                            <input type="submit" hidden>
+                                            <button type="submit" hidden/>
 
                                         </form>
                                     </div>

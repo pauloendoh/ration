@@ -1,0 +1,39 @@
+<script>
+    $(document).ready(function(){
+    $(".rating-form").on('submit', function(event){
+        event.preventDefault();
+
+        //
+
+        var form = $(this);
+        var form_data = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            rating: form.find(".your-rating").val(),
+            interest: form.find(".your-interest").val(),
+            user_id: "{{ request.user.id }}",
+            item_id: "{{ item.id }}"
+        };
+
+        //
+
+        create_post(form, form_data);
+    });
+
+    function create_post(form, form_data){
+        $.ajax({
+            url: "/ajax/update_interaction",
+            type: "POST",
+            data: form_data ,
+            dataType: 'json',
+
+            success : function(data){
+                console.log("create_post() success");
+
+                $(".saved-message").remove();
+                form.after("<label class='saved-message'>Saved!</label>");
+            }
+        });
+    };
+
+});
+</script>

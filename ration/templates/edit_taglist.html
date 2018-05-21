@@ -6,10 +6,7 @@
 
     <div class="row">
 
-        <!-- Left container -->
-        <div class="col-2 pl-0 pr-0">
-            {% include 'includes/your_user_left_container.html' %}
-        </div>
+        {% include 'includes/left_container.html' %}
 
         <!-- Middle container -->
         <div class="col-7 ">
@@ -46,7 +43,7 @@
                         <div class="form-group">
                             <label for="tags">Tags (required): </label>
                             <input id="tags" name="tags" type="text" class="form-control"
-                            value="{% for tag in taglist.tags.all %}{{ tag.name}}; {% endfor %}">
+                                   value="{% for tag in taglist.tags.all %}{{ tag.name}}; {% endfor %}">
                         </div>
 
                         <!-- Description -->

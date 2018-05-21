@@ -1,0 +1,102 @@
+{% load utils %}
+
+{% block javascript %}
+{% include 'includes/rating_home.html' %}
+{% endblock %}
+
+{% load humanize %}
+
+
+<ul class="no-bullets pl-0">
+    {% for update in update_list %}
+
+    <li class="mb-2 ">
+        <div class="container pb-2">
+            <div class="row">
+
+                <!-- Profile pic -->
+                <div class="col-1">
+                    <div class="update-card-user-pic">
+                        <a href="{% url 'user' update.user.username %}">
+                            <img class="rounded-circle"
+                                 src="/media/{{ update.user.profile.picture }}"
+                                 width="50" height="50"
+                            />
+                        </a>
+                    </div>
+
+                </div>
+
+
+                <div class="col-11 pl-4 pt-2 pb-3 shadow-sm bg-white rounded">
+
+                    <!-- First line (username and timestamp) -->
+                    <a class="text-dark font-weight-bold "
+                       href="{% url 'user' update.user.username %}">{{update.user.username}}</a>
+                    <small class="text-muted"> • {{ update.timestamp|naturaltime }}</small>
+
+                    <div class="row pt-2">
+
+                        <div class="col-4">
+                            <a href="{% url 'item' update.interaction.item.id %}">
+
+                                <!-- Image -->
+                                {% ifequal update.interaction.item.image '' %}
+
+                                <img class="w-100" src="/media/item_icons/default.png"/>
+                                {% else %}
+                                <img class="w-100" src="/media/{{ update.interaction.item.image }}"/>
+                                {% endifequal %}
+
+                            </a>
+                        </div>
+
+                        <div class="col-8">
+
+                            <!-- Update description -->
+                            <h5 class="font-weight-bold"><a class="text-dark"
+                                                            href="{% url 'item' update.interaction.item.id %}">
+                                {{ update.interaction.item.name }}
+                            </a>
+                            </h5>
+                            <p>{{ update.message }}</p>
+                            <form class="rating-form"
+                                  method="POST">
+                                {% csrf_token %}
+                                <p>
+                                    Your score:
+                                    <input type="number"
+                                           class="your-rating"
+                                           min="1" max="5"
+                                           name="rating"
+                                           value="{% get_user_score_by_item request.user update.interaction.item %}"
+                                    />/5
+                                </p>
+                                <p>
+                                    Your interest:
+                                    <input type="number"
+                                           class="your-interest"
+                                           min="1" max="3"
+                                           name="interest"
+                                           value="{% get_user_interest_by_item request.user update.interaction.item %}"
+                                    />/3
+                                </p>
+                                <input type="hidden"
+                                       class="item-id"
+                                       value="{{ update.interaction.item.id }}"
+                                />
+                                <input type="submit" hidden/>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </li>
+    {% endfor %}
+</ul>

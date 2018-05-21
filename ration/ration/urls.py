@@ -48,6 +48,8 @@ urlpatterns = [
     path('user/<str:username>/following', views.following_list, name="following_list"),
     path('user/<str:username>/followers', views.follower_list, name='follower_list'),
     path('delete_taglist/<int:taglist_id>', views.delete_taglist, name='delete_taglist'),
+    path('update_rating/<int:item_id>', views.update_rating, name='update_rating'),
+    path('ajax/update_interaction', views.update_interaction, name='update_interaction'),
 
 ]
 

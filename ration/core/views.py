@@ -1,12 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm, TaglistForm
 from core.models import Item, User_Item, Profile, Taglist, Tag, Following, Update
 from core.utils import create_and_authenticate_user, get_logs_by_user, update_user_item, \
-    get_latest_items, get_comparison_list, get_tag, generate_taglist_logs, get_updates_by_taglist
+    get_latest_items, get_comparison_list, get_tag, generate_taglist_logs, \
+    get_follower_list_by_user
 
 
 def home(request):
@@ -23,7 +25,7 @@ def home(request):
 
         for following in following_list:
             taglist = following.taglist
-            updates = get_updates_by_taglist(taglist)
+            updates = taglist.get_update_list()
             for update in updates:
                 update_list.append(update)
 
@@ -63,16 +65,15 @@ def signup(request):
 def user(request, username):
     user = get_object_or_404(User, username=username)
 
-
     latest_items = get_latest_items(5)
 
     taglist = Taglist.objects.filter(user=user).first()
     taglists = Taglist.objects.filter(user=user)
     for tl in taglists:
         if tl.is_main:
-            taglist =  tl
+            taglist = tl
 
-    update_list = get_updates_by_taglist(taglist)
+    update_list = taglist.get_update_list()
 
     return render(request, 'user.html',
                   {'user': user, 'latest_items': latest_items, 'update_list': update_list, 'taglist': taglist})
@@ -113,7 +114,36 @@ def items(request):
 
 def user_item_list(request, username):
     user = get_object_or_404(User, username=username)
-    user_item_list = User_Item.objects.filter(user=user)
+    user_item_query_set = User_Item.objects.filter(user=user)
+
+    user_item_list = []
+
+    for user_item in user_item_query_set:
+        user_item_list.append(user_item)
+
+    order = request.GET.get('order', 'name')
+    sort = request.GET.get('sort', 'asc')
+    if order == 'name':
+        if sort == 'asc':
+            user_item_list.sort(key=lambda x: x.item.name)
+        else:
+            user_item_list.sort(key=lambda x: x.item.name, reverse=True)
+    if order == 'ration':
+        if sort == 'asc':
+            user_item_list.sort(key=lambda x: x.item.avg_rating)
+        else:
+            user_item_list.sort(key=lambda x: x.item.avg_rating, reverse=True)
+    if order == 'score':
+        if sort == 'asc':
+            user_item_list.sort(key=lambda x: x.rating)
+        else:
+            user_item_list.sort(key=lambda x: x.rating, reverse=True)
+    if order == 'interest':
+        if sort == 'asc':
+            user_item_list = sorted(user_item_list, key=lambda x: (x.interest is None, x.interest))
+        else:
+
+            user_item_list = sorted(user_item_list, reverse=True, key=lambda x: (x.interest is not None, x.interest))
 
     return render(request, 'user_items.html', {'user': user, 'user_item_list': user_item_list})
 
@@ -301,18 +331,7 @@ def taglist(request, taglist_id):
     taglist = get_object_or_404(Taglist, id=taglist_id)
     user = request.user
 
-    user_update_list = Update.objects.filter(user=user)
-    taglist_update_list = []
-
-    for update in user_update_list:
-        for tag in taglist.tags.all():
-            try:
-                for item_tag in update.interaction.item.tags.all():
-                    if tag == item_tag:
-                        taglist_update_list.append(update)
-                        break
-            except:
-                pass
+    taglist_update_list = taglist.get_update_list()
 
     taglist_update_list.sort(key=lambda x: x.timestamp, reverse=True)
 
@@ -360,21 +379,55 @@ def following_list(request, username):
 def follower_list(request, username):
     user = get_object_or_404(User, username=username)
 
-    taglists = Taglist.objects.filter(user=user)
 
-    follower_list = []
-
-    for taglist in taglists:
-        for following in taglist.following.all():
-            follower = following.follower
-
-            inside_list = False
-
-            for x in follower_list:
-                if x.id == follower.id:
-                    inside_list = True
-
-            if not inside_list:
-                follower_list.append(follower)
+    follower_list = get_follower_list_by_user(user)
 
     return render(request, 'followers.html', {'user': user, 'follower_list': follower_list})
+
+
+@login_required
+def update_rating(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    user = request.user
+
+    if request.method == 'POST':
+        form = UserItemForm(request.POST)
+        if form.is_valid():
+            return update_user_item(user, item, form)
+    else:
+        return redirect('home')
+
+
+@login_required
+def update_interaction(request):
+    data = {
+        'teste': 'Testando123'
+    }
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        interest = request.POST.get('interest')
+        user_id = request.POST.get('user_id')
+        item_id = request.POST.get('item_id')
+
+        user = User.objects.get(id=user_id)
+        print("aqui?")
+
+        item = Item.objects.get(id=item_id)
+        print("deu ruim")
+
+        form = UserItemForm(request.POST)
+        if form.is_valid():
+            print("deu ruim 2")
+            user_item = form.save(commit=False)
+            user_item.user = user
+            user_item.item = item
+            if User_Item.objects.filter(user=request.user, item=item).count() > 0:
+                user_item = User_Item.objects.filter(user=request.user, item=item).first()
+                user_item.rating = rating
+                user_item.interest = interest
+            user_item.save()
+            user_item.item.calc_average()
+            print("deu bom?")
+
+            return JsonResponse(data)
