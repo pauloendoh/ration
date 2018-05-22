@@ -108,7 +108,7 @@
                                                                class="your-rating" min="1"
                                                                max="5"
                                                                name="rating"
-                                                               value="{{  user_item.rating|floatformat }}"/>
+                                                               value="{{user_item.rating|floatformat|default_if_none:''}}"/>
                                                         / 5
                                                     </p>
                                                 </div>

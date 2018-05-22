@@ -8,16 +8,19 @@ from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm, TaglistF
 from core.models import Item, User_Item, Profile, Taglist, Tag, Following, Update
 from core.utils import create_and_authenticate_user, get_logs_by_user, update_user_item, \
     get_latest_items, get_comparison_list, get_tag, generate_taglist_logs, \
-    get_follower_list_by_user
+    get_follower_list_by_user, get_latest_users
 
 
 def home(request):
     latest_items = get_latest_items(5)
+    newest_users = get_latest_users(5)
 
     if request.user.is_authenticated:
         user = request.user
 
         following_list = Following.objects.filter(follower=user)
+
+
 
         log_list = []
 
@@ -36,9 +39,9 @@ def home(request):
             for log in taglist.logs.all():
                 log_list.append(log)
 
-        return render(request, 'home.html', {'latest_items': latest_items, 'update_list': update_list})
+        return render(request, 'home.html', {'latest_items': latest_items, 'update_list': update_list, 'newest_users': newest_users, })
 
-    return render(request, 'home.html', {'latest_items': latest_items})
+    return render(request, 'home.html', {'latest_items': latest_items, 'newest_users': newest_users, })
 
 
 def about(request):
@@ -79,6 +82,20 @@ def user(request, username):
                   {'user': user, 'latest_items': latest_items, 'update_list': update_list, 'taglist': taglist})
 
 
+def user_list(request):
+    user = request.user
+    user_list = User.objects.all()
+    return render(request, 'user_list.html', {'user_list': user_list, 'user': user})
+
+
+def user_created_item_list(request, username):
+    user = get_object_or_404(User, username=username)
+
+    item_list = Item.objects.filter(creator=user)
+
+    return render(request, 'user_created_item_list.html', {'item_list': item_list, 'user': user, })
+
+
 def item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     latest_items = get_latest_items(5)
@@ -112,40 +129,47 @@ def items(request):
     return render(request, 'items.html', {'items': items})
 
 
-def user_item_list(request, username):
+def rating_list(request, username):
     user = get_object_or_404(User, username=username)
     user_item_query_set = User_Item.objects.filter(user=user)
 
-    user_item_list = []
+    rating_list = []
 
-    for user_item in user_item_query_set:
-        user_item_list.append(user_item)
+    if request.GET.get('tag'):
+        tag_name = request.GET.get('tag')
+        tag = get_object_or_404(Tag, name=tag_name)
+        for user_item in user_item_query_set:
+            if user_item.has_tag(tag):
+                rating_list.append(user_item)
+    else:
+        for user_item in user_item_query_set:
+            rating_list.append(user_item)
 
     order = request.GET.get('order', 'name')
     sort = request.GET.get('sort', 'asc')
     if order == 'name':
         if sort == 'asc':
-            user_item_list.sort(key=lambda x: x.item.name)
+            rating_list.sort(key=lambda x: x.item.name)
         else:
-            user_item_list.sort(key=lambda x: x.item.name, reverse=True)
+            rating_list.sort(key=lambda x: x.item.name, reverse=True)
     if order == 'ration':
         if sort == 'asc':
-            user_item_list.sort(key=lambda x: x.item.avg_rating)
+            rating_list = sorted(rating_list, key=lambda x: (x.item.avg_rating is None, x.item.avg_rating))
         else:
-            user_item_list.sort(key=lambda x: x.item.avg_rating, reverse=True)
+            rating_list = sorted(rating_list, reverse=True,
+                                 key=lambda x: (x.item.avg_rating is not None, x.item.avg_rating))
     if order == 'score':
         if sort == 'asc':
-            user_item_list.sort(key=lambda x: x.rating)
+            rating_list = sorted(rating_list, key=lambda x: (x.rating is None, x.rating))
         else:
-            user_item_list.sort(key=lambda x: x.rating, reverse=True)
+            rating_list = sorted(rating_list, reverse=True, key=lambda x: (x.rating is not None, x.rating))
     if order == 'interest':
         if sort == 'asc':
-            user_item_list = sorted(user_item_list, key=lambda x: (x.interest is None, x.interest))
+            rating_list = sorted(rating_list, key=lambda x: (x.interest is None, x.interest))
         else:
+            rating_list = sorted(rating_list, reverse=True, key=lambda x: (x.interest is not None, x.interest))
 
-            user_item_list = sorted(user_item_list, reverse=True, key=lambda x: (x.interest is not None, x.interest))
-
-    return render(request, 'user_items.html', {'user': user, 'user_item_list': user_item_list})
+    return render(request, 'ratings.html', {'user': user, 'rating_list': rating_list})
 
 
 @login_required
@@ -379,7 +403,6 @@ def following_list(request, username):
 def follower_list(request, username):
     user = get_object_or_404(User, username=username)
 
-
     follower_list = get_follower_list_by_user(user)
 
     return render(request, 'followers.html', {'user': user, 'follower_list': follower_list})
@@ -411,14 +434,11 @@ def update_interaction(request):
         item_id = request.POST.get('item_id')
 
         user = User.objects.get(id=user_id)
-        print("aqui?")
 
         item = Item.objects.get(id=item_id)
-        print("deu ruim")
 
         form = UserItemForm(request.POST)
         if form.is_valid():
-            print("deu ruim 2")
             user_item = form.save(commit=False)
             user_item.user = user
             user_item.item = item
@@ -428,6 +448,37 @@ def update_interaction(request):
                 user_item.interest = interest
             user_item.save()
             user_item.item.calc_average()
-            print("deu bom?")
+
+            message = "Updated an item's ratings: " + item.name + " ( Score: " + str(user_item.rating) + \
+                      " | Interest: " + str(user_item.interest) + " )"
+            Update.objects.create(user=user, message=message, interaction=user_item)
 
             return JsonResponse(data)
+
+def user_timeline(request, username):
+    user = get_object_or_404(User, username=username)
+
+    # TODO: fix the update model (user, item, rating, ...?)
+    update_list_query_set = Update.objects.filter(user=user)
+    update_list = []
+
+    if request.GET.get('tag'):
+        tag_name = request.GET.get('tag')
+        tag = get_object_or_404(Tag, name=tag_name)
+
+        for update in update_list_query_set:
+            try:
+                if update.interaction.has_tag(tag):
+                    update_list.append(update)
+            except:
+                pass
+    else:
+        for update in update_list_query_set:
+            if update.interaction:
+                update_list.append(update)
+
+    update_list.sort(key=lambda x:x.timestamp, reverse=True)
+
+    latest_items = get_latest_items(5)
+
+    return render(request, 'home.html', {'user': user, 'update_list': update_list, 'latest_items': latest_items})

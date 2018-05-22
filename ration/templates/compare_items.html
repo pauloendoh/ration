@@ -26,7 +26,7 @@
                 <nav class="navbar navbar-expand-sm">
                     <ul class="navbar-nav">
                         <li class="align-self-center">
-                            <a class="nav-link text-center" href="{% url 'user_item_list' user.username %}">
+                            <a class="nav-link text-center" href="{% url 'rating_list' user.username %}">
                                 Items<br>
                                 <b>{{ user.user_items.all|length }}</b>
                             </a>

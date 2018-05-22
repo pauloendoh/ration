@@ -1,9 +1,32 @@
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
-from django.utils.safestring import mark_safe
-from markdown import markdown
+from django.contrib.auth.models import User
+
+
+def get_tag_list(self):
+    rating_list = User_Item.objects.filter(user=self)
+    tag_list = []
+
+    for rating in rating_list:
+        for tag in rating.item.tags.all():
+            if not tag in tag_list:
+                tag_list.append(tag)
+
+    return tag_list
+
+def get_rating_list_by_tag(self, tag):
+    rating_query_set = User_Item.objects.filter(user=self)
+    rating_list = []
+
+    for rating in rating_query_set:
+        if rating.has_tag(tag):
+            rating_list.append(rating)
+    return rating_list
+
+
+User.add_to_class("get_tag_list", get_tag_list)
+User.add_to_class("get_rating_list_by_tag", get_rating_list_by_tag)
 
 
 class Profile(models.Model):
@@ -49,6 +72,12 @@ class User_Item(models.Model):
     rating = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
     interest = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(3)], null=True, blank=True)
 
+    def has_tag(self, tag):
+        for x in self.item.tags.all():
+            if tag == x:
+                return True
+        return False
+
 
 class Taglist(models.Model):
     user = models.ForeignKey(User, related_name='taglists', on_delete=models.CASCADE)
@@ -77,7 +106,6 @@ class Taglist(models.Model):
         return update_list
 
 
-
 class Following(models.Model):
     follower = models.ForeignKey(User, related_name='followings', on_delete=models.CASCADE)
     taglist = models.ForeignKey(Taglist, related_name='followings', on_delete=models.CASCADE)
@@ -94,4 +122,3 @@ class Update(models.Model):
     interaction = models.ForeignKey(User_Item, related_name='updates', on_delete=models.CASCADE, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=255)
-

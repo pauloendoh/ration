@@ -27,31 +27,31 @@
                         <th class="align-middle text-center">#</th>
                         <th class="align-middle">
                             <a class="text-white "
-                               href="{% url 'user_item_list' user.username %}?order=name">
+                               href="{% url 'rating_list' user.username %}?order=name">
                                 Name
                             </a>
                         </th>
                         <th class="align-middle text-center">
                             <a class="text-white "
-                               href="{% url 'user_item_list' user.username %}?order=ration&sort=desc">
+                               href="{% url 'rating_list' user.username %}?order=ration&sort=desc">
                                 Ration
                             </a>
                         </th>
                         <th class="align-middle text-center">
                             <a class="text-white "
-                               href="{% url 'user_item_list' user.username %}?order=score&sort=desc">
+                               href="{% url 'rating_list' user.username %}?order=score&sort=desc">
                                 Sco
                             </a>
                         </th>
                         <th class="align-middle text-center">
                             <a class="text-white "
-                               href="{% url 'user_item_list' user.username %}?order=interest&sort=desc">
+                               href="{% url 'rating_list' user.username %}?order=interest&sort=desc">
                                 Int
                             </a>
                         </th>
                     </tr>
 
-                    {% for user_item in user_item_list %}
+                    {% for user_item in rating_list %}
                     <tr class="">
                         <td class="align-middle text-center">
                             {{ forloop.counter }}

@@ -1,6 +1,6 @@
 from django import template
 
-from core.models import User_Item, Taglist, Following
+from core.models import User_Item, Taglist, Following, Item
 from core.utils import get_follower_list_by_user
 
 register = template.Library()
@@ -40,3 +40,14 @@ def get_following_count_by_user(user):
             user_following_list.append(following.follower)
 
     return len(user_following_list)
+
+@register.simple_tag
+def get_created_item_count_by_user(user):
+    count = Item.objects.filter(creator=user).count()
+    return count
+
+@register.simple_tag
+def get_rating_count_by_user_and_tag(user, tag):
+    rating_list = user.get_rating_list_by_tag(tag)
+
+    return len(rating_list)

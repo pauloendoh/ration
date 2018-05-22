@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="mt-3 pb-2 container">
+    <div class="row">
+        {% include 'includes/left_container.html' %}
+
+        <div class="col-10">
+            <ul>
+                {% for user in user_list %}
+                <li>
+                    <a href="{% url 'user' user.username %}">@{{ user.username }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

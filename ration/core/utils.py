@@ -1,4 +1,5 @@
 from django.contrib.auth import login as auth_login, authenticate
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import redirect
 
@@ -20,10 +21,10 @@ def create_and_authenticate_user(request):
 
 
 def get_logs_by_user(user):
-    user_item_list = User_Item.objects.filter(user=user)
+    rating_list = User_Item.objects.filter(user=user)
 
     logs = []
-    for user_item in user_item_list:
+    for user_item in rating_list:
         for log in user_item.logs.all():
             logs.append(log)
         logs.sort(key=lambda x: x.timestamp, reverse=True)
@@ -101,6 +102,10 @@ def get_latest_items(n):
     return item_list
 
 
+def get_latest_users(n):
+    user_list = User.objects.all().order_by('-id')[:n]
+    return user_list
+
 class Comparison:
     def __init__(self, user_item, your_user, their_user):
         self.item = user_item.item
@@ -130,9 +135,9 @@ class Comparison:
 def get_comparison_list(your_user, their_user):
     comparison_list = []
 
-    user_item_list = User_Item.objects.filter(Q(user=your_user) | Q(user=their_user))
+    rating_list = User_Item.objects.filter(Q(user=your_user) | Q(user=their_user))
 
-    for user_item in user_item_list:
+    for user_item in rating_list:
         comparison = Comparison(user_item, your_user, their_user)
         comparison_exists = False
 

@@ -32,7 +32,10 @@ urlpatterns = [
     path('logout/', auth_views.logout, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     path('user/<str:username>', views.user, name='user'),
-    path('user/<str:username>/items', views.user_item_list, name='user_item_list'),
+    path('user_list', views.user_list, name='user_list'),
+    path('user/<str:username>/created', views.user_created_item_list, name='user_created_item_list'),
+    path('user/<str:username>/ratings', views.rating_list, name='rating_list'),
+    path('user/<str:username>/timeline', views.user_timeline, name='user_timeline'),
     path('user/<str:username>/compare_items', views.compare_items, name='compare_items'),
     path('create_item', views.create_item, name='create_item'),
     path('item/<int:item_id>', views.item, name='item'),
@@ -50,7 +53,6 @@ urlpatterns = [
     path('delete_taglist/<int:taglist_id>', views.delete_taglist, name='delete_taglist'),
     path('update_rating/<int:item_id>', views.update_rating, name='update_rating'),
     path('ajax/update_interaction', views.update_interaction, name='update_interaction'),
-
 ]
 
 if settings.DEBUG:
