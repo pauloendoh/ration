@@ -20,8 +20,6 @@ def home(request):
 
         following_list = Following.objects.filter(follower=user)
 
-
-
         log_list = []
 
         update_list = []
@@ -39,7 +37,8 @@ def home(request):
             for log in taglist.logs.all():
                 log_list.append(log)
 
-        return render(request, 'home.html', {'latest_items': latest_items, 'update_list': update_list, 'newest_users': newest_users, })
+        return render(request, 'home.html',
+                      {'latest_items': latest_items, 'update_list': update_list, 'newest_users': newest_users, })
 
     return render(request, 'home.html', {'latest_items': latest_items, 'newest_users': newest_users, })
 
@@ -442,6 +441,7 @@ def update_interaction(request):
             user_item = form.save(commit=False)
             user_item.user = user
             user_item.item = item
+
             if User_Item.objects.filter(user=request.user, item=item).count() > 0:
                 user_item = User_Item.objects.filter(user=request.user, item=item).first()
                 user_item.rating = rating
@@ -449,11 +449,12 @@ def update_interaction(request):
             user_item.save()
             user_item.item.calc_average()
 
-            message = "Updated an item's ratings: " + item.name + " ( Score: " + str(user_item.rating) + \
-                      " | Interest: " + str(user_item.interest) + " )"
+            message = "Updated their rating (Score: " + str(user_item.rating) + \
+                      "; Interest: " + str(user_item.interest) + ")"
             Update.objects.create(user=user, message=message, interaction=user_item)
 
             return JsonResponse(data)
+
 
 def user_timeline(request, username):
     user = get_object_or_404(User, username=username)
@@ -477,7 +478,7 @@ def user_timeline(request, username):
             if update.interaction:
                 update_list.append(update)
 
-    update_list.sort(key=lambda x:x.timestamp, reverse=True)
+    update_list.sort(key=lambda x: x.timestamp, reverse=True)
 
     latest_items = get_latest_items(5)
 

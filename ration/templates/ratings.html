@@ -11,85 +11,82 @@
         {% include 'includes/left_container.html' %}
 
         <!-- Middle container -->
-        <div class="col-7 ">
-            <div class="bg-white">
-                <h3 class="pt-3">
-                    @<a class="text-dark"
-                        href="{% url 'user' user.username %}">{{ user.username }}</a>'s items
-                    {% ifnotequal request.user user %}
-                    (<a href="{% url 'compare_items' user.username %}">compare your items</a>)
-                    {% endifnotequal %}
-                </h3>
+        <div class="col-7">
+
+            <h3 class="font-weight-bold d-inline">
+                #{{ request.GET.tag }}
+            </h3>
+            ·
+            <a href="{% url 'user_timeline' user.username %}?tag={{ request.GET.tag }}">
+                View timeline
+            </a>
+            {% ifnotequal request.user user %}
+            ·
+            <a href="{% url 'compare_items' user.username %}">compare your ratings</a>
+            {% endifnotequal %}
+
+            <table class="table table-striped bg-white">
+                <tr class="thead-dark">
+                    <th class="align-middle text-center">#</th>
+                    <th class="align-middle">
+                        <a class="text-white "
+                           href="{% url 'rating_list' user.username %}?order=name">
+                            Name
+                        </a>
+                    </th>
+                    <th class="align-middle text-center">
+                        <a class="text-white "
+                           href="{% url 'rating_list' user.username %}?order=ration&sort=desc">
+                            Ration
+                        </a>
+                    </th>
+                    <th class="align-middle text-center">
+                        <a class="text-white "
+                           href="{% url 'rating_list' user.username %}?order=score&sort=desc">
+                            Sco
+                        </a>
+                    </th>
+                    <th class="align-middle text-center">
+                        <a class="text-white "
+                           href="{% url 'rating_list' user.username %}?order=interest&sort=desc">
+                            Int
+                        </a>
+                    </th>
+                </tr>
+
+                {% for user_item in rating_list %}
+                <tr class="">
+                    <td class="align-middle text-center">
+                        {{ forloop.counter }}
+                    </td>
 
 
-                <table class="table table-striped border border-top-0 ">
-                    <tr class="thead-dark">
-                        <th class="align-middle text-center">#</th>
-                        <th class="align-middle">
-                            <a class="text-white "
-                               href="{% url 'rating_list' user.username %}?order=name">
-                                Name
-                            </a>
-                        </th>
-                        <th class="align-middle text-center">
-                            <a class="text-white "
-                               href="{% url 'rating_list' user.username %}?order=ration&sort=desc">
-                                Ration
-                            </a>
-                        </th>
-                        <th class="align-middle text-center">
-                            <a class="text-white "
-                               href="{% url 'rating_list' user.username %}?order=score&sort=desc">
-                                Sco
-                            </a>
-                        </th>
-                        <th class="align-middle text-center">
-                            <a class="text-white "
-                               href="{% url 'rating_list' user.username %}?order=interest&sort=desc">
-                                Int
-                            </a>
-                        </th>
-                    </tr>
-
-                    {% for user_item in rating_list %}
-                    <tr class="">
-                        <td class="align-middle text-center">
-                            {{ forloop.counter }}
-                        </td>
-
-
-                        <td>
-                            <a href="{% url 'item' user_item.item.id %}">{{ user_item.item.name }}</a>
-                            {% if user_item.item.url %}
-                            <a href="{{ user_item.item.url }}" target="_blank"><i
-                                    class="material-icons">link</i></a>
-                            {% endif %}
-                        </td>
-                        <td class="align-middle text-center">
-                            {{ user_item.item.avg_rating|floatformat }}
-                        </td>
-                        <td class="text-center align-middle">{{ user_item.rating|floatformat }}</td>
-                        <td class="text-center align-middle">{{ user_item.interest|floatformat }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+                    <td>
+                        <a href="{% url 'item' user_item.item.id %}">{{ user_item.item.name }}</a>
+                        {% if user_item.item.url %}
+                        <a href="{{ user_item.item.url }}" target="_blank"><i
+                                class="material-icons">link</i></a>
+                        {% endif %}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ user_item.item.avg_rating|floatformat }}<small><small>/5</small></small>
+                    </td>
+                    <td class="text-center align-middle">
+                        {{ user_item.rating|floatformat }}<small><small>/5</small></small>
+                    </td>
+                    <td class="text-center align-middle">
+                        {{ user_item.interest|floatformat }}<small><small>/3</small></small>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
 
 
         </div>
 
         <!-- Right container -->
-        <div class="col-3 bg-white">
-            <!-- 10 latest items -->
-            <div class="list-group p-3">
-                <h3>Latest items</h3>
-                <ul>
-                    {% for item in latest_items %}
-                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
-
+        <div class="col-3 bg-white shadow-sm">
+            {% include 'includes/right_container_new_items.html' %}
         </div>
 
     </div>

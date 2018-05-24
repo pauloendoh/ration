@@ -30,7 +30,11 @@
                 <div class="col-6">
                     <div class="align-self-center">
                         <a class="nav-link text-center pl-0 pr-0"
-                           href="{% url 'user_created_item_list' user.username %}">Created<br><b>{%get_created_item_count_by_user user%}</b>
+                           href="{% url 'user_created_item_list' user.username %}">Created
+                            <br>
+                            <b>
+                                {%get_created_item_count_by_user user%}
+                            </b>
                         </a>
                     </div>
                 </div>
@@ -98,12 +102,23 @@
             </div>
 
             <!-- List of tags -->
-            <ul class="no-bullets pl-0">
+            <ul class="no-bullets pl-0 pb-3">
                 {% for tag in user.get_tag_list %}
                 <li>
-                    <a href="{% url 'rating_list' user.username %}?tag={{ tag.name }}">
-                        {{ tag.name }} ({% get_rating_count_by_user_and_tag user tag %} ratings)
-                    </a>
+                    <small>
+                        <a href="{% url 'rating_list' user.username %}?tag={{ tag.name }}">
+                            <div class="row no-gutters">
+                                <div class="col-11">
+                                    #{{ tag.name }}
+                                </div>
+                                <div class="col-1 text-center">
+                                    {% get_rating_count_by_user_and_tag user tag %}
+                                </div>
+                            </div>
+
+                        </a>
+                    </small>
+
                 </li>
                 {% endfor %}
             </ul>
