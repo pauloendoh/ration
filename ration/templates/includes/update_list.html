@@ -1,8 +1,6 @@
 {% load utils %}
 
-{% block javascript %}
-{% include 'includes/rating_home.html' %}
-{% endblock %}
+
 
 {% load humanize %}
 
@@ -35,7 +33,7 @@
                        href="{% url 'user' update.user.username %}">
                         {{update.user.username}}
                     </a>
-                    <small class="text-muted">{{update.message}} </small>
+                    <small class="text-muted">{{update.message}}</small>
 
 
                     <div class="row pt-2">
@@ -74,16 +72,16 @@
                             {% endfor %}
 
                             <!-- Rating form -->
-                            <form class="rating-form"
+                            <form class="rating-form-update"
                                   method="POST">
                                 {% csrf_token %}
                                 <div class="row pt-2 pb-2">
                                     <div class="col-6">
                                         <small class="font-weight-bold">Your score: <input type="number"
-                                                                  class="your-rating"
-                                                                  min="1" max="5"
-                                                                  name="rating"
-                                                                  value="{% get_user_score_by_item request.user update.interaction.item %}"
+                                                                                           class="your-rating"
+                                                                                           min="1" max="5"
+                                                                                           name="rating"
+                                                                                           value="{% get_user_score_by_item request.user update.interaction.item %}"
                                         />/5
                                         </small>
                                     </div>

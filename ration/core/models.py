@@ -4,6 +4,11 @@ from django.db.models import Avg
 from django.contrib.auth.models import User
 
 
+def get_user_tag_list(self):
+    user_tag_list = User_Tag.objects.filter(user=self).order_by('-item_count')
+    return user_tag_list
+
+
 def get_tag_list(self):
     rating_list = User_Item.objects.filter(user=self)
     tag_list = []
@@ -15,6 +20,7 @@ def get_tag_list(self):
 
     return tag_list
 
+
 def get_rating_list_by_tag(self, tag):
     rating_query_set = User_Item.objects.filter(user=self)
     rating_list = []
@@ -25,6 +31,7 @@ def get_rating_list_by_tag(self, tag):
     return rating_list
 
 
+User.add_to_class("get_user_tag_list", get_user_tag_list)
 User.add_to_class("get_tag_list", get_tag_list)
 User.add_to_class("get_rating_list_by_tag", get_rating_list_by_tag)
 
@@ -45,6 +52,13 @@ class Profile(models.Model):
 
 class Tag(models.Model):
     name = models.TextField()
+
+
+class User_Tag(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    item_count = models.IntegerField()
+    is_private = models.NullBooleanField()
 
 
 class Item(models.Model):

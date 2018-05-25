@@ -34,8 +34,8 @@
 <div class="pt-5"></div>
 <div class="pt-2"></div>
 
-<nav class="navbar fixed-top navbar-expand-sm bg-white navbar-light shadow-sm">
-    <div class="container ">
+<nav class="navbar fixed-top navbar-expand-sm bg-white navbar-light shadow-sm ">
+    <div class="container pl-0 pr-0 ">
         <ul class="navbar-nav mr-auto">
 
             <!-- Logo -->
@@ -112,7 +112,9 @@
 {% block content %}{% endblock %}
 
 <!-- Custom JS -->
-{% block javascript %}{% endblock %}
+{% include 'includes/rating.html' %}
+{% block javascript %}
+{% endblock %}
 
 </body>
 </html>

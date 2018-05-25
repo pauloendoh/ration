@@ -46,8 +46,3 @@ def get_created_item_count_by_user(user):
     count = Item.objects.filter(creator=user).count()
     return count
 
-@register.simple_tag
-def get_rating_count_by_user_and_tag(user, tag):
-    rating_list = user.get_rating_list_by_tag(tag)
-
-    return len(rating_list)

@@ -17,7 +17,7 @@
                 #{{ request.GET.tag }}
             </h3>
             ·
-            <a href="{% url 'user_timeline' user.username %}?tag={{ request.GET.tag }}">
+            <a href="{% url 'user' user.username %}?tag={{ request.GET.tag }}">
                 View timeline
             </a>
             {% ifnotequal request.user user %}
@@ -86,7 +86,7 @@
 
         <!-- Right container -->
         <div class="col-3 bg-white shadow-sm">
-            {% include 'includes/right_container_new_items.html' %}
+            {% include 'includes/right_container.html' %}
         </div>
 
     </div>

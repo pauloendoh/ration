@@ -78,41 +78,20 @@
 
             <div class="mt-2 mb-3 container border-top"></div>
 
-            <div class="row ">
-                <div class="col-9">
-                    <ul>
-                        {% for taglist in user.taglists.all %}
-                        <li>
-                            <a href="{% url 'taglist' taglist.id %}">{{ taglist.name }}</a>
-                            {% if taglist.is_main %}
-                            ★
-                            {% endif %}
-                        </li>
-                        {% endfor %}
 
-                        {% ifequal request.user user %}
-                        <li><a href="{% url 'create_taglist' %}"><b>CREATE TAGLIST</b></a></li>
-                        {% endifequal %}
-                    </ul>
-
-                </div>
-                <div class="col-3">
-
-                </div>
-            </div>
 
             <!-- List of tags -->
             <ul class="no-bullets pl-0 pb-3">
-                {% for tag in user.get_tag_list %}
+                {% for user_tag in user.get_user_tag_list %}
                 <li>
                     <small>
-                        <a href="{% url 'rating_list' user.username %}?tag={{ tag.name }}">
+                        <a href="{% url 'rating_list' user.username %}?tag={{ user_tag.tag.name }}">
                             <div class="row no-gutters">
                                 <div class="col-11">
-                                    #{{ tag.name }}
+                                    #{{ user_tag.tag.name }}
                                 </div>
                                 <div class="col-1 text-center">
-                                    {% get_rating_count_by_user_and_tag user tag %}
+                                    {{ user_tag.item_count }}
                                 </div>
                             </div>
 

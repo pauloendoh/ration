@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import redirect
 
 from core.forms import SignUpForm, ItemForm, UserItemForm
-from core.models import User_Item, Item, Tag, Taglist, Log, Update
+from core.models import User_Item, Item, Tag, Taglist, Log, Update, User_Tag
 
 
 def create_and_authenticate_user(request):
@@ -52,6 +52,18 @@ def generate_taglist_logs(user, item, tag_name):
                     break
 
 
+def update_user_tag(user):
+    tag_list = user.get_tag_list()
+    for tag in tag_list:
+        item_count = len(user.get_rating_list_by_tag(tag))
+
+        if User_Tag.objects.filter(user=user, tag=tag).count() == 0:
+            User_Tag.objects.create(user=user, tag=tag, item_count=item_count, is_private=True)
+        else:
+            user_tag = User_Tag.objects.get(user=user, tag=tag)
+            user_tag.item_count = item_count
+            user_tag.save()
+
 
 def update_user_item(user, item, form):
     if User_Item.objects.filter(user=user, item=item).count() > 0:
@@ -66,9 +78,12 @@ def update_user_item(user, item, form):
     user_item.save()
     item.calc_average()
 
-    message = "Updated an item's ratings: " + item.name + " ( Score: "+ str(user_item.rating) +\
+    message = "Updated an item's ratings: " + item.name + " ( Score: " + str(user_item.rating) + \
               " | Interest: " + str(user_item.interest) + " )"
     Update.objects.create(user=user, message=message, interaction=user_item)
+
+    for tag in item.tags.all():
+        update_user_tag(user, tag)
 
     user_taglists = user.taglists.all()
     for user_taglist in user_taglists:
@@ -103,8 +118,9 @@ def get_latest_items(n):
 
 
 def get_latest_users(n):
-    user_list = User.objects.all().order_by('-id')[:n]
-    return user_list
+    users = User.objects.all().order_by('-id')[:n]
+    return users
+
 
 class Comparison:
     def __init__(self, user_item, your_user, their_user):
@@ -151,6 +167,7 @@ def get_comparison_list(your_user, their_user):
 
     return comparison_list
 
+
 def get_follower_list_by_user(user):
     follower_list = []
 
@@ -167,3 +184,29 @@ def get_follower_list_by_user(user):
                 follower_list.append(following.follower)
 
     return follower_list
+
+
+def get_arranged_ratings(ratings, order, sort):
+    if order == 'name':
+        if sort == 'asc':
+            ratings.sort(key=lambda x: x.item.name)
+        else:
+            ratings.sort(key=lambda x: x.item.name, reverse=True)
+    if order == 'ration':
+        if sort == 'asc':
+            ratings = sorted(ratings, key=lambda x: (x.item.avg_rating is None, x.item.avg_rating))
+        else:
+            ratings = sorted(ratings, reverse=True,
+                             key=lambda x: (x.item.avg_rating is not None, x.item.avg_rating))
+    if order == 'score':
+        if sort == 'asc':
+            ratings = sorted(ratings, key=lambda x: (x.rating is None, x.rating))
+        else:
+            ratings = sorted(ratings, reverse=True, key=lambda x: (x.rating is not None, x.rating))
+    if order == 'interest':
+        if sort == 'asc':
+            ratings = sorted(ratings, key=lambda x: (x.interest is None, x.interest))
+        else:
+            ratings = sorted(ratings, reverse=True, key=lambda x: (x.interest is not None, x.interest))
+
+    return ratings
