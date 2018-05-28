@@ -58,7 +58,7 @@
                     <div class="align-self-center">
                         <a class="nav-link text-center pl-0 pr-0" href="{% url 'following_list' user.username %}">Following
                             <br>
-                            <b>{% get_following_count_by_user user %}</b>
+                            <!-- get following counter by user -->
                         </a>
                     </div>
                 </div>
@@ -76,6 +76,7 @@
 
             </div>
 
+            <!-- Divider -->
             <div class="mt-2 mb-3 container border-top"></div>
 
 
@@ -83,22 +84,57 @@
             <!-- List of tags -->
             <ul class="no-bullets pl-0 pb-3">
                 {% for user_tag in user.get_user_tag_list %}
+
+                {% if user_tag.user == request.user %}
                 <li>
                     <small>
                         <a href="{% url 'rating_list' user.username %}?tag={{ user_tag.tag.name }}">
                             <div class="row no-gutters">
                                 <div class="col-11">
                                     #{{ user_tag.tag.name }}
+                                    {% if user_tag.is_private %}
+
+                                    <i class="material-icons align-middle" style="font-size: 10px; color: #b5b5b5; ">
+                                        lock
+
+                                    </i>
+
+                                    {% endif %}
                                 </div>
                                 <div class="col-1 text-center">
                                     {{ user_tag.item_count }}
                                 </div>
                             </div>
-
                         </a>
                     </small>
-
                 </li>
+                {% else %}
+                {% if user_tag.is_private == False %}
+                <li>
+                    <small>
+                        <a href="{% url 'rating_list' user.username %}?tag={{ user_tag.tag.name }}">
+                            <div class="row no-gutters">
+                                <div class="col-11">
+                                    #{{ user_tag.tag.name }}
+                                    {% if user_tag.is_private %}
+
+                                    <i class="material-icons align-middle" style="font-size: 10px; color: #b5b5b5; ">
+                                        lock
+
+                                    </i>
+
+                                    {% endif %}
+                                </div>
+                                <div class="col-1 text-center">
+                                    {{ user_tag.item_count }}
+                                </div>
+                            </div>
+                        </a>
+                    </small>
+                </li>
+                {% endif %}
+                {% endif %}
+
                 {% endfor %}
             </ul>
 

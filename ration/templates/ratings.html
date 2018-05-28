@@ -13,42 +13,100 @@
         <!-- Middle container -->
         <div class="col-7">
 
-            <h3 class="font-weight-bold d-inline">
-                #{{ request.GET.tag }}
-            </h3>
-            ·
-            <a href="{% url 'user' user.username %}?tag={{ request.GET.tag }}">
-                View timeline
-            </a>
-            {% ifnotequal request.user user %}
-            ·
-            <a href="{% url 'compare_items' user.username %}">compare your ratings</a>
-            {% endifnotequal %}
+            <div class="row no-gutters">
+                <div class="col-9">
+                    <h3 class="font-weight-bold d-inline">
+                        #{{ request.GET.tag }}
+                    </h3>
+                    ·
+                    <a href="{% url 'user' user.username %}?tag={{ request.GET.tag }}">
+                        View timeline
+                    </a>
 
-            <table class="table table-striped bg-white">
+                    <!-- Follow/unfollow -->
+                    {% if request.user != user_tag.user %}
+                    {% if user_tag %}
+                    ·
+                    <a href="{% url 'follow' user_tag.id %}">
+                        {% if is_following %}
+                        Unfollow
+                        {% else %}
+                        Follow
+                        {% endif %}
+                    </a>
+                    {% endif %}
+                    {% endif %}
+
+                    <!-- Favorite/unfavorite button -->
+                    {% if user_tag %}
+                    ·
+                    <a href="{% url 'favorite_user_tag' user_tag.id %}">
+                        {% if is_favorite %}
+                        Unfavorite
+                        {% else %}
+                        Favorite
+                        {% endif %}
+                    </a>
+                    {% endif %}
+
+                    <!-- Compare ratings -->
+                    {% ifnotequal request.user user %}
+                    ·
+                    <a href="{% url 'compare_items' user.username %}">compare your ratings</a>
+                    {% endifnotequal %}
+
+                </div>
+                <div class="col-3">
+                    {% if user_tag %}
+                    <div class="float-right">
+                        {% ifequal request.user user %}
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {% if user_tag.is_private %}
+                            Private
+                            {% else %}
+                            Public
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'private_user_tag' user_tag.id %}">
+                                {% if user_tag.is_private %}
+                                Public
+                                {% else %}
+                                Private
+                                {% endif %}
+                            </a>
+                        </div>
+                        {% endifequal %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <table class="table table-bordered bg-white">
                 <tr class="thead-dark">
                     <th class="align-middle text-center">#</th>
                     <th class="align-middle">
                         <a class="text-white "
-                           href="{% url 'rating_list' user.username %}?order=name">
+                           href="{% url 'rating_list' user.username %}?order=name&tag={{ request.GET.tag }}">
                             Name
                         </a>
                     </th>
                     <th class="align-middle text-center">
                         <a class="text-white "
-                           href="{% url 'rating_list' user.username %}?order=ration&sort=desc">
+                           href="{% url 'rating_list' user.username %}?order=ration&sort=desc&tag={{ request.GET.tag }}">
                             Ration
                         </a>
                     </th>
                     <th class="align-middle text-center">
                         <a class="text-white "
-                           href="{% url 'rating_list' user.username %}?order=score&sort=desc">
+                           href="{% url 'rating_list' user.username %}?order=score&sort=desc&tag={{ request.GET.tag }}">
                             Sco
                         </a>
                     </th>
                     <th class="align-middle text-center">
                         <a class="text-white "
-                           href="{% url 'rating_list' user.username %}?order=interest&sort=desc">
+                           href="{% url 'rating_list' user.username %}?order=interest&sort=desc&tag={{ request.GET.tag }}">
                             Int
                         </a>
                     </th>
@@ -60,7 +118,7 @@
                         {{ forloop.counter }}
                     </td>
 
-
+                    <!-- Item name -->
                     <td>
                         <a href="{% url 'item' user_item.item.id %}">{{ user_item.item.name }}</a>
                         {% if user_item.item.url %}
@@ -68,15 +126,35 @@
                                 class="material-icons">link</i></a>
                         {% endif %}
                     </td>
+
+                    <!-- Ration score -->
                     <td class="align-middle text-center">
-                        {{ user_item.item.avg_rating|floatformat }}<small><small>/5</small></small>
+                        {% if user_item.item.avg_rating >= 4 %}
+                        <b>{{ user_item.item.avg_rating|floatformat }}</b>
+                        {% else %}
+                        {{ user_item.item.avg_rating|floatformat }}
+                        {% endif %}
                     </td>
+
+                    <!-- User score -->
                     <td class="text-center align-middle">
-                        {{ user_item.rating|floatformat }}<small><small>/5</small></small>
+                        {% if user_item.rating >= 4 %}
+                        <b> {{ user_item.rating|floatformat }}</b>
+                        {% else %}
+                        {{ user_item.rating|floatformat }}
+                        {% endif %}
                     </td>
+
+                    <!-- User interest -->
                     <td class="text-center align-middle">
-                        {{ user_item.interest|floatformat }}<small><small>/3</small></small>
+                        {% if user_item.interest == 3 %}
+                        <b> {{user_item.interest|floatformat}}</b>
+                        {% else %}
+                        {{user_item.interest|floatformat}}
+                        {% endif %}
                     </td>
+
+
                 </tr>
                 {% endfor %}
             </table>

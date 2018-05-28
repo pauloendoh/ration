@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
-from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm, TaglistForm
-from core.models import Item, User_Item, Profile, Taglist, Tag, Following, Update
+from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm
+from core.models import Item, User_Item, Profile, Tag, Following, Update, User_Tag, Favorite_User_Tag
 from core.utils import create_and_authenticate_user, update_user_item, \
-    get_latest_items, get_comparison_list, get_tag, generate_taglist_logs, \
+    get_latest_items, get_comparison_list, get_tag, \
     get_follower_list_by_user, get_latest_users, update_user_tag, get_arranged_ratings
 
 
@@ -20,22 +21,20 @@ def home(request):
 
         following_list = Following.objects.filter(follower=user)
 
-        log_list = []
-
         update_list = []
 
         for following in following_list:
-            taglist = following.taglist
-            updates = taglist.get_update_list()
+            # TODO
+            user_tag = following.user_tag
+            updates = user_tag.get_update_list()
             for update in updates:
                 update_list.append(update)
 
-        update_list.sort(key=lambda x: x.timestamp, reverse=True)
+        updates = Update.objects.filter(user=user)
+        for update in updates:
+            update_list.append(update)
 
-        for following in following_list:
-            taglist = following.taglist
-            for log in taglist.logs.all():
-                log_list.append(log)
+        update_list.sort(key=lambda x: x.timestamp, reverse=True)
 
         return render(request, 'home.html',
                       {'latest_items': latest_items, 'update_list': update_list, 'newest_users': newest_users, })
@@ -147,9 +146,24 @@ def rating_list(request, username):
 
     ratings_queryset = User_Item.objects.filter(user=user)
 
+    is_following = False
+    is_favorite = False
+    user_tag = False
+
     if request.GET.get('tag'):
         tag_name = request.GET.get('tag')
         tag = get_object_or_404(Tag, name=tag_name)
+        user_tag = User_Tag.objects.get(user=user, tag=tag)
+
+        if user_tag.is_private and user_tag.user != request.user:
+            return redirect('home')
+
+        if Favorite_User_Tag.objects.filter(user=request.user, user_tag=user_tag).count() > 0:
+            is_favorite = True
+
+        if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
+            is_following = True
+
         for user_item in ratings_queryset:
             if user_item.has_tag(tag):
                 ratings.append(user_item)
@@ -162,7 +176,9 @@ def rating_list(request, username):
 
     ratings = get_arranged_ratings(ratings, order, sort)
 
-    return render(request, 'ratings.html', {'user': user, 'rating_list': ratings})
+    return render(request, 'ratings.html',
+                  {'user': user, 'rating_list': ratings, 'user_tag': user_tag, 'is_following': is_following,
+                   'is_favorite': is_favorite, })
 
 
 @login_required
@@ -182,7 +198,6 @@ def create_item(request):
                     tag_name = raw_tag.lower().strip()
                     tag = get_tag(tag_name)
                     item.tags.add(tag)
-                    generate_taglist_logs(user, item, tag_name)
 
             message = "New item: " + item.name
             Update.objects.create(user=user, message=message)
@@ -280,109 +295,17 @@ def settings(request):
 
 
 @login_required
-def create_taglist(request):
-    if request.method == 'POST':
-        form = TaglistForm(request.POST)
-        if form.is_valid():
-            taglist = form.save(commit=False)
-            taglist.user = request.user
+def follow(request, user_tag_id):
+    user = request.user
 
-            if taglist.is_main:
-                taglists = Taglist.objects.filter(user=taglist.user)
-                for x in taglists:
-                    if x.is_main:
-                        x.is_main = False
-                        x.save()
+    user_tag = get_object_or_404(User_Tag, id=user_tag_id)
 
-            taglist.save()
-
-            raw_tags = form.cleaned_data['tags'].split(';')
-            for raw_tag in raw_tags:
-                if raw_tag != "" and raw_tag != " ":
-                    tag_name = raw_tag.lower().strip()
-                    tag = get_tag(tag_name)
-                    taglist.tags.add(tag)
-
-            return redirect('taglist', taglist.id)
+    if Following.objects.filter(follower=user, user_tag=user_tag).count() > 0:
+        Following.objects.filter(follower=user, user_tag=user_tag).delete()
     else:
-        form = TaglistForm()
-    return render(request, 'edit_taglist.html', {'form': form})
+        Following.objects.create(follower=user, user_tag=user_tag)
 
-
-@login_required
-def edit_taglist(request, taglist_id):
-    user = request.user
-    taglist = get_object_or_404(Taglist, id=taglist_id)
-
-    if Taglist.objects.filter(user=user, id=taglist_id).count() == 0:
-        return redirect('taglist', taglist_id)
-
-    if request.method == 'POST':
-        form = TaglistForm(request.POST, instance=taglist)
-        if form.is_valid():
-
-            if taglist.is_main:
-                taglists = Taglist.objects.filter(user=taglist.user)
-                for x in taglists:
-                    if x.is_main:
-                        x.is_main = False
-                        x.save()
-
-            taglist.save()
-
-            taglist.tags.clear()
-            raw_tags = form.cleaned_data['tags'].split(';')
-            for raw_tag in raw_tags:
-                if raw_tag != "" and raw_tag != " ":
-                    tag = get_tag(raw_tag.lower().strip())
-                    taglist.tags.add(tag)
-
-            return redirect('taglist', taglist_id)
-        else:
-            return render(request, 'edit_item.html', {'item': item, 'form': form})
-    else:
-        return render(request, 'edit_taglist.html', {'taglist': taglist})
-
-
-def taglist(request, taglist_id):
-    taglist = get_object_or_404(Taglist, id=taglist_id)
-    user = request.user
-
-    taglist_update_list = taglist.get_update_list()
-
-    taglist_update_list.sort(key=lambda x: x.timestamp, reverse=True)
-
-    if request.user.is_authenticated:
-        if Following.objects.filter(follower=user, taglist=taglist).count() > 0:
-            return render(request, 'taglist.html', {'taglist': taglist, 'is_following': True, 'user': taglist.user,
-                                                    'taglist_update_list': taglist_update_list})
-
-    return render(request, 'taglist.html',
-                  {'taglist': taglist, 'user': taglist.user, 'taglist_update_list': taglist_update_list})
-
-
-@login_required
-def delete_taglist(request, taglist_id):
-    user = request.user
-    taglist = get_object_or_404(Taglist, id=taglist_id)
-
-    if user == taglist.user:
-        taglist.delete()
-
-    return redirect('home')
-
-
-@login_required
-def follow(request, taglist_id):
-    user = request.user
-
-    taglist = get_object_or_404(Taglist, id=taglist_id)
-
-    if Following.objects.filter(follower=user, taglist=taglist).count() > 0:
-        Following.objects.filter(follower=user, taglist=taglist).delete()
-    else:
-        Following.objects.create(follower=user, taglist=taglist)
-    return redirect('taglist', taglist_id)
+    return redirect(reverse('rating_list', kwargs={'username': user_tag.user.username}) + '?tag=' + user_tag.tag.name)
 
 
 def following_list(request, username):
@@ -421,19 +344,69 @@ def update_interaction(request):
 
             if User_Item.objects.filter(user=request.user, item=item).count() > 0:
                 user_item = User_Item.objects.filter(user=request.user, item=item).first()
+
+                if user_item.rating == int(rating) and user_item.interest == int(interest):
+                    data = {
+                        'message' : 'Score or interest must be different!'
+                    }
+                    return JsonResponse(data)
+
                 user_item.rating = rating
                 user_item.interest = interest
             user_item.save()
             user_item.item.calc_average()
 
-            message = "Updated their rating (Score: " + str(user_item.rating) + \
-                      "; Interest: " + str(user_item.interest) + ")"
-            Update.objects.create(user=user, message=message, interaction=user_item)
+            updates = Update.objects.filter(interaction=user_item)
+            for update in updates:
+                update.is_visible = False
+                update.save()
 
-            update_user_tag(user)
+            message = "updated their rating (Score: " + str(user_item.rating) + \
+                      "; Interest: " + str(user_item.interest) + ")"
+            Update.objects.create(user=user, message=message, interaction=user_item, is_visible=True)
+
+            for tag in item.tags.all():
+                update_user_tag(user, tag)
 
             data = {
-                'teste': 'Testando123'
+                'message': 'Saved!'
             }
 
             return JsonResponse(data)
+
+
+@login_required
+def private_user_tag(request, user_tag_id):
+    user = request.user
+    user_tag = User_Tag.objects.get(id=user_tag_id)
+    if user_tag.user == user:
+        if user_tag.is_private:
+            user_tag.is_private = False
+        else:
+            user_tag.is_private = True
+        user_tag.save()
+    return redirect(reverse('rating_list', kwargs={'username': user.username}) + '?tag=' + user_tag.tag.name)
+
+
+@login_required
+def favorite_user_tag(request, user_tag_id):
+    user = request.user
+    user_tag = User_Tag.objects.get(id=user_tag_id)
+
+    try:
+        Favorite_User_Tag.objects.get(user=user, user_tag=user_tag).delete()
+    except:
+        Favorite_User_Tag.objects.create(user=user, user_tag=user_tag)
+
+    return redirect(reverse('rating_list', kwargs={'username': user.username}) + '?tag=' + user_tag.tag.name)
+
+
+@login_required
+def hide_update(request, update_id):
+    update = get_object_or_404(Update, id=update_id)
+
+    if update.user == request.user:
+        update.is_visible = False
+        update.save()
+
+    return redirect('user', update.user.username)

@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import redirect
 
-from core.forms import SignUpForm, ItemForm, UserItemForm
-from core.models import User_Item, Item, Tag, Taglist, Log, Update, User_Tag
+from core.forms import SignUpForm
+from core.models import User_Item, Item, Tag, Update, User_Tag, Following
 
 
 def create_and_authenticate_user(request):
@@ -20,18 +20,6 @@ def create_and_authenticate_user(request):
     return
 
 
-def get_logs_by_user(user):
-    rating_list = User_Item.objects.filter(user=user)
-
-    logs = []
-    for user_item in rating_list:
-        for log in user_item.logs.all():
-            logs.append(log)
-        logs.sort(key=lambda x: x.timestamp, reverse=True)
-
-    return logs
-
-
 def get_tag(name):
     if Tag.objects.filter(name=name).count() > 0:
         tag = Tag.objects.filter(name=name).first()
@@ -41,28 +29,31 @@ def get_tag(name):
         return tag
 
 
-def generate_taglist_logs(user, item, tag_name):
-    if Taglist.objects.filter(user=user).count() > 0:
-        user_taglists = Taglist.objects.filter(user=user)
-        for user_taglist in user_taglists:
-            for tag in user_taglist.tags.all():
-                if tag.name == tag_name:
-                    message = "@" + user.username + "  -> item: " + item.name
-                    Log.objects.create(taglist=user_taglist, message=message)
-                    break
+def update_user_tag(user, tag):
+    item_count = len(user.get_ratings_by_tag(tag))
+
+    if User_Tag.objects.filter(user=user, tag=tag).count() == 0:
+        User_Tag.objects.create(user=user, tag=tag, item_count=item_count, is_private=True)
+    else:
+        user_tag = User_Tag.objects.get(user=user, tag=tag)
+        user_tag.item_count = item_count
+        user_tag.save()
 
 
-def update_user_tag(user):
-    tag_list = user.get_tag_list()
-    for tag in tag_list:
-        item_count = len(user.get_rating_list_by_tag(tag))
+def update_all_user_tag():
+    users = User.objects.all()
 
-        if User_Tag.objects.filter(user=user, tag=tag).count() == 0:
-            User_Tag.objects.create(user=user, tag=tag, item_count=item_count, is_private=True)
-        else:
-            user_tag = User_Tag.objects.get(user=user, tag=tag)
-            user_tag.item_count = item_count
-            user_tag.save()
+    for user in users:
+        tag_list = user.get_tag_list()
+        for tag in tag_list:
+            item_count = len(user.get_ratings_by_tag(tag))
+
+            if User_Tag.objects.filter(user=user, tag=tag).count() == 0:
+                User_Tag.objects.create(user=user, tag=tag, item_count=item_count, is_private=True)
+            else:
+                user_tag = User_Tag.objects.get(user=user, tag=tag)
+                user_tag.item_count = item_count
+                user_tag.save()
 
 
 def update_user_item(user, item, form):
@@ -85,31 +76,7 @@ def update_user_item(user, item, form):
     for tag in item.tags.all():
         update_user_tag(user, tag)
 
-    user_taglists = user.taglists.all()
-    for user_taglist in user_taglists:
-        for tag in user_taglist.tags.all():
-            if tag in user_item.item.tags.all():
-                message = "@" + user.username + "  -> item: " + item.name + \
-                          " (rating: " + str(user_item.rating) + \
-                          " | interest: " + str(user_item.interest) + ")"
-                Log.objects.create(taglist=user_taglist, message=message)
-                break
-
     return redirect('item', item.id)
-
-
-def get_log_message(user_item):
-    rating_log = ""
-    if not user_item.rating == None:
-        rating_log = "Rating: " + str(int(user_item.rating)) + ""
-
-    interest_log = ""
-    if not user_item.interest == None:
-        interest_log = " || Interest: " + str(int(user_item.interest))
-
-    message = user_item.user.username + " updated '" + user_item.item.name + "' (" + rating_log + interest_log + ")"
-
-    return message
 
 
 def get_latest_items(n):
@@ -171,16 +138,17 @@ def get_comparison_list(your_user, their_user):
 def get_follower_list_by_user(user):
     follower_list = []
 
-    for taglist in user.taglists.all():
-        for following in taglist.followings.all():
+    user_tags = User_Tag.objects.filter(user=user)
 
-            inside_list = False
+    for user_tag in user_tags:
+        followings = Following.objects.filter(user_tag=user_tag)
+        for following in followings:
+            in_list = False
 
             for follower in follower_list:
                 if follower.id == following.follower.id:
-                    inside_list = True
-
-            if not inside_list:
+                    in_list = True
+            if not in_list:
                 follower_list.append(following.follower)
 
     return follower_list
@@ -210,3 +178,4 @@ def get_arranged_ratings(ratings, order, sort):
             ratings = sorted(ratings, reverse=True, key=lambda x: (x.interest is not None, x.interest))
 
     return ratings
+

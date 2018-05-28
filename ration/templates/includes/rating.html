@@ -26,6 +26,10 @@
                 user_id: "{{ request.user.id }}",
                 item_id: form.find(".item-id").val()
             };
+
+            console.log(form);
+            console.log(form_data);
+
             create_post(form, form_data);
          });
 
@@ -56,7 +60,7 @@
                 console.log("create_post() success");
 
                 $(".saved-message").remove();
-                form.after("<label class='saved-message'>Saved!</label>");
+                form.after("<label class='saved-message'>" + data.message + "</label>");
             }
         });
     };

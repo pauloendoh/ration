@@ -21,19 +21,19 @@ def get_tag_list(self):
     return tag_list
 
 
-def get_rating_list_by_tag(self, tag):
+def get_ratings_by_tag(self, tag):
     rating_query_set = User_Item.objects.filter(user=self)
-    rating_list = []
+    ratings = []
 
     for rating in rating_query_set:
         if rating.has_tag(tag):
-            rating_list.append(rating)
-    return rating_list
+            ratings.append(rating)
+    return ratings
 
 
 User.add_to_class("get_user_tag_list", get_user_tag_list)
 User.add_to_class("get_tag_list", get_tag_list)
-User.add_to_class("get_rating_list_by_tag", get_rating_list_by_tag)
+User.add_to_class("get_ratings_by_tag", get_ratings_by_tag)
 
 
 class Profile(models.Model):
@@ -52,13 +52,35 @@ class Profile(models.Model):
 
 class Tag(models.Model):
     name = models.TextField()
-
+    is_official = models.BooleanField()
 
 class User_Tag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
     item_count = models.IntegerField()
     is_private = models.NullBooleanField()
+
+    def get_update_list(self):
+        user_update_list = Update.objects.filter(user=self.user)
+        update_list = []
+
+        for update in user_update_list:
+            try:
+                item = update.interaction.item
+                for tag in item.tags.all():
+                    if tag == self.tag:
+                        update_list.append(update)
+            except:
+                pass
+
+        update_list.sort(key=lambda x: x.timestamp, reverse=True)
+
+        return update_list
+
+
+class Favorite_User_Tag(models.Model):
+    user = models.ForeignKey(User, related_name='favorite_user_tags', on_delete=models.CASCADE)
+    user_tag = models.ForeignKey(User_Tag, on_delete=models.CASCADE)
 
 
 class Item(models.Model):
@@ -93,42 +115,12 @@ class User_Item(models.Model):
         return False
 
 
-class Taglist(models.Model):
-    user = models.ForeignKey(User, related_name='taglists', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    tags = models.ManyToManyField(Tag)
-    description = models.TextField(blank=True, null=True)
-    is_private = models.BooleanField()
-    is_main = models.BooleanField()
 
-    def get_update_list(self):
-        user = self.user
-        user_update_list = Update.objects.filter(user=user)
-        update_list = []
-
-        for update in user_update_list:
-            try:
-                item = update.interaction.item
-                for tag in item.tags.all():
-                    if tag in self.tags.all():
-                        update_list.append(update)
-            except:
-                pass
-
-        update_list.sort(key=lambda x: x.timestamp, reverse=True)
-
-        return update_list
 
 
 class Following(models.Model):
-    follower = models.ForeignKey(User, related_name='followings', on_delete=models.CASCADE)
-    taglist = models.ForeignKey(Taglist, related_name='followings', on_delete=models.CASCADE)
-
-
-class Log(models.Model):
-    taglist = models.ForeignKey(Taglist, related_name='logs', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    message = models.TextField()
+    follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_tag = models.ForeignKey(User_Tag, on_delete=models.CASCADE)
 
 
 class Update(models.Model):
@@ -136,3 +128,4 @@ class Update(models.Model):
     interaction = models.ForeignKey(User_Item, related_name='updates', on_delete=models.CASCADE, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=255)
+    is_visible = models.BooleanField()

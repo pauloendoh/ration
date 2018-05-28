@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth.models import User
 
-from core.models import Item, User_Item, Profile, Taglist
+from core.models import Item, User_Item, Profile
 
 
 class SignUpForm(UserCreationForm):
@@ -31,11 +31,3 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['fullname', 'picture', 'bio', 'location', 'website']
-
-
-class TaglistForm(forms.ModelForm):
-    tags = forms.CharField(widget=forms.TextInput(attrs={'placeholder': "Separate tags with ';'"}))
-
-    class Meta:
-        model = Taglist
-        fields = ['name', 'tags', 'description', 'is_private', 'is_main']
