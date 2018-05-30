@@ -3,6 +3,8 @@
 
 {% load humanize %}
 
+{% include 'ajax/view_more.html' %}
+
 
 <ul class="no-bullets pl-0">
     {% for update in update_list %}
@@ -87,7 +89,8 @@
 
                             <!-- Item tags -->
                             {% for tag in update.interaction.item.tags.all %}
-                            <a class="no-underline" href="{% url 'items' %}?tag={{ tag.name }}">
+                            <a class="no-underline"
+                               href="{% url 'rating_list' update.user.username %}?tag={{ tag.name }}">
                                 <span class="badge badge-light font-weight-normal">
                                     #{{ tag.name }}
                                 </span>
@@ -125,13 +128,17 @@
                                 <input type="submit" hidden/>
                             </form>
 
+
                             <!-- Item description -->
-                            <small class="font-italic mt-2 text-justify">
-                                {{ update.interaction.item.description|slice:'100' }}
-                                {% if update.interaction.item.description|length > 100 %}
-                                . . . (<a href="{% url 'item' update.interaction.item.id %}">see more</a>)
-                                {%endif%}
-                            </small>
+                            <p class="font-italic mt-2 text-justify">
+                                <small>
+                                    {{ update.interaction.item.description|slice:'100' }}
+                                    {% if update.interaction.item.description|length > 100 %}
+                                    . . . (<a class="view-more" href="{% url 'item' update.interaction.item.id %}"
+                                              data-value="{{ update.interaction.item.description }}">see more</a>)
+                                    {%endif%}
+                                </small>
+                            </p>
 
 
                         </div>

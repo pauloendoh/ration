@@ -1,0 +1,16 @@
+<script>
+    $(document).ready(function(){
+        $('.view-more').click(function(event){
+            event.preventDefault();
+
+            var small_description = $(this).parent();
+            var item_description = $(this).data('value');
+
+            small_description.text(item_description);
+
+        });
+
+
+    });
+
+</script>

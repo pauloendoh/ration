@@ -30,22 +30,20 @@ def get_follower_count_by_user(user):
     return len(follower_list)
 
 
-'''
 @register.simple_tag
 def get_following_count_by_user(user):
-    following_list = Following.objects.filter(follower=user)
-    user_following_list = []
+    followings = Following.objects.filter(follower=user)
+    user_followings = []
 
-    for following in following_list:
+    for following in followings:
         inside_list = False
-        for user_following in user_following_list:
+        for user_following in user_followings:
             if following.user_tag.user.id == user_following.id:
                 inside_list= True
         if not inside_list:
-            user_following_list.append(following.follower)
+            user_followings.append(following.follower)
 
-    return len(user_following_list)
-'''
+    return len(user_followings)
 
 
 @register.simple_tag

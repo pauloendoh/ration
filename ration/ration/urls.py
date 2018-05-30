@@ -50,7 +50,6 @@ urlpatterns = [
     path('private_user_tag/<int:user_tag_id>', views.private_user_tag, name='private_user_tag'),
     path('favorite_user_tag/<int:user_tag_id>', views.favorite_user_tag, name='favorite_user_tag'),
     path('hide_update/<int:update_id>', views.hide_update, name='hide_update'),
-
 ]
 
 if settings.DEBUG:

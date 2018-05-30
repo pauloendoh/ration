@@ -267,7 +267,12 @@ def search(request):
 
     user_results = User.objects.filter(Q(username__icontains=query) | Q(profile__fullname__icontains=query))
 
-    return render(request, 'search.html', {'item_results': item_results, 'user_results': user_results})
+    tag_results = Tag.objects.filter(name__icontains=query)
+    if query.startswith('#'):
+        tag_name = query.split('#')[1].strip()
+        tag_results = Tag.objects.filter(name__icontains=tag_name)
+
+    return render(request, 'search.html', {'item_results': item_results, 'user_results': user_results, 'tag_results': tag_results})
 
 
 @login_required
@@ -311,7 +316,7 @@ def follow(request, user_tag_id):
 def following_list(request, username):
     user = get_object_or_404(User, username=username)
 
-    following_list = Following.objects.filter(follower=request.user)
+    following_list = Following.objects.filter(follower=user)
 
     return render(request, 'following.html', {'following_list': following_list, 'user': user})
 

@@ -13,11 +13,9 @@
         <div class="col-7 ">
             <div class="container bg-white">
 
-                {% if not user_results %}
-                {% if not item_results %}
+                {% if user_results == False and item_results == False and tag_results == False %}
                 <h3>No results</h3>
                 {% endif %}
-                {% endif%}
 
                 <!-- User list -->
                 {% if user_results %}
@@ -117,8 +115,17 @@
                     </li>
                     {% endfor %}
                 </ul>
-
                 {% endif %}
+
+                <!-- Tag results -->
+                <h5>Tag results:</h5>
+                <ul>
+                    {% for tag in tag_results %}
+                    <li><a href="{% url 'items' %}?tag={{ tag.name }}">#{{ tag.name }}
+                        </a></li>
+                    {% endfor %}
+                </ul>
+
             </div>
 
         </div>

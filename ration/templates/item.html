@@ -4,8 +4,10 @@
 {% load humanize %}
 
 
-
 {% block content %}
+
+{% include 'includes/rating_star.html' %}
+
 
 <div class="mt-3 pb-2 container">
 
@@ -95,7 +97,7 @@
                                     <div class="col-8">
                                         <form class="rating-form"
                                               method="POST">
-                                            {% csrf_token %}
+
 
                                             <div class="row">
                                                 <div class="col-6 align-self-center">
@@ -127,9 +129,51 @@
                                             <button type="submit" hidden/>
 
                                         </form>
+
                                     </div>
 
                                     {% endif %}
+
+                                    <!-- Rating Stars Box -->
+                                    <div class='rating-stars text-center'>
+                                        <ul id='stars'>
+                                            <li class='star
+{% if user_item.rating >= 1 %}
+selected
+{% endif %}' title='Poor' data-value='1'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star
+{% if user_item.rating >= 2 %}
+selected
+{% endif %}
+' title='Fair' data-value='2'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star
+{% if user_item.rating >= 3 %}
+selected
+{% endif %}' title='Good' data-value='3'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star
+{% if user_item.rating >= 4 %}
+selected
+{% endif %}' title='Excellent' data-value='4'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class='star
+{% if user_item.rating >= 5 %}
+selected
+{% endif %}' title='WOW!!!' data-value='5'>
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class='success-box'>
+                                        <div class='text-message'></div>
+                                    </div>
 
                                 </div>
                             </div>

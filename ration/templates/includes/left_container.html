@@ -58,7 +58,7 @@
                     <div class="align-self-center">
                         <a class="nav-link text-center pl-0 pr-0" href="{% url 'following_list' user.username %}">Following
                             <br>
-                            <!-- get following counter by user -->
+                            <b> {% get_following_count_by_user user %}</b>
                         </a>
                     </div>
                 </div>
@@ -78,7 +78,6 @@
 
             <!-- Divider -->
             <div class="mt-2 mb-3 container border-top"></div>
-
 
 
             <!-- List of tags -->

@@ -142,6 +142,7 @@ def get_follower_list_by_user(user):
 
     for user_tag in user_tags:
         followings = Following.objects.filter(user_tag=user_tag)
+
         for following in followings:
             in_list = False
 
@@ -178,4 +179,3 @@ def get_arranged_ratings(ratings, order, sort):
             ratings = sorted(ratings, reverse=True, key=lambda x: (x.interest is not None, x.interest))
 
     return ratings
-

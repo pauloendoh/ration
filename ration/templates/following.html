@@ -13,8 +13,8 @@
             <h1>Following: </h1>
             <ul>
                 {% for following in following_list %}
-                <li>{{ following.taglist.name }} (
-                    <a href="{% url 'user' following.taglist.user.username %}">@{{following.taglist.user.username}}</a>
+                <li># {{ following.user_tag.tag.name }} (
+                    <a href="{% url 'user' following.user_tag.user.username %}">@{{following.user_tag.user.username}}</a>
                     )
                 </li>
                 {% endfor %}
