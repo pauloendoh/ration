@@ -37,7 +37,7 @@
                                href="{% url 'user' update.user.username %}">
                                 {{update.user.username}}
                             </a>
-                            <small class="text-muted">{{update.message}}</small>
+                            <small>{{update.message}}</small>
                         </div>
 
                         <!-- Options -->
@@ -54,6 +54,12 @@
                                         Hide update
                                     </a>
                                     {% endif %}
+                                    <a class="dropdown-item" href="#" class="dropdown-toggle"
+                                       data-toggle="modal"
+                                       data-target="#exampleModal{{update.id}}"
+                                    >
+                                        Rating history
+                                    </a>
                                 </div>
                             </div>
 
@@ -98,6 +104,7 @@
                             {% endfor %}
 
                             <!-- Rating form -->
+                            {% if request.user.is_authenticated %}
                             <form class="rating-form-update">
                                 <div class="row pt-2 pb-2">
                                     <div class="col-6">
@@ -127,7 +134,7 @@
                                 />
                                 <input type="submit" hidden/>
                             </form>
-
+                            {% endif %}
 
                             <!-- Item description -->
                             <p class="font-italic mt-2 text-justify">
@@ -152,6 +159,9 @@
 
         </div>
     </li>
+
+    {% include 'includes/rating_history_modal.html' %}
+
     {% endif %}
 
 

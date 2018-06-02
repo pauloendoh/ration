@@ -23,10 +23,10 @@
 
         <!-- Tags -->
         <div class="form-group">
-            <label for="tags">Tag (required): </label>
+            <label for="tags">Tags: </label>
             <input id="tags" name='tags' type="text" class="form-control"
                    value="{% for tag in item.tags.all %}{{ tag.name }}; {% endfor %}"
-                   required
+
                    placeholder="Separate tags with ';'">
         </div>
 

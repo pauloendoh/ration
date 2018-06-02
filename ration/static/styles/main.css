@@ -52,3 +52,35 @@ top: 10px;
 .rating-stars ul > li.star.selected > i.fa {
   color:#FF912C;
 }
+
+
+/* Interest flame */
+
+.interest-flames ul {
+  list-style-type:none;
+  padding:0;
+
+  -moz-user-select:none;
+  -webkit-user-select:none;
+}
+.interest-flames ul > li.flame{
+  display:inline-block;
+
+}
+
+.interest-flames ul > li.flame> i.fa-fire{
+  font-size:1em;
+  color:#ccc;
+}
+
+/* Hover state */
+.interest-flames ul > li.flame.hover > i.fa-fire {
+  color:#6ba3ff;
+}
+
+/* Selected state*/
+.interest-flames ul > li.flame.selected > i.fa-fire {
+  color:#0069D9;
+}
+
+

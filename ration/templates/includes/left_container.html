@@ -2,6 +2,7 @@
 
 <div class="col-2 pl-0 pr-0">
 
+    {% if request.user.is_authenticated %}
     <div class="bg-white pl-3 pr-3 shadow-sm rounded">
         <div class="pt-3">
 
@@ -140,4 +141,7 @@
             {% endif %}
         </div>
     </div>
+
+    {% endif %}
+
 </div>

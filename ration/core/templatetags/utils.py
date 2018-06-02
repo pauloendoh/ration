@@ -1,7 +1,6 @@
 from django import template
 
-from core.models import User_Item, Following, Item
-from core.utils import get_follower_list_by_user
+from core.models import User_Item, Following, Item, Update
 
 register = template.Library()
 
@@ -26,8 +25,8 @@ def get_user_interest_by_item(user, item):
 
 @register.simple_tag
 def get_follower_count_by_user(user):
-    follower_list = get_follower_list_by_user(user)
-    return len(follower_list)
+    followers = user.get_followers()
+    return len(followers)
 
 
 @register.simple_tag
@@ -50,3 +49,10 @@ def get_following_count_by_user(user):
 def get_created_item_count_by_user(user):
     count = Item.objects.filter(creator=user).count()
     return count
+
+@register.simple_tag
+def get_updates_by_user_item(user_item):
+    updates = Update.objects.filter(user=user_item.user,
+                                    interaction=user_item).order_by('-timestamp')
+
+    return updates

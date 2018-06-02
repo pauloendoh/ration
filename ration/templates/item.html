@@ -6,7 +6,8 @@
 
 {% block content %}
 
-{% include 'includes/rating_star.html' %}
+{% include 'ajax/rating_star.html' %}
+{% include 'ajax/interest_flame.html' %}
 
 
 <div class="mt-3 pb-2 container">
@@ -140,39 +141,68 @@
                                             <li class='star
 {% if user_item.rating >= 1 %}
 selected
-{% endif %}' title='Poor' data-value='1'>
+{% endif %}' title='Horrible' data-value='1'>
                                                 <i class='fa fa-star fa-fw'></i>
                                             </li>
                                             <li class='star
 {% if user_item.rating >= 2 %}
 selected
 {% endif %}
-' title='Fair' data-value='2'>
+' title='Bad' data-value='2'>
                                                 <i class='fa fa-star fa-fw'></i>
                                             </li>
                                             <li class='star
 {% if user_item.rating >= 3 %}
 selected
-{% endif %}' title='Good' data-value='3'>
+{% endif %}' title='Normal' data-value='3'>
                                                 <i class='fa fa-star fa-fw'></i>
                                             </li>
                                             <li class='star
 {% if user_item.rating >= 4 %}
 selected
-{% endif %}' title='Excellent' data-value='4'>
+{% endif %}' title='Good' data-value='4'>
                                                 <i class='fa fa-star fa-fw'></i>
                                             </li>
                                             <li class='star
 {% if user_item.rating >= 5 %}
 selected
-{% endif %}' title='WOW!!!' data-value='5'>
+{% endif %}' title='Excellent' data-value='5'>
                                                 <i class='fa fa-star fa-fw'></i>
                                             </li>
                                         </ul>
                                     </div>
 
+
                                     <div class='success-box'>
                                         <div class='text-message'></div>
+                                    </div>
+
+                                    <!-- Interest flames -->
+                                    <div class="interest-flames text-center">
+                                        <ul id="flames">
+                                            <li class="flame
+{% if user_item.interest >= 1 %}
+selected
+{% endif %}"
+                                                title="Not interested" data-value="1">
+                                                <i class="fas fa-fire"></i>
+                                            </li>
+                                            <li class="flame
+{% if user_item.interest >= 2 %}
+selected
+{% endif %}"
+                                                title="Interested" data-value="2">
+                                                <i class="fas fa-fire"></i>
+                                            </li>
+                                            <li class="flame
+{% if user_item.interest >= 3 %}
+selected
+{% endif %}"
+                                                title="Very interested" data-value="3">
+                                                <i class="fas fa-fire"></i>
+                                            </li>
+                                        </ul>
+
                                     </div>
 
                                 </div>

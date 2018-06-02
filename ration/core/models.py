@@ -2,6 +2,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models import Avg
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 
 def get_user_tag_list(self):
@@ -31,9 +32,58 @@ def get_ratings_by_tag(self, tag):
     return ratings
 
 
+def get_or_create_user_item(self, item):
+    try:
+        user_item = User_Item.objects.get(user=self, item=item)
+        return user_item
+    except:
+        user_item = User_Item.objects.create(user=self, item=item)
+        return user_item
+
+
+def get_updates_by_tag_name(self, tag_name):
+    updates = []
+    updates_queryset = self.updates.all()
+
+    if tag_name == '':
+        for update in updates_queryset:
+            updates.append(update)
+    else:
+        tag = get_object_or_404(Tag, name=tag_name)
+
+        for update in updates_queryset:
+            try:
+                if update.interaction.has_tag(tag):
+                    updates.append(update)
+            except:
+                pass
+    return updates
+
+def get_followers(self):
+    followers = []
+
+    user_tags = User_Tag.objects.filter(user=self)
+    for user_tag in user_tags:
+        followings = Following.objects.filter(user_tag=user_tag)
+
+        for following in followings:
+            in_list = False
+
+            for follower in followers:
+                if follower.id == following.follower.id:
+                    in_list = True
+            if not in_list:
+                followers.append(following.follower)
+
+    return followers
+
+
 User.add_to_class("get_user_tag_list", get_user_tag_list)
 User.add_to_class("get_tag_list", get_tag_list)
 User.add_to_class("get_ratings_by_tag", get_ratings_by_tag)
+User.add_to_class("get_or_create_user_item", get_or_create_user_item)
+User.add_to_class("get_updates_by_tag_name", get_updates_by_tag_name)
+User.add_to_class("get_followers", get_followers)
 
 
 class Profile(models.Model):
@@ -52,7 +102,8 @@ class Profile(models.Model):
 
 class Tag(models.Model):
     name = models.TextField()
-    is_official = models.BooleanField()
+    is_official = models.BooleanField(default=0)
+
 
 class User_Tag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -87,7 +138,7 @@ class Item(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     url = models.CharField(max_length=255, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, related_name='items')
+    tags = models.ManyToManyField(Tag, related_name='items', blank=True)
 
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -113,9 +164,6 @@ class User_Item(models.Model):
             if tag == x:
                 return True
         return False
-
-
-
 
 
 class Following(models.Model):

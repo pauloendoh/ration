@@ -3,24 +3,10 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import redirect
 
-from core.forms import SignUpForm
 from core.models import User_Item, Item, Tag, Update, User_Tag, Following
 
 
-def create_and_authenticate_user(request):
-    form = SignUpForm(request.POST)
-    form.save()
-
-    username = form.cleaned_data.get('username')
-    password = form.cleaned_data.get('password1')
-
-    user = authenticate(username=username, password=password)
-    auth_login(request, user)
-
-    return
-
-
-def get_tag(name):
+def get_or_create_tag(name):
     if Tag.objects.filter(name=name).count() > 0:
         tag = Tag.objects.filter(name=name).first()
         return tag
@@ -135,24 +121,7 @@ def get_comparison_list(your_user, their_user):
     return comparison_list
 
 
-def get_follower_list_by_user(user):
-    follower_list = []
 
-    user_tags = User_Tag.objects.filter(user=user)
-
-    for user_tag in user_tags:
-        followings = Following.objects.filter(user_tag=user_tag)
-
-        for following in followings:
-            in_list = False
-
-            for follower in follower_list:
-                if follower.id == following.follower.id:
-                    in_list = True
-            if not in_list:
-                follower_list.append(following.follower)
-
-    return follower_list
 
 
 def get_arranged_ratings(ratings, order, sort):

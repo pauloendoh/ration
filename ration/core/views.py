@@ -1,3 +1,4 @@
+from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
@@ -5,11 +6,11 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
-from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm
+from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm, UpdateScoreForm, UpdateInterestForm
 from core.models import Item, User_Item, Profile, Tag, Following, Update, User_Tag, Favorite_User_Tag
-from core.utils import create_and_authenticate_user, update_user_item, \
-    get_latest_items, get_comparison_list, get_tag, \
-    get_follower_list_by_user, get_latest_users, update_user_tag, get_arranged_ratings
+from core.utils import update_user_item, \
+    get_latest_items, get_comparison_list, get_or_create_tag, \
+    get_latest_users, update_user_tag, get_arranged_ratings
 
 
 def home(request):
@@ -36,10 +37,12 @@ def home(request):
 
         update_list.sort(key=lambda x: x.timestamp, reverse=True)
 
-        return render(request, 'home.html',
-                      {'latest_items': latest_items, 'update_list': update_list, 'newest_users': newest_users, })
+        return render(request, 'home.html', {'latest_items': latest_items,
+                                             'update_list': update_list,
+                                             'newest_users': newest_users, })
 
-    return render(request, 'home.html', {'latest_items': latest_items, 'newest_users': newest_users, })
+    return render(request, 'home.html', {'latest_items': latest_items,
+                                         'newest_users': newest_users, })
 
 
 def about(request):
@@ -55,7 +58,14 @@ def signup(request):
         if request.method == 'POST':
             form = SignUpForm(request.POST)
             if form.is_valid():
-                create_and_authenticate_user(request)
+                form.save()
+
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password1')
+
+                user = authenticate(username=username, password=password)
+                auth_login(request, user)
+
                 return redirect('home')
         else:
             form = SignUpForm()
@@ -66,36 +76,22 @@ def signup(request):
 def user(request, username):
     user = get_object_or_404(User, username=username)
 
-    # TODO: fix the update model (user, item, rating, ...?)
-    update_list_query_set = Update.objects.filter(user=user)
-    update_list = []
-
-    if request.GET.get('tag'):
-        tag_name = request.GET.get('tag')
-        tag = get_object_or_404(Tag, name=tag_name)
-
-        for update in update_list_query_set:
-            try:
-                if update.interaction.has_tag(tag):
-                    update_list.append(update)
-            except:
-                pass
-    else:
-        for update in update_list_query_set:
-            if update.interaction:
-                update_list.append(update)
-
-    update_list.sort(key=lambda x: x.timestamp, reverse=True)
+    tag_name = request.GET.get('tag', '')
+    updates = user.get_updates_by_tag_name(tag_name)
+    updates.sort(key=lambda x: x.timestamp, reverse=True)
 
     latest_items = get_latest_items(5)
 
-    return render(request, 'home.html', {'user': user, 'update_list': update_list, 'latest_items': latest_items})
+    return render(request, 'home.html', {'user': user,
+                                         'update_list': updates,
+                                         'latest_items': latest_items})
 
 
 def users(request):
     user = request.user
     users = User.objects.all()
-    return render(request, 'user_list.html', {'users': users, 'user': user})
+    return render(request, 'user_list.html', {'users': users,
+                                              'user': user})
 
 
 def user_created_item_list(request, username):
@@ -103,7 +99,8 @@ def user_created_item_list(request, username):
 
     item_list = Item.objects.filter(creator=user)
 
-    return render(request, 'user_created_item_list.html', {'item_list': item_list, 'user': user, })
+    return render(request, 'user_created_item_list.html', {'item_list': item_list,
+                                                           'user': user, })
 
 
 def item(request, item_id):
@@ -122,8 +119,10 @@ def item(request, item_id):
         else:
             form = UserItemForm()
 
-        return render(request, 'item.html',
-                      {'item': item, 'form': form, 'user_item': user_item, 'latest_items': latest_items})
+        return render(request, 'item.html',{'item': item,
+                                            'form': form,
+                                            'user_item': user_item,
+                                            'latest_items': latest_items})
 
     else:
         return render(request, 'item.html', {'item': item})
@@ -155,14 +154,16 @@ def rating_list(request, username):
         tag = get_object_or_404(Tag, name=tag_name)
         user_tag = User_Tag.objects.get(user=user, tag=tag)
 
-        if user_tag.is_private and user_tag.user != request.user:
-            return redirect('home')
+        if request.user.is_authenticated:
 
-        if Favorite_User_Tag.objects.filter(user=request.user, user_tag=user_tag).count() > 0:
-            is_favorite = True
+            if user_tag.is_private and user_tag.user != request.user:
+                return redirect('home')
 
-        if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
-            is_following = True
+            if Favorite_User_Tag.objects.filter(user=request.user, user_tag=user_tag).count() > 0:
+                is_favorite = True
+
+            if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
+                is_following = True
 
         for user_item in ratings_queryset:
             if user_item.has_tag(tag):
@@ -176,9 +177,11 @@ def rating_list(request, username):
 
     ratings = get_arranged_ratings(ratings, order, sort)
 
-    return render(request, 'ratings.html',
-                  {'user': user, 'rating_list': ratings, 'user_tag': user_tag, 'is_following': is_following,
-                   'is_favorite': is_favorite, })
+    return render(request, 'ratings.html',{'user': user,
+                                           'rating_list': ratings,
+                                           'user_tag': user_tag,
+                                           'is_following': is_following,
+                                           'is_favorite': is_favorite, })
 
 
 @login_required
@@ -196,11 +199,15 @@ def create_item(request):
             for raw_tag in raw_tags:
                 if raw_tag != "" and raw_tag != " ":
                     tag_name = raw_tag.lower().strip()
-                    tag = get_tag(tag_name)
+                    tag = get_or_create_tag(tag_name)
                     item.tags.add(tag)
 
-            message = "New item: " + item.name
-            Update.objects.create(user=user, message=message)
+            message = "created: " + item.name
+            user_item = user.get_or_create_user_item(item)
+            Update.objects.create(user=user,
+                                  message=message,
+                                  is_visible=True,
+                                  interaction=user_item)
 
             return redirect('item', item.id)
     else:
@@ -225,15 +232,20 @@ def edit_item(request, item_id):
             raw_tags = form.cleaned_data['tags'].split(';')
             for raw_tag in raw_tags:
                 if raw_tag != "" and raw_tag != " ":
-                    tag = get_tag(raw_tag.lower().strip())
+                    tag = get_or_create_tag(raw_tag.lower().strip())
                     item.tags.add(tag)
 
-            message = "Edited an item: " + item.name
-            Update.objects.create(user=user, message=message)
+            message = "edited an item: "
+            user_item = user.get_or_create_user_item(item)
+            Update.objects.create(user=user,
+                                  message=message,
+                                  is_visible=True,
+                                  interaction=user_item)
 
             return redirect('item', item_id)
         else:
-            return render(request, 'edit_item.html', {'item': item, 'form': form})
+            return render(request, 'edit_item.html', {'item': item,
+                                                      'form': form})
     else:
         return render(request, 'edit_item.html', {'item': item})
 
@@ -256,7 +268,8 @@ def compare_items(request, username):
 
     comparison_list = get_comparison_list(your_user, their_user)
 
-    return render(request, 'compare_items.html', {'their_user': their_user, 'comparison_list': comparison_list})
+    return render(request, 'compare_items.html', {'their_user': their_user,
+                                                  'comparison_list': comparison_list})
 
 
 def search(request):
@@ -272,7 +285,9 @@ def search(request):
         tag_name = query.split('#')[1].strip()
         tag_results = Tag.objects.filter(name__icontains=tag_name)
 
-    return render(request, 'search.html', {'item_results': item_results, 'user_results': user_results, 'tag_results': tag_results})
+    return render(request, 'search.html',{'item_results': item_results,
+                                          'user_results': user_results,
+                                          'tag_results': tag_results})
 
 
 @login_required
@@ -296,7 +311,8 @@ def settings(request):
                 return redirect('user', user.username)
     else:
         form = ProfileForm()
-    return render(request, 'settings.html', {'form': form, 'latest_items': latest_items})
+    return render(request, 'settings.html', {'form': form,
+                                             'latest_items': latest_items})
 
 
 @login_required
@@ -318,16 +334,125 @@ def following_list(request, username):
 
     following_list = Following.objects.filter(follower=user)
 
-    return render(request, 'following.html', {'following_list': following_list, 'user': user})
+    return render(request, 'following.html', {'following_list': following_list,
+                                              'user': user})
 
 
 def follower_list(request, username):
     user = get_object_or_404(User, username=username)
 
-    follower_list = get_follower_list_by_user(user)
+    follower_list = user.get_followers()
 
-    return render(request, 'followers.html', {'user': user, 'follower_list': follower_list})
+    return render(request, 'followers.html', {'user': user,
+                                              'follower_list': follower_list})
 
+@login_required
+def update_score(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        item_id = request.POST.get('item_id')
+
+        user = User.objects.get(id=user_id)
+        item = Item.objects.get(id=item_id)
+
+        score = request.POST.get('score')
+
+        form = UpdateScoreForm(request.POST)
+        if form.is_valid():
+            user_item = form.save(commit=False)
+            user_item.user = user
+            user_item.item = item
+
+            if User_Item.objects.filter(user=user, item=item).count() > 0:
+                user_item = User_Item.objects.get(user=user, item=item)
+
+                print(user_item.rating)
+                print(score)
+
+                if user_item.rating == score:
+                    data = {
+                        'message': 'Score must be different.'
+                    }
+                    return JsonResponse(data)
+
+                user_item.rating = score
+
+            user_item.save()
+            user_item.item.calc_average()
+
+            updates = Update.objects.filter(interaction=user_item)
+            for update in updates:
+                update.is_visible = False
+                update.save()
+
+            message = "scored " + str(int(user_item.rating)) + "/5"
+            Update.objects.create(user=user,
+                                  message=message,
+                                  interaction=user_item,
+                                  is_visible=True)
+
+            for tag in item.tags.all():
+                update_user_tag(user, tag)
+
+            data = {
+                'message': 'Score saved!'
+            }
+            return JsonResponse(data)
+
+
+@login_required
+def update_interest(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        item_id = request.POST.get('item_id')
+
+        user = User.objects.get(id=user_id)
+        item = Item.objects.get(id=item_id)
+
+        interest = request.POST.get('interest')
+
+        form = UpdateInterestForm(request.POST)
+        if form.is_valid():
+            user_item = form.save(commit=False)
+            user_item.user = user
+            user_item.item = item
+
+            if User_Item.objects.filter(user=user, item=item).count() > 0:
+                user_item = User_Item.objects.get(user=user, item=item)
+
+                print(user_item.interest)
+                print(interest)
+
+                if user_item.interest == interest:
+                    data = {
+                        'message': 'Interest must be different.'
+                    }
+                    return JsonResponse(data)
+
+                user_item.interest = interest
+
+            user_item.save()
+            user_item.item.calc_average()
+
+            updates = Update.objects.filter(interaction=user_item)
+            for update in updates:
+                update.is_visible = False
+                update.save()
+
+            message = "update their interest to "+interest+"/3"
+
+            Update.objects.create(user=user,
+                                  message=message,
+                                  interaction=user_item,
+                                  is_visible=True)
+
+            for tag in item.tags.all():
+                update_user_tag(user, tag)
+
+            data = {
+                'message': 'Interest saved!'
+            }
+            return JsonResponse(data)
 
 @login_required
 def update_interaction(request):
@@ -338,8 +463,8 @@ def update_interaction(request):
         user = User.objects.get(id=user_id)
         item = Item.objects.get(id=item_id)
 
-        rating = request.POST.get('rating')
-        interest = request.POST.get('interest')
+        rating = float(request.POST.get('rating'))
+        interest = float(request.POST.get('interest'))
 
         form = UserItemForm(request.POST)
         if form.is_valid():
@@ -347,17 +472,22 @@ def update_interaction(request):
             user_item.user = user
             user_item.item = item
 
-            if User_Item.objects.filter(user=request.user, item=item).count() > 0:
-                user_item = User_Item.objects.filter(user=request.user, item=item).first()
+            if User_Item.objects.filter(user=user, item=item).count() > 0:
+                user_item = User_Item.objects.get(user=user, item=item)
 
-                if user_item.rating == int(rating) and user_item.interest == int(interest):
+
+
+                if user_item.rating == rating and user_item.interest == interest:
                     data = {
-                        'message' : 'Score or interest must be different!'
+                        'message': 'Score or interest must be different!'
                     }
                     return JsonResponse(data)
 
                 user_item.rating = rating
                 user_item.interest = interest
+
+
+
             user_item.save()
             user_item.item.calc_average()
 

@@ -14,7 +14,7 @@ class SignUpForm(UserCreationForm):
 
 
 class ItemForm(forms.ModelForm):
-    tags = forms.CharField(widget=forms.TextInput(attrs={'placeholder': "Separate tags with ';'"}))
+    tags = forms.CharField(required=False, widget=forms.TextInput(attrs={'placeholder': "Separate tags with ';'"}))
 
     class Meta:
         model = Item
@@ -26,6 +26,15 @@ class UserItemForm(forms.ModelForm):
         model = User_Item
         fields = ['rating', 'interest']
 
+class UpdateScoreForm(forms.ModelForm):
+    class Meta:
+        model = User_Item
+        fields = ['rating']
+
+class UpdateInterestForm(forms.ModelForm):
+    class Meta:
+        model = User_Item
+        fields = ['interest']
 
 class ProfileForm(forms.ModelForm):
     class Meta:

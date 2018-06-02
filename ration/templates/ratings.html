@@ -24,7 +24,7 @@
                     </a>
 
                     <!-- Follow/unfollow -->
-                    {% if request.user != user_tag.user %}
+                    {% if request.user == True and request.user != user_tag.user %}
                     {% if user_tag %}
                     ·
                     <a href="{% url 'follow' user_tag.id %}">
@@ -38,6 +38,7 @@
                     {% endif %}
 
                     <!-- Favorite/unfavorite button -->
+                    {% if request.user.is_authenticated %}
                     {% if user_tag %}
                     ·
                     <a href="{% url 'favorite_user_tag' user_tag.id %}">
@@ -48,12 +49,13 @@
                         {% endif %}
                     </a>
                     {% endif %}
+                    {% endif %}
 
                     <!-- Compare ratings -->
-                    {% ifnotequal request.user user %}
+                    {% if request.user.is_authenticated == True and request.user != user %}
                     ·
                     <a href="{% url 'compare_items' user.username %}">compare your ratings</a>
-                    {% endifnotequal %}
+                    {% endif %}
 
                 </div>
                 <div class="col-3">
