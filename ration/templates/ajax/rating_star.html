@@ -48,24 +48,10 @@ $(document).ready(function(){
 
         update_rating(form_data)
 
-        // JUST RESPONSE (Not needed)
-        var msg = "";
-        if (ratingValue > 1) {
-            msg = "Thanks! You rated this " + ratingValue + " stars.";
-        } else {
-            msg = "We will improve ourselves. You rated this " + ratingValue + " stars.";
-        }
 
-        responseMessage(msg);
 
     });
 });
-
-
-function responseMessage(msg) {
-  $('.success-box').fadeIn(200);
-  $('.success-box div.text-message').html("<span>" + msg + "</span>");
-}
 
 function update_rating(form_data){
     $.ajax({
@@ -75,7 +61,8 @@ function update_rating(form_data){
         dataType: 'json',
 
         success : function(data){
-            console.log(data.message);
+            $('.saved-message').text(data.message);
+            $('.saved-message').fadeIn().delay(2000).fadeOut();
         }
     });
 };

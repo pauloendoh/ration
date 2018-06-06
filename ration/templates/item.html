@@ -22,12 +22,27 @@
 
                     <div class="col-3 mt-3">
 
+                        <div class="row">
+                            <div class="col-6"></div>
+                            <div class="col-6">
+                                <!-- Avg score -->
+                                {% ifnotequal item.avg_rating None %}
+                                <small class="avg-score bg-dark text-white pl-1 pr-1 rounded"
+                                       title="Average score: {{ item.avg_rating|floatformat }} ({{ item.get_number_of_scores }} vote{{item.get_number_of_scores|pluralize}})">
+                                    {{ item.avg_rating|floatformat }} / 5
+                                </small>
+                                {% endifnotequal %}
+                            </div>
+                        </div>
+
+
                         <!-- Image -->
                         {% ifequal item.image '' %}
-                        <img width="175" height="175" src="/media/item_icons/default.png"/>
+                        <img class="w-100" src="/media/item_icons/default.png"/>
                         {% else %}
-                        <img width="175" height="175px" src="/media/{{ item.image }}"/>
+                        <img class="w-100" src="/media/{{ item.image }}"/>
                         {% endifequal %}
+
 
                     </div>
 
@@ -84,56 +99,7 @@
                             <div class="container mt-2">
                                 <div class="row">
 
-                                    <!-- Site rating -->
-                                    <div class="col-4 align-self-center">
-                                        {% ifnotequal item.avg_rating None %}
-                                        <p class="text-center">
-                                            <b>RATION</b>
-                                            <br>
-                                            {{ item.avg_rating|floatformat }}/5
-                                        </p>
-                                        {% endifnotequal %}
-                                    </div>
-                                    {% if request.user.is_authenticated %}
-                                    <div class="col-8">
-                                        <form class="rating-form"
-                                              method="POST">
 
-
-                                            <div class="row">
-                                                <div class="col-6 align-self-center">
-                                                    <p class="text-center">
-                                                        <b>YOUR RATING</b>
-                                                        <br>
-                                                        <input type="number"
-                                                               class="your-rating" min="1"
-                                                               max="5"
-                                                               name="rating"
-                                                               value="{{user_item.rating|floatformat|default_if_none:''}}"/>
-                                                        / 5
-                                                    </p>
-                                                </div>
-                                                <div class="col-6 align-self-center">
-                                                    <p class="text-center">
-                                                        <b>YOUR INTEREST</b>
-                                                        <br>
-                                                        <input type="number"
-                                                               class="your-interest"
-                                                               name="interest"
-                                                               max="3"
-                                                               min="1"
-                                                               value="{{ user_item.interest|floatformat}}"/>
-                                                        / 3
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <button type="submit" hidden/>
-
-                                        </form>
-
-                                    </div>
-
-                                    {% endif %}
 
                                     <!-- Rating Stars Box -->
                                     <div class='rating-stars text-center'>
@@ -225,7 +191,7 @@ selected
         </div>
 
         <!-- Right container -->
-        <div class="col-3 bg-white">
+        <div class="col-3 pl-0 pr-0">
             {% include 'includes/right_container.html' %}
         </div>
 

@@ -152,6 +152,8 @@ class Item(models.Model):
         self.avg_interest = self.user_items.all().aggregate(Avg('interest')).get('interest__avg')
         self.save()
 
+    def get_number_of_scores(self):
+        return User_Item.objects.filter(item=self).count()
 
 class User_Item(models.Model):
     user = models.ForeignKey(User, related_name='user_items', on_delete=models.CASCADE)

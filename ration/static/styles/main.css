@@ -20,8 +20,16 @@ z-index:1;
 top: 10px;
 }
 
-.saved-message{
+.avg-score{
+opacity:0.8;
+position: absolute;
+z-index: 1;
+top: 5px;
+right: 20px;
+}
 
+.saved-message{
+display:none;
 }
 
 /* Rating Star Widgets Style */
@@ -34,7 +42,7 @@ top: 10px;
 }
 .rating-stars ul > li.star {
   display:inline-block;
-
+  cursor: pointer;
 }
 
 /* Idle State of the stars */

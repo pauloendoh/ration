@@ -1,6 +1,6 @@
 from django import template
 
-from core.models import User_Item, Following, Item, Update
+from core.models import User_Item, Following, Item, Update, User_Tag
 
 register = template.Library()
 
@@ -56,3 +56,24 @@ def get_updates_by_user_item(user_item):
                                     interaction=user_item).order_by('-timestamp')
 
     return updates
+
+@register.simple_tag
+def get_following_user_tags(your_user, user_item):
+    tags = user_item.item.tags.all()
+
+    following_user_tags = []
+    for tag in tags:
+        try:
+            user_tag = User_Tag.objects.get(user=user_item.user, tag=tag)
+            if your_user.is_following(user_tag):
+                following_user_tags.append(user_tag)
+        except:
+            pass
+
+    return following_user_tags
+
+@register.simple_tag
+def user_is_following_user_tag(user, user_tag):
+    if user.is_following(user_tag):
+        return True
+    return False

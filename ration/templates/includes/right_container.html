@@ -55,12 +55,7 @@
                             >{{ item.name|slice:"50"}}{% if item.name|length > 50 %}
                                 ... {% endif%}
                             </a>
-                            <span class="badge badge-primary
-                    font-weight-normal"
-                                  title="Ration Score">
-                        {{ item.avg_rating|floatformat }}
-                                /5
-                    </span>
+
                             <br>
                             <!-- Tags -->
                             {% for tag in item.tags.all %}

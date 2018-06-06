@@ -11,7 +11,7 @@
         {% include 'includes/left_container.html' %}
 
         <!-- Middle container -->
-        <div class="col-7">
+        <div class="col-10">
 
             <div class="row no-gutters">
                 <div class="col-9">
@@ -24,7 +24,7 @@
                     </a>
 
                     <!-- Follow/unfollow -->
-                    {% if request.user == True and request.user != user_tag.user %}
+                    {% if request.user.is_authenticated == True and request.user != user_tag.user %}
                     {% if user_tag %}
                     ·
                     <a href="{% url 'follow' user_tag.id %}">
@@ -164,10 +164,7 @@
 
         </div>
 
-        <!-- Right container -->
-        <div class="col-3 bg-white shadow-sm">
-            {% include 'includes/right_container.html' %}
-        </div>
+
 
     </div>
 

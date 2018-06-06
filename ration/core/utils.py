@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import redirect
 
-from core.models import User_Item, Item, Tag, Update, User_Tag, Following
+from core.forms import SignUpForm
+from core.models import User_Item, Tag, Update, User_Tag, Following, Item
 
 
 def get_or_create_tag(name):
@@ -119,9 +120,6 @@ def get_comparison_list(your_user, their_user):
             comparison_list.append(comparison)
 
     return comparison_list
-
-
-
 
 
 def get_arranged_ratings(ratings, order, sort):

@@ -172,8 +172,8 @@ def rating_list(request, username):
         for user_item in ratings_queryset:
             ratings.append(user_item)
 
-    order = request.GET.get('order', 'name')
-    sort = request.GET.get('sort', 'asc')
+    order = request.GET.get('order', 'score')
+    sort = request.GET.get('sort', 'desc')
 
     ratings = get_arranged_ratings(ratings, order, sort)
 
@@ -182,6 +182,9 @@ def rating_list(request, username):
                                            'user_tag': user_tag,
                                            'is_following': is_following,
                                            'is_favorite': is_favorite, })
+
+
+
 
 
 @login_required
@@ -202,7 +205,7 @@ def create_item(request):
                     tag = get_or_create_tag(tag_name)
                     item.tags.add(tag)
 
-            message = "created: " + item.name
+            message = "created: "
             user_item = user.get_or_create_user_item(item)
             Update.objects.create(user=user,
                                   message=message,
@@ -366,10 +369,9 @@ def update_score(request):
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-                print(user_item.rating)
-                print(score)
 
-                if user_item.rating == score:
+
+                if int(user_item.rating) == int(score):
                     data = {
                         'message': 'Score must be different.'
                     }
@@ -395,7 +397,7 @@ def update_score(request):
                 update_user_tag(user, tag)
 
             data = {
-                'message': 'Score saved!'
+                'message': 'You ' + message + ' (' + item.name + ')'
             }
             return JsonResponse(data)
 
@@ -439,7 +441,15 @@ def update_interest(request):
                 update.is_visible = False
                 update.save()
 
-            message = "update their interest to "+interest+"/3"
+            message = ""
+
+            if int(user_item.interest) == 1:
+                message = "not interested in:"
+            if int(user_item.interest) == 2:
+                message = "interested in:"
+            if int(user_item.interest) == 3:
+                message = "very interested in:"
+
 
             Update.objects.create(user=user,
                                   message=message,
@@ -450,7 +460,7 @@ def update_interest(request):
                 update_user_tag(user, tag)
 
             data = {
-                'message': 'Interest saved!'
+                'message': "You're " + message + " " + item.name
             }
             return JsonResponse(data)
 
