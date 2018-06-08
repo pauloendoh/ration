@@ -119,10 +119,10 @@ def item(request, item_id):
         else:
             form = UserItemForm()
 
-        return render(request, 'item.html',{'item': item,
-                                            'form': form,
-                                            'user_item': user_item,
-                                            'latest_items': latest_items})
+        return render(request, 'item.html', {'item': item,
+                                             'form': form,
+                                             'user_item': user_item,
+                                             'latest_items': latest_items})
 
     else:
         return render(request, 'item.html', {'item': item})
@@ -177,14 +177,11 @@ def rating_list(request, username):
 
     ratings = get_arranged_ratings(ratings, order, sort)
 
-    return render(request, 'ratings.html',{'user': user,
-                                           'rating_list': ratings,
-                                           'user_tag': user_tag,
-                                           'is_following': is_following,
-                                           'is_favorite': is_favorite, })
-
-
-
+    return render(request, 'ratings.html', {'user': user,
+                                            'rating_list': ratings,
+                                            'user_tag': user_tag,
+                                            'is_following': is_following,
+                                            'is_favorite': is_favorite, })
 
 
 @login_required
@@ -288,9 +285,9 @@ def search(request):
         tag_name = query.split('#')[1].strip()
         tag_results = Tag.objects.filter(name__icontains=tag_name)
 
-    return render(request, 'search.html',{'item_results': item_results,
-                                          'user_results': user_results,
-                                          'tag_results': tag_results})
+    return render(request, 'search.html', {'item_results': item_results,
+                                           'user_results': user_results,
+                                           'tag_results': tag_results})
 
 
 @login_required
@@ -349,16 +346,17 @@ def follower_list(request, username):
     return render(request, 'followers.html', {'user': user,
                                               'follower_list': follower_list})
 
+
 @login_required
 def update_score(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
-        item_id = request.POST.get('item_id')
+        item_id = int(request.POST.get('item_id'))
 
         user = User.objects.get(id=user_id)
         item = Item.objects.get(id=item_id)
 
-        score = request.POST.get('score')
+        score = int(request.POST.get('score'))
 
         form = UpdateScoreForm(request.POST)
         if form.is_valid():
@@ -369,9 +367,7 @@ def update_score(request):
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-
-
-                if int(user_item.rating) == int(score):
+                if user_item.rating != None and int(user_item.rating) == int(score):
                     data = {
                         'message': 'Score must be different.'
                     }
@@ -422,9 +418,7 @@ def update_interest(request):
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-                print(user_item.interest)
-                print(interest)
-
+                
                 if user_item.interest == interest:
                     data = {
                         'message': 'Interest must be different.'
@@ -450,7 +444,6 @@ def update_interest(request):
             if int(user_item.interest) == 3:
                 message = "very interested in:"
 
-
             Update.objects.create(user=user,
                                   message=message,
                                   interaction=user_item,
@@ -463,6 +456,7 @@ def update_interest(request):
                 'message': "You're " + message + " " + item.name
             }
             return JsonResponse(data)
+
 
 @login_required
 def update_interaction(request):
@@ -485,8 +479,6 @@ def update_interaction(request):
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-
-
                 if user_item.rating == rating and user_item.interest == interest:
                     data = {
                         'message': 'Score or interest must be different!'
@@ -495,8 +487,6 @@ def update_interaction(request):
 
                 user_item.rating = rating
                 user_item.interest = interest
-
-
 
             user_item.save()
             user_item.item.calc_average()

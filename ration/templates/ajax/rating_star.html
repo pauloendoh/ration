@@ -2,19 +2,16 @@
 $(document).ready(function(){
 
     // 1. Visualizing things on Hover - See next part for action on click
-    $('#stars li').on('mouseover', function(){
+    $('.stars li').on('mouseover', function(){
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
 
     // Now highlight all the stars that's not after the current hovered star
     $(this).parent().children('li.star').each(function(e){
         if (e < onStar) {
-        $(this).addClass('hover');
-    } else {
-        $(this).removeClass('hover');
+            $(this).addClass('hover');
+        } else {
+            $(this).removeClass('hover');
         }
-
-
-
     });
 
     }).on('mouseout', function(){
@@ -24,9 +21,11 @@ $(document).ready(function(){
     });
 
     // 2. Action to perform on click
-    $('#stars li').on('click', function(){
+    $('.stars li').on('click', function(){
         var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+        var item_id = $(this).parent().data('value');
         var stars = $(this).parent().children('li.star');
+
 
         for (i = 0; i < stars.length; i++) {
             $(stars[i]).removeClass('selected');
@@ -36,19 +35,17 @@ $(document).ready(function(){
             $(stars[i]).addClass('selected');
         }
 
+        var ratingValue = parseInt($(this).parent().children('li.selected').last().data('value'), 10);
+
         // AJAX CALL
-        var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10);
         var form_data = {
             csrfmiddlewaretoken: '{{ csrf_token }}',
             score: ratingValue,
-            interest: 1, // test
             user_id: "{{ request.user.id }}",
-            item_id: "{{ item.id }}"
+            item_id: item_id
         };
 
         update_rating(form_data)
-
-
 
     });
 });
@@ -66,4 +63,5 @@ function update_rating(form_data){
         }
     });
 };
+
 </script>

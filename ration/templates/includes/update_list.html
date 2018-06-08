@@ -4,6 +4,9 @@
 {% load humanize %}
 
 {% include 'ajax/view_more.html' %}
+{% include 'ajax/rating_star.html' %}
+{% include 'ajax/interest_flame.html' %}
+
 
 
 <ul class="no-bullets pl-0">
@@ -130,35 +133,68 @@
 
                             <!-- Rating form -->
                             {% if request.user.is_authenticated %}
-                            <form class="rating-form-update">
-                                <div class="row pt-2 pb-2">
-                                    <div class="col-6">
-                                        <small class="font-weight-bold">Your score: <input type="number"
-                                                                                           class="your-rating"
-                                                                                           min="1" max="5"
-                                                                                           name="rating"
-                                                                                           value="{% get_user_score_by_item request.user update.interaction.item %}"
-                                        />/5
-                                        </small>
+                            <div class="row pt-2 pb-2">
+
+                                <!-- Score Stars -->
+                                <div class="col-6">
+                                    <div class="text-center">
+                                        <small class="font-weight-bold">Your Score:</small>
                                     </div>
-                                    <div class="col-6">
-                                        <small class="font-weight-bold">
-                                            Your interest:
-                                            <input type="number"
-                                                   class="your-interest"
-                                                   min="1" max="3"
-                                                   name="interest"
-                                                   value="{% get_user_interest_by_item request.user update.interaction.item %}"
-                                            />/3
-                                        </small>
+                                    <div class="rating-stars text-center">
+                                        <ul class="stars" class="mb-0" data-value="{{update.interaction.item.id}}">
+
+                                            {% get_user_score_by_item request.user update.interaction.item as your_score%}
+
+                                            <li class="star {% if your_score >= 1 %}selected{% endif %}"
+                                                title="Horrible" data-value="1">
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class="star {% if your_score >= 2 %}selected{% endif %}"
+                                                title="Bad" data-value="2">
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class="star {% if your_score >= 3 %}selected{% endif %}"
+                                                title="Normal" data-value="3">
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class="star {% if your_score >= 4 %}selected{% endif %}"
+                                                title="Good" data-value="4">
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                            <li class="star {% if your_score >= 5 %}selected{% endif %}"
+                                                title="Excellent" data-value="5">
+                                                <i class='fa fa-star fa-fw'></i>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <input type="hidden"
-                                       class="item-id"
-                                       value="{{ update.interaction.item.id }}"
-                                />
-                                <input type="submit" hidden/>
-                            </form>
+
+                                <!-- Interest Flames -->
+                                <div class="col-6">
+                                    <div class="text-center">
+                                        <small class="font-weight-bold">Your Interest:</small>
+                                    </div>
+                                    <div class="interest-flames text-center">
+                                        <ul class="flames" class="mb-0" data-value="{{ update.interaction.item.id }}">
+                                            <li class="flame {% if update.interaction.interest >= 1 %}selected{% endif %}"
+                                                title="Not interested" data-value="1">
+                                                <i class="fas fa-fire"></i>
+                                            </li>
+                                            <li class="flame {% if update.interaction.interest >= 2 %}selected{% endif %}"
+                                                title="Interested" data-value="2">
+                                                <i class="fas fa-fire"></i>
+                                            </li>
+                                            <li class="flame {% if update.interaction.interest >= 3 %}selected{% endif %}"
+                                                title="Very interested!" data-value="3">
+                                                <i class="fas fa-fire"></i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             {% endif %}
 
                             <!-- Item description -->

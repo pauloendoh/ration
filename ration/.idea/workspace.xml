@@ -13,29 +13,29 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="item.html" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/templates/item.html">
+          <file leaf-file-name="rating_star.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/ajax/rating_star.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="476">
-                  <caret line="195" column="14" selection-start-line="195" selection-start-column="14" selection-end-line="195" selection-end-column="14" />
+                <state relative-caret-position="322">
+                  <caret line="43" selection-start-line="43" selection-end-line="43" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="home.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/home.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="266">
-                  <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="22" selection-end-column="14" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="update_list.html" pinned="false" current-in-tab="false">
+          <file leaf-file-name="update_list.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="504">
-                  <caret line="93" selection-start-line="93" selection-end-line="93" />
+                <state relative-caret-position="98">
+                  <caret line="7" column="31" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="item.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/item.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="630">
+                  <caret line="150" column="102" selection-start-line="150" selection-start-column="102" selection-end-line="150" selection-end-column="102" />
                 </state>
               </provider>
             </entry>
@@ -44,41 +44,29 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="153">
-                  <caret line="106" column="35" selection-start-line="106" selection-start-column="35" selection-end-line="106" selection-end-column="35" />
+                <state relative-caret-position="350">
+                  <caret line="420" column="16" selection-start-line="420" selection-start-column="16" selection-end-line="420" selection-end-column="16" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/core/models.py">
+          <file leaf-file-name="interest_flame.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/ajax/interest_flame.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="13">
-                  <caret line="142" column="50" selection-start-line="142" selection-start-column="50" selection-end-line="142" selection-end-column="50" />
-                  <folding>
-                    <element signature="e#0#71#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="280">
+                  <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="rating.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/includes/rating.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="265">
-                  <caret line="42" column="45" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
+          <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/static/styles/main.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="378">
-                  <caret line="27" column="12" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
+                <state relative-caret-position="231">
+                  <caret line="65" column="11" selection-start-line="65" selection-start-column="3" selection-end-line="65" selection-end-column="11" />
                 </state>
               </provider>
             </entry>
@@ -89,22 +77,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>onstar</find>
-      <find>selected</find>
-      <find>star</find>
-      <find>console</find>
-      <find>ajax</find>
-      <find>interest</find>
-      <find>lamb</find>
-      <find>order_by</find>
-      <find>create_item</find>
-      <find>dropdown</find>
-      <find>as</find>
-      <find>following</find>
-      <find>rating</find>
-      <find>is_following</find>
-      <find>follow</find>
-      <find>font</find>
       <find>get_rating_comparisons</find>
       <find>get_arranged_ratings</find>
       <find>get_arranged</find>
@@ -113,12 +85,28 @@
       <find>created</find>
       <find>avg</find>
       <find>saved</find>
-      <find>update_score</find>
       <find>rating_list</find>
       <find>edit</find>
       <find>your rating</find>
       <find>img</find>
       <find>ration</find>
+      <find>container</find>
+      <find>pic</find>
+      <find>item</find>
+      <find>shadow</find>
+      <find>co</find>
+      <find>item.creator.user</find>
+      <find>timestamp</find>
+      <find>by</find>
+      <find>&lt;form</find>
+      <find>your score</find>
+      <find>avg-score</find>
+      <find>form</find>
+      <find>update_score</find>
+      <find>ratingValue</find>
+      <find>item.</find>
+      <find>selected</find>
+      <find>#</find>
     </findStrings>
     <replaceStrings>
       <replace>ratings_queryset</replace>
@@ -175,14 +163,14 @@
         <option value="$PROJECT_DIR$/core/utils.py" />
         <option value="$PROJECT_DIR$/templates/includes/right_container.html" />
         <option value="$PROJECT_DIR$/templates/base.html" />
-        <option value="$PROJECT_DIR$/templates/ajax/rating_star.html" />
-        <option value="$PROJECT_DIR$/templates/ajax/interest_flame.html" />
-        <option value="$PROJECT_DIR$/core/views.py" />
         <option value="$PROJECT_DIR$/core/models.py" />
-        <option value="$PROJECT_DIR$/templates/includes/update_list.html" />
-        <option value="$PROJECT_DIR$/static/styles/main.css" />
         <option value="$PROJECT_DIR$/templates/home.html" />
+        <option value="$PROJECT_DIR$/static/styles/main.css" />
         <option value="$PROJECT_DIR$/templates/item.html" />
+        <option value="$PROJECT_DIR$/templates/ajax/interest_flame.html" />
+        <option value="$PROJECT_DIR$/templates/ajax/rating_star.html" />
+        <option value="$PROJECT_DIR$/templates/includes/update_list.html" />
+        <option value="$PROJECT_DIR$/core/views.py" />
       </list>
     </option>
   </component>
@@ -550,31 +538,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="103" column="39" selection-start-line="103" selection-start-column="39" selection-end-line="103" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/includes/rating.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="265">
           <caret line="42" column="45" selection-start-line="42" selection-start-column="45" selection-end-line="42" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ajax/rating_star.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="572">
-          <caret line="63" column="12" selection-start-line="63" selection-start-column="12" selection-end-line="64" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ajax/interest_flame.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="41" column="42" selection-start-line="41" selection-start-column="42" selection-end-line="41" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -588,27 +555,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="106" column="35" selection-start-line="106" selection-start-column="35" selection-end-line="106" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="93" selection-start-line="93" selection-end-line="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/styles/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="27" column="12" selection-start-line="27" selection-start-column="12" selection-end-line="27" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
@@ -616,10 +562,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="42" column="25" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/styles/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="65" column="11" selection-start-line="65" selection-start-column="3" selection-end-line="65" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ajax/interest_flame.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="43" column="28" selection-start-line="43" selection-start-column="28" selection-end-line="43" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ajax/rating_star.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/item.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="195" column="14" selection-start-line="195" selection-start-column="14" selection-end-line="195" selection-end-column="14" />
+        <state relative-caret-position="630">
+          <caret line="150" column="102" selection-start-line="150" selection-start-column="102" selection-end-line="150" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="98">
+          <caret line="7" column="31" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="420" column="16" selection-start-line="420" selection-start-column="16" selection-end-line="420" selection-end-column="16" />
         </state>
       </provider>
     </entry>
