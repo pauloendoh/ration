@@ -19,26 +19,10 @@ def home(request):
 
     if request.user.is_authenticated:
         user = request.user
-
-        following_list = Following.objects.filter(follower=user)
-
-        update_list = []
-
-        for following in following_list:
-            # TODO
-            user_tag = following.user_tag
-            updates = user_tag.get_update_list()
-            for update in updates:
-                update_list.append(update)
-
-        updates = Update.objects.filter(user=user)
-        for update in updates:
-            update_list.append(update)
-
-        update_list.sort(key=lambda x: x.timestamp, reverse=True)
+        updates = user.get_all_updates()
 
         return render(request, 'home.html', {'latest_items': latest_items,
-                                             'update_list': update_list,
+                                             'updates': updates,
                                              'newest_users': newest_users, })
 
     return render(request, 'home.html', {'latest_items': latest_items,
@@ -59,12 +43,7 @@ def signup(request):
             form = SignUpForm(request.POST)
             if form.is_valid():
                 form.save()
-
-                username = form.cleaned_data.get('username')
-                password = form.cleaned_data.get('password1')
-                user = authenticate(username=username, password=password)
-                auth_login(request, user)
-
+                form.login(request)
                 return redirect('home')
         else:
             form = SignUpForm()

@@ -40,6 +40,23 @@ def get_or_create_user_item(self, item):
         user_item = User_Item.objects.create(user=self, item=item)
         return user_item
 
+def get_all_updates(self):
+    updates = []
+    followings = Following.objects.filter(follower=self)
+
+    for following in followings:
+        user_tag = following.user_tag
+        user_tag_updates = user_tag.get_update_list()
+        for update in user_tag_updates:
+            if update not in updates:
+                updates.append(update)
+
+    user_updates = Update.objects.filter(user=self)
+    for update in user_updates:
+        updates.append(update)
+
+    updates.sort(key=lambda x: x.timestamp, reverse=True)
+    return updates
 
 def get_updates_by_tag_name(self, tag_name):
     updates = []
@@ -84,6 +101,7 @@ User.add_to_class("get_ratings_by_tag", get_ratings_by_tag)
 User.add_to_class("get_or_create_user_item", get_or_create_user_item)
 User.add_to_class("get_updates_by_tag_name", get_updates_by_tag_name)
 User.add_to_class("get_followers", get_followers)
+User.add_to_class("get_all_updates", get_all_updates)
 
 
 class Profile(models.Model):
