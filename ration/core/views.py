@@ -390,7 +390,7 @@ def update_score(request):
 
             message = "scored "
 
-            for x in range(1,6):
+            for x in range(1, 6):
                 if int(user_item.rating) >= x:
                     message = message + "★"
                 else:
@@ -432,7 +432,6 @@ def update_interest(request):
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-
                 if user_item.interest == interest:
                     data = {
                         'message': 'Interest must be different.'
@@ -469,58 +468,6 @@ def update_interest(request):
             data = {
                 'message': "You're " + message + " " + item.name
             }
-            return JsonResponse(data)
-
-
-@login_required
-def update_interaction(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        item_id = request.POST.get('item_id')
-
-        user = User.objects.get(id=user_id)
-        item = Item.objects.get(id=item_id)
-
-        rating = float(request.POST.get('rating'))
-        interest = float(request.POST.get('interest'))
-
-        form = UserItemForm(request.POST)
-        if form.is_valid():
-            user_item = form.save(commit=False)
-            user_item.user = user
-            user_item.item = item
-
-            if User_Item.objects.filter(user=user, item=item).count() > 0:
-                user_item = User_Item.objects.get(user=user, item=item)
-
-                if user_item.rating == rating and user_item.interest == interest:
-                    data = {
-                        'message': 'Score or interest must be different!'
-                    }
-                    return JsonResponse(data)
-
-                user_item.rating = rating
-                user_item.interest = interest
-
-            user_item.save()
-            user_item.item.calc_average()
-
-            updates = Update.objects.filter(interaction=user_item)
-            for update in updates:
-                update.is_visible = False
-                update.save()
-
-            message = "updated their rating (Score: " + str(user_item.rating) + \
-                      "; Interest: " + str(user_item.interest) + ")"
-            Update.objects.create(user=user, message=message, interaction=user_item, is_visible=True)
-
-            for tag in item.tags.all():
-                update_user_tag(user, tag)
-
-            data = {
-                'message': 'Saved!'
-            }
-
             return JsonResponse(data)
 
 

@@ -46,7 +46,6 @@ urlpatterns = [
     path('follow/<int:user_tag_id>', views.follow, name='follow'),
     path('user/<str:username>/following', views.following_list, name="following_list"),
     path('user/<str:username>/followers', views.follower_list, name='follower_list'),
-    path('ajax/update_interaction', views.update_interaction, name='update_interaction'),
     path('ajax/update_score', views.update_score, name='update_score'),
     path('ajax/update_interest', views.update_interest, name='update_interest'),
     path('private_user_tag/<int:user_tag_id>', views.private_user_tag, name='private_user_tag'),
