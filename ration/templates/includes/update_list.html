@@ -1,230 +1,166 @@
 {% load utils %}
 
-
-{% load humanize %}
-
 {% include 'ajax/view_more.html' %}
 {% include 'ajax/rating_star.html' %}
 {% include 'ajax/interest_flame.html' %}
 
+{% for update in update_list %}
+{% if update.is_visible %}
+<div class="container mb-3">
+    <div class="row">
+
+        <!-- Profile pic -->
+        <div class="col-1">
+            <div class="update-card-user-pic">
+                <a href="{% url 'user' update.user.username %}">
+                    <img class="rounded-circle"
+                         src="/media/{{ update.user.profile.picture }}"
+                         width="50" height="50"/>
+                </a>
+            </div>
+        </div>
 
 
-<ul class="no-bullets pl-0">
-    {% for update in update_list %}
-    {% if update.is_visible %}
-    <li class="mb-2 ">
-        <div class="container pb-2">
-            <div class="row">
+        <div class="col-11 pl-4 pt-2 pb-3 shadow-sm bg-white rounded">
+            <div class="row no-gutters">
 
-                <!-- Profile pic -->
-                <div class="col-1">
-                    <div class="update-card-user-pic">
-                        <a href="{% url 'user' update.user.username %}">
-                            <img class="rounded-circle"
-                                 src="/media/{{ update.user.profile.picture }}"
-                                 width="50" height="50"
-                            />
-                        </a>
-                    </div>
-
+                <!-- Username, update message and timestamp-->
+                <div class="col-8">
+                    <a class="text-dark font-weight-bold"
+                       href="{% url 'user' update.user.username %}">
+                        {{update.user.username}}
+                    </a>
+                    <small>
+                        {% if 'interest' in update.message %}
+                        is
+                        {% endif %}
+                        {{update.message}}
+                    </small>
                 </div>
 
-
-                <div class="col-11 pl-4 pt-2 pb-3 shadow-sm bg-white rounded">
-
-                    <div class="row no-gutters">
-
-                        <!-- Username, update message and timestamp-->
-                        <div class="col-8">
-                            <a class="text-dark font-weight-bold "
-                               href="{% url 'user' update.user.username %}">
-                                {{update.user.username}}
-                            </a>
-                            <small>{{update.message}}</small>
-                        </div>
-
-                        <!-- Options -->
-                        <div class="col-4">
-                            <div class="float-right">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <small>
-                                        {{ update.timestamp|naturaltime }}
-                                    </small>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    {% if request.user == update.user %}
-                                    <a class="dropdown-item" href="{% url 'hide_update' update.id %}">
-                                        Hide update
-                                    </a>
-                                    {% endif %}
-                                    <a class="dropdown-item" href="#" class="dropdown-toggle"
-                                       data-toggle="modal"
-                                       data-target="#exampleModal{{update.id}}"
-                                    >
-                                        Rating history
-                                    </a>
-
-                                    <!-- Follow/Unfollow user tags -->
-                                    {% if request.user.is_authenticated %}
-                                    {% get_following_user_tags request.user update.interaction as following_user_tags %}
-                                    {% for user_tag in following_user_tags %}
-                                    <a class="dropdown-item"
-                                       href="{% url 'follow' user_tag.id %}">
-                                        {% user_is_following_user_tag request.user user_tag as is_following %}
-                                        {% if is_following %}
-                                        Unfollow #{{ user_tag.tag.name }}
-                                        {% else %}
-                                        Follow #{{ user_tag.tag.name }}
-                                        {% endif %}
-                                    </a>
-                                    {% endfor %}
-                                    {% endif %}
-                                    {% if request.user == update.interaction.item.creator %}
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item"
-                                       href="{% url 'edit_item' update.interaction.item.id %}">
-                                        Edit item</a>
-                                    <a class="dropdown-item"
-                                       href="{% url 'delete_item' update.interaction.item.id %}">
-                                        Delete item</a>
-                                    {% endif %}
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-
-                    <div class="row pt-2">
-
-                        <div class="col-4">
-                            <a href="{% url 'item' update.interaction.item.id %}">
-
-                                <!-- Image -->
-                                {% ifequal update.interaction.item.image '' %}
-
-                                <img class="w-100" src="/media/item_icons/default.png"/>
-                                {% else %}
-                                <img class="w-100" src="/media/{{ update.interaction.item.image }}"/>
-                                {% endifequal %}
-
-                            </a>
-                        </div>
-
-                        <div class="col-8 pr-4 pl-2">
-
-                            <!-- Item name -->
-                            <h5 class="font-weight-bold mb-0">
-                                <a class="text-dark"
-                                   href="{% url 'item' update.interaction.item.id %}">
-                                    {{ update.interaction.item.name }}
-                                </a>
-                            </h5>
-
-                            <!-- Item tags -->
-                            {% for tag in update.interaction.item.tags.all %}
-                            <a class="no-underline"
-                               href="{% url 'items' %}?tag={{ tag.name }}">
-                                <span class="badge badge-light font-weight-normal">
-                                    #{{ tag.name }}
-                                </span>
-                            </a>
-                            {% endfor %}
-
-                            <!-- Rating form -->
-                            {% if request.user.is_authenticated %}
-                            <div class="row pt-2 pb-2">
-
-                                <!-- Score Stars -->
-                                <div class="col-6">
-                                    <div class="text-center">
-                                        <small class="font-weight-bold">Your Score:</small>
-                                    </div>
-                                    <div class="rating-stars text-center">
-                                        <ul class="stars" class="mb-0" data-value="{{update.interaction.item.id}}">
-
-                                            {% get_user_score_by_item request.user update.interaction.item as your_score%}
-
-                                            <li class="star {% if your_score >= 1 %}selected{% endif %}"
-                                                title="Horrible" data-value="1">
-                                                <i class='fa fa-star fa-fw'></i>
-                                            </li>
-                                            <li class="star {% if your_score >= 2 %}selected{% endif %}"
-                                                title="Bad" data-value="2">
-                                                <i class='fa fa-star fa-fw'></i>
-                                            </li>
-                                            <li class="star {% if your_score >= 3 %}selected{% endif %}"
-                                                title="Normal" data-value="3">
-                                                <i class='fa fa-star fa-fw'></i>
-                                            </li>
-                                            <li class="star {% if your_score >= 4 %}selected{% endif %}"
-                                                title="Good" data-value="4">
-                                                <i class='fa fa-star fa-fw'></i>
-                                            </li>
-                                            <li class="star {% if your_score >= 5 %}selected{% endif %}"
-                                                title="Excellent" data-value="5">
-                                                <i class='fa fa-star fa-fw'></i>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <!-- Interest Flames -->
-                                <div class="col-6">
-                                    <div class="text-center">
-                                        <small class="font-weight-bold">Your Interest:</small>
-                                    </div>
-                                    <div class="interest-flames text-center">
-                                        <ul class="flames" class="mb-0" data-value="{{ update.interaction.item.id }}">
-                                            <li class="flame {% if update.interaction.interest >= 1 %}selected{% endif %}"
-                                                title="Not interested" data-value="1">
-                                                <i class="fas fa-fire"></i>
-                                            </li>
-                                            <li class="flame {% if update.interaction.interest >= 2 %}selected{% endif %}"
-                                                title="Interested" data-value="2">
-                                                <i class="fas fa-fire"></i>
-                                            </li>
-                                            <li class="flame {% if update.interaction.interest >= 3 %}selected{% endif %}"
-                                                title="Very interested!" data-value="3">
-                                                <i class="fas fa-fire"></i>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            {% endif %}
-
-                            <!-- Item description -->
-                            <p class="font-italic mt-2 text-justify">
-                                <small>
-                                    {{ update.interaction.item.description|slice:'100' }}
-                                    {% if update.interaction.item.description|length > 100 %}
-                                    . . . (<a class="view-more" href="{% url 'item' update.interaction.item.id %}"
-                                              data-value="{{ update.interaction.item.description }}">see more</a>)
-                                    {%endif%}
-                                </small>
-                            </p>
-
-
-                        </div>
-                    </div>
-
-
+                <!-- Update card's options -->
+                <div class="col-4">
+                    {% include 'includes/update_card_options.html' %}
                 </div>
 
             </div>
 
 
+            <div class="row pt-2">
+
+                <!-- Image -->
+                <div class="col-4">
+                    <a href="{% url 'item' update.interaction.item.id %}">
+                        {% ifequal update.interaction.item.image '' %}
+                        <img class="w-100" src="/media/item_icons/default.png"/>
+                        {% else %}
+                        <img class="w-100" src="/media/{{ update.interaction.item.image }}"/>
+                        {% endifequal %}
+                    </a>
+                </div>
+
+                <!-- Item's info -->
+                <div class="col-8 pr-4 pl-2">
+
+                    <!-- Item's name -->
+                    <h5 class="font-weight-bold mb-0">
+                        <a class="text-dark"
+                           href="{% url 'item' update.interaction.item.id %}">
+                            {{ update.interaction.item.name }}
+                        </a>
+                    </h5>
+
+                    <!-- Item's tags -->
+                    {% for tag in update.interaction.item.tags.all %}
+                    <a class="no-underline"
+                       href="{% url 'items' %}?tag={{ tag.name }}">
+                                <span class="badge badge-light font-weight-normal">
+                                    #{{ tag.name }}
+                                </span>
+                    </a>
+                    {% endfor %}
+
+                    <!-- Rating section -->
+                    {% if request.user.is_authenticated %}
+                    <div class="row pt-2 pb-2">
+
+                        <!-- Score Stars -->
+                        <div class="col-6">
+                            <div class="text-center">
+                                <small class="font-weight-bold">Your Score:</small>
+                            </div>
+                            <div class="rating-stars text-center">
+                                <ul class="stars mb-0"  data-value="{{update.interaction.item.id}}">
+
+                                    {%get_user_score_by_item request.user update.interaction.item as your_score%}
+
+                                    <li class="star {% if your_score >= 1 %}selected{% endif %}"
+                                        title="Horrible" data-value="1">
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class="star {% if your_score >= 2 %}selected{% endif %}"
+                                        title="Bad" data-value="2">
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class="star {% if your_score >= 3 %}selected{% endif %}"
+                                        title="Normal" data-value="3">
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class="star {% if your_score >= 4 %}selected{% endif %}"
+                                        title="Good" data-value="4">
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                    <li class="star {% if your_score >= 5 %}selected{% endif %}"
+                                        title="Excellent" data-value="5">
+                                        <i class='fa fa-star fa-fw'></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Interest Flames -->
+                        <div class="col-6">
+                            <div class="text-center">
+                                <small class="font-weight-bold">Your Interest:</small>
+                            </div>
+                            <div class="interest-flames text-center">
+                                <ul class="flames mb-0" data-value="{{ update.interaction.item.id }}">
+                                    <li class="flame {% if update.interaction.interest >= 1 %}selected{% endif %}"
+                                        title="Not interested" data-value="1">
+                                        <i class="fas fa-fire"></i>
+                                    </li>
+                                    <li class="flame {% if update.interaction.interest >= 2 %}selected{% endif %}"
+                                        title="Interested" data-value="2">
+                                        <i class="fas fa-fire"></i>
+                                    </li>
+                                    <li class="flame {% if update.interaction.interest >= 3 %}selected{% endif %}"
+                                        title="Very interested!" data-value="3">
+                                        <i class="fas fa-fire"></i>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Item description -->
+                    <p class="font-italic mt-2 mb-0 text-justify">
+                        <small>
+                            {{ update.interaction.item.description|slice:'200' }}
+                            {% if update.interaction.item.description|length > 200 %}
+                             ... (<a class="view-more" href="{% url 'item' update.interaction.item.id %}"
+                                      data-value="{{ update.interaction.item.description }}">see more</a>)
+                            {%endif%}
+                        </small>
+                    </p>
+
+                </div>
+            </div>
         </div>
-    </li>
+    </div>
+</div>
 
-    {% include 'includes/rating_history_modal.html' %}
+{% include 'includes/rating_history_modal.html' %}
 
-    {% endif %}
-
-
-    {% endfor %}
-</ul>
+{% endif %}
+{% endfor %}

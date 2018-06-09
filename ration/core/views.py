@@ -62,7 +62,6 @@ def signup(request):
 
                 username = form.cleaned_data.get('username')
                 password = form.cleaned_data.get('password1')
-
                 user = authenticate(username=username, password=password)
                 auth_login(request, user)
 
@@ -237,6 +236,12 @@ def edit_item(request, item_id):
 
             message = "edited an item: "
             user_item = user.get_or_create_user_item(item)
+
+            updates = Update.objects.filter(interaction=user_item)
+            for update in updates:
+                update.is_visible = False
+                update.save()
+
             Update.objects.create(user=user,
                                   message=message,
                                   is_visible=True,
@@ -351,7 +356,7 @@ def follower_list(request, username):
 def update_score(request):
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
-        item_id = int(request.POST.get('item_id'))
+        item_id = request.POST.get('item_id')
 
         user = User.objects.get(id=user_id)
         item = Item.objects.get(id=item_id)
@@ -383,7 +388,16 @@ def update_score(request):
                 update.is_visible = False
                 update.save()
 
-            message = "scored " + str(int(user_item.rating)) + "/5"
+            message = "scored "
+
+            for x in range(1,6):
+                if int(user_item.rating) >= x:
+                    message = message + "★"
+                else:
+                    message = message + "✰"
+
+            message = message + ":"
+
             Update.objects.create(user=user,
                                   message=message,
                                   interaction=user_item,
@@ -418,7 +432,7 @@ def update_interest(request):
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-                
+
                 if user_item.interest == interest:
                     data = {
                         'message': 'Interest must be different.'

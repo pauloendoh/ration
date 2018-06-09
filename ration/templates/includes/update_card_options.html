@@ -1,0 +1,51 @@
+{% load humanize %}
+{% load utils %}
+
+<div class="float-right">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <small>
+            {{ update.timestamp|naturaltime }}
+        </small>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right">
+
+        {% if request.user == update.user %}
+        <a class="dropdown-item" href="{% url 'hide_update' update.id %}">
+            Hide update
+        </a>
+        {% endif %}
+
+        <a class="dropdown-item" href="#" class="dropdown-toggle"
+           data-toggle="modal"
+           data-target="#exampleModal{{update.id}}">
+            Rating history
+        </a>
+
+
+        <!-- Follow/Unfollow user tags -->
+        {% if request.user.is_authenticated %}
+        {% get_following_user_tags request.user update.interaction as following_user_tags %}
+        {% for user_tag in following_user_tags %}
+        <a class="dropdown-item"
+           href="{% url 'follow' user_tag.id %}">
+            {% user_is_following_user_tag request.user user_tag as is_following %}
+            {% if is_following %}
+            Unfollow #{{ user_tag.tag.name }}
+            {% else %}
+            Follow #{{ user_tag.tag.name }}
+            {% endif %}
+        </a>
+        {% endfor %}
+        {% endif %}
+
+        {% if request.user == update.interaction.item.creator %}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item"
+           href="{% url 'edit_item' update.interaction.item.id %}">
+            Edit item</a>
+        <a class="dropdown-item"
+           href="{% url 'delete_item' update.interaction.item.id %}">
+            Delete item</a>
+        {% endif %}
+    </div>
+</div>

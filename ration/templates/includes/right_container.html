@@ -23,7 +23,7 @@
     <!-- New items -->
     <h5 class="d-inline font-weight-bold ">New items</h5>
     <small class="ml-1 mr-1 font-weight-bold ">·</small>
-    <a class="d-inline" href="{% url 'items' %}">
+    <a href="{% url 'items' %}">
         <small>View all</small>
     </a>
 
@@ -35,22 +35,23 @@
 
                     <div class="row pt-2">
 
-                        <div class="col-4 pl-0 pr-0 ">
+                        <div class="col-4 pl-2 pr-0 ">
                             <!-- Image -->
                             <div class="d-flex justify-content-center">
                                 <a class="" href="{% url 'item' item.id %}">
                                     {% ifequal item.image '' %}
-                                    <img width="75" height="75" src="/media/item_icons/default.png">
+                                    <img class="w-100" src="/media/item_icons/default.png">
                                     {% else %}
-                                    <img width="75" height="75"
+                                    <img class="w-100"
                                          src="/media/{{ item.image }}"/>
                                     {% endifequal %}
                                 </a>
                             </div>
                         </div>
 
-                        <div class="col-7 pl-0 pr-0">
+                        <div class="col-7 pl-2 pr-0">
                             <a href="{% url 'item' item.id %}"
+                               class="text-dark font-weight-bold"
                                title="{{ item.name }}"
                             >{{ item.name|slice:"50"}}{% if item.name|length > 50 %}
                                 ... {% endif%}
@@ -89,42 +90,7 @@
 
                     </div>
 
-                    <!-- Rating form -->
-                    {% if request.user.is_authenticated %}
-                    <form class="right-container-rating-form">
-                        {% csrf_token %}
-                        <div class="row ">
-                            <div class="col-6">
-                                <small class="font-weight-bold">
-                                    Your score:
-                                    <br>
-                                    <input type="number"
-                                           class="your-rating"
-                                           min="1"
-                                           max="5"
-                                           name="rating"
-                                           value="{% get_user_score_by_item request.user item %}"
-                                    />/5
-                                </small>
 
-                            </div>
-                            <div class="col-6">
-                                <small class="font-weight-bold">
-                                    Your interest:
-                                    <br>
-                                    <input type="number"
-                                           class="your-interest"
-                                           min="1" max="3"
-                                           name="interest"
-                                           value="{% get_user_interest_by_item request.user item %}"
-                                    />/3
-                                </small>
-                            </div>
-                        </div>
-                        <input type="hidden" class="item-id" value="{{ item.id }}"/>
-                        <input type="submit" hidden/>
-                    </form>
-                    {% endif %}
 
                 </div>
 
