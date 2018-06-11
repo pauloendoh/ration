@@ -1,6 +1,7 @@
 from django import template
+from django.shortcuts import get_object_or_404
 
-from core.models import User_Item, Following, Item, Update, User_Tag
+from core.models import User_Item, Following, Item, Update, User_Tag, Tag
 
 register = template.Library()
 
@@ -77,3 +78,9 @@ def user_is_following_user_tag(user, user_tag):
     if user.is_following(user_tag):
         return True
     return False
+
+@register.simple_tag
+def get_user_tag(user, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    user_tag = User_Tag.objects.get(user=user, tag=tag)
+    return user_tag

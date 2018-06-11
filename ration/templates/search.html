@@ -118,13 +118,16 @@
                 {% endif %}
 
                 <!-- Tag results -->
+                {% if tag_results %}
                 <h5>Tag results:</h5>
                 <ul>
                     {% for tag in tag_results %}
                     <li><a href="{% url 'items' %}?tag={{ tag.name }}">#{{ tag.name }}
-                        </a></li>
+                    </a></li>
                     {% endfor %}
                 </ul>
+                {% endif %}
+
 
             </div>
 

@@ -56,12 +56,13 @@ def user(request, username):
 
     tag_name = request.GET.get('tag', '')
     updates = user.get_updates_by_tag_name(tag_name)
+
     updates.sort(key=lambda x: x.timestamp, reverse=True)
 
     latest_items = get_latest_items(5)
 
     return render(request, 'home.html', {'user': user,
-                                         'update_list': updates,
+                                         'updates': updates,
                                          'latest_items': latest_items})
 
 
@@ -119,16 +120,14 @@ def items(request):
 def rating_list(request, username):
     user = get_object_or_404(User, username=username)
 
-    ratings = []
+    order = request.GET.get('order', 'score')
+    sort = request.GET.get('sort', 'desc')
 
+    ratings = []
     ratings_queryset = User_Item.objects.filter(user=user)
 
-    is_following = False
-    is_favorite = False
-    user_tag = False
-
-    if request.GET.get('tag'):
-        tag_name = request.GET.get('tag')
+    tag_name = request.GET.get('tag')
+    if tag_name != '':
         tag = get_object_or_404(Tag, name=tag_name)
         user_tag = User_Tag.objects.get(user=user, tag=tag)
 
@@ -137,29 +136,18 @@ def rating_list(request, username):
             if user_tag.is_private and user_tag.user != request.user:
                 return redirect('home')
 
-            if Favorite_User_Tag.objects.filter(user=request.user, user_tag=user_tag).count() > 0:
-                is_favorite = True
-
-            if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
-                is_following = True
-
         for user_item in ratings_queryset:
             if user_item.has_tag(tag):
                 ratings.append(user_item)
     else:
-        for user_item in ratings_queryset:
-            ratings.append(user_item)
-
-    order = request.GET.get('order', 'score')
-    sort = request.GET.get('sort', 'desc')
+        for rating in ratings_queryset:
+            ratings.append(rating)
 
     ratings = get_arranged_ratings(ratings, order, sort)
 
     return render(request, 'ratings.html', {'user': user,
                                             'rating_list': ratings,
-                                            'user_tag': user_tag,
-                                            'is_following': is_following,
-                                            'is_favorite': is_favorite, })
+                                            })
 
 
 @login_required
@@ -333,62 +321,61 @@ def follower_list(request, username):
 
 @login_required
 def update_score(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        item_id = request.POST.get('item_id')
+    user_id = request.POST.get('user_id')
+    item_id = request.POST.get('item_id')
 
-        user = User.objects.get(id=user_id)
-        item = Item.objects.get(id=item_id)
+    user = User.objects.get(id=user_id)
+    item = Item.objects.get(id=item_id)
 
-        score = int(request.POST.get('score'))
+    score = int(request.POST.get('score'))
 
-        form = UpdateScoreForm(request.POST)
-        if form.is_valid():
-            user_item = form.save(commit=False)
-            user_item.user = user
-            user_item.item = item
+    form = UpdateScoreForm(request.POST)
+    if form.is_valid():
+        user_item = form.save(commit=False)
+        user_item.user = user
+        user_item.item = item
 
-            if User_Item.objects.filter(user=user, item=item).count() > 0:
-                user_item = User_Item.objects.get(user=user, item=item)
+        if User_Item.objects.filter(user=user, item=item).count() > 0:
+            user_item = User_Item.objects.get(user=user, item=item)
 
-                if user_item.rating != None and int(user_item.rating) == int(score):
-                    data = {
-                        'message': 'Score must be different.'
-                    }
-                    return JsonResponse(data)
+            if user_item.rating != None and int(user_item.rating) == int(score):
+                data = {
+                    'message': 'Score must be different.'
+                }
+                return JsonResponse(data)
 
-                user_item.rating = score
+            user_item.rating = score
 
-            user_item.save()
-            user_item.item.calc_average()
+        user_item.save()
+        user_item.item.calc_average()
 
-            updates = Update.objects.filter(interaction=user_item)
-            for update in updates:
-                update.is_visible = False
-                update.save()
+        updates = Update.objects.filter(interaction=user_item)
+        for update in updates:
+            update.is_visible = False
+            update.save()
 
-            message = "scored "
+        message = "scored "
 
-            for x in range(1, 6):
-                if int(user_item.rating) >= x:
-                    message = message + "★"
-                else:
-                    message = message + "✰"
+        for x in range(1, 6):
+            if int(user_item.rating) >= x:
+                message = message + "★"
+            else:
+                message = message + "✰"
 
-            message = message + ":"
+        message = message + ":"
 
-            Update.objects.create(user=user,
-                                  message=message,
-                                  interaction=user_item,
-                                  is_visible=True)
+        Update.objects.create(user=user,
+                              message=message,
+                              interaction=user_item,
+                              is_visible=True)
 
-            for tag in item.tags.all():
-                update_user_tag(user, tag)
+        for tag in item.tags.all():
+            update_user_tag(user, tag)
 
-            data = {
-                'message': 'You ' + message + ' (' + item.name + ')'
-            }
-            return JsonResponse(data)
+        data = {
+            'message': 'You ' + message + ' (' + item.name + ')'
+        }
+        return JsonResponse(data)
 
 
 @login_required
@@ -427,14 +414,7 @@ def update_interest(request):
                 update.is_visible = False
                 update.save()
 
-            message = ""
-
-            if int(user_item.interest) == 1:
-                message = "not interested in:"
-            if int(user_item.interest) == 2:
-                message = "interested in:"
-            if int(user_item.interest) == 3:
-                message = "very interested in:"
+            message = Update.generate_message_by_interest(int(interest))
 
             Update.objects.create(user=user,
                                   message=message,

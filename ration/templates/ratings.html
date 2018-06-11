@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load utils %}
 
 
 {% block content %}
@@ -24,10 +25,12 @@
                     </a>
 
                     <!-- Follow/unfollow -->
+                    {% get_user_tag user request.GET.tag as user_tag %}
                     {% if request.user.is_authenticated == True and request.user != user_tag.user %}
                     {% if user_tag %}
                     ·
                     <a href="{% url 'follow' user_tag.id %}">
+                        {% user_is_following_user_tag request.user user_tag as is_following %}
                         {% if is_following %}
                         Unfollow
                         {% else %}
@@ -90,7 +93,7 @@
                     <th class="align-middle text-center">#</th>
                     <th class="align-middle">
                         <a class="text-white "
-                           href="{% url 'rating_list' user.username %}?order=name&tag={{ request.GET.tag }}">
+                           href="{% url 'rating_list' user.username %}?order=name&sort=asc&tag={{ request.GET.tag }}">
                             Name
                         </a>
                     </th>

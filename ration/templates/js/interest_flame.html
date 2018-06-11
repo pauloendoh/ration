@@ -58,9 +58,11 @@ function update_interest(form_data){
         dataType: 'json',
 
         success : function(data){
-            $('.saved-message').text(data.message);
-            $('.saved-message').fadeIn().delay(2000).fadeOut();
+            saved_message(data.message);
         }
     });
 };
+
+{% include 'js/saved_message.html' %}
+
 </script>

@@ -40,6 +40,7 @@ def get_or_create_user_item(self, item):
         user_item = User_Item.objects.create(user=self, item=item)
         return user_item
 
+
 def get_all_updates(self):
     updates = []
     followings = Following.objects.filter(follower=self)
@@ -58,6 +59,7 @@ def get_all_updates(self):
     updates.sort(key=lambda x: x.timestamp, reverse=True)
     return updates
 
+
 def get_updates_by_tag_name(self, tag_name):
     updates = []
     updates_queryset = self.updates.all()
@@ -75,6 +77,7 @@ def get_updates_by_tag_name(self, tag_name):
             except:
                 pass
     return updates
+
 
 def get_followers(self):
     followers = []
@@ -95,6 +98,16 @@ def get_followers(self):
     return followers
 
 
+def is_following(self, user_tag):
+    followings = Following.objects.filter(follower=self)
+    for following in followings:
+        if following.user_tag == user_tag:
+            return True
+    return False
+
+def get_comparisons(user):
+    pass
+
 User.add_to_class("get_user_tag_list", get_user_tag_list)
 User.add_to_class("get_tag_list", get_tag_list)
 User.add_to_class("get_ratings_by_tag", get_ratings_by_tag)
@@ -102,6 +115,8 @@ User.add_to_class("get_or_create_user_item", get_or_create_user_item)
 User.add_to_class("get_updates_by_tag_name", get_updates_by_tag_name)
 User.add_to_class("get_followers", get_followers)
 User.add_to_class("get_all_updates", get_all_updates)
+User.add_to_class("is_following", is_following)
+User.add_to_class("get_comparisons", get_comparisons)
 
 
 class Profile(models.Model):
@@ -173,6 +188,7 @@ class Item(models.Model):
     def get_number_of_scores(self):
         return User_Item.objects.filter(item=self).count()
 
+
 class User_Item(models.Model):
     user = models.ForeignKey(User, related_name='user_items', on_delete=models.CASCADE)
     item = models.ForeignKey(Item, related_name='user_items', on_delete=models.CASCADE)
@@ -197,3 +213,13 @@ class Update(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     message = models.CharField(max_length=255)
     is_visible = models.BooleanField()
+
+    def generate_message_by_interest(interest):
+        message = ""
+        if interest == 1:
+            message = "not interested in:"
+        if interest == 2:
+            message = "interested in:"
+        if interest == 3:
+            message = "very interested in:"
+        return message
