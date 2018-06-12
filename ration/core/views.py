@@ -10,7 +10,7 @@ from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm, UpdateSc
 from core.models import Item, User_Item, Profile, Tag, Following, Update, User_Tag, Favorite_User_Tag
 from core.utils import update_user_item, \
     get_latest_items, get_comparison_list, get_or_create_tag, \
-    get_latest_users, update_user_tag, get_arranged_ratings
+    get_latest_users, update_user_tag, get_arranged_ratings, get_ratings, get_comparisons
 
 
 def home(request):
@@ -120,34 +120,19 @@ def items(request):
 def rating_list(request, username):
     user = get_object_or_404(User, username=username)
 
+    tag_name = request.GET.get('tag', '')
     order = request.GET.get('order', 'score')
     sort = request.GET.get('sort', 'desc')
 
-    ratings = []
-    ratings_queryset = User_Item.objects.filter(user=user)
-
-    tag_name = request.GET.get('tag')
-    if tag_name != '':
-        tag = get_object_or_404(Tag, name=tag_name)
-        user_tag = User_Tag.objects.get(user=user, tag=tag)
-
-        if request.user.is_authenticated:
-
-            if user_tag.is_private and user_tag.user != request.user:
-                return redirect('home')
-
-        for user_item in ratings_queryset:
-            if user_item.has_tag(tag):
-                ratings.append(user_item)
+    if request.user.is_authenticated and request.user != user:
+        comparisons = get_comparisons(user, request.user, tag_name, order, sort)
+        return render(request, 'ratings.html', {'user':user,
+                                                'comparisons': comparisons})
     else:
-        for rating in ratings_queryset:
-            ratings.append(rating)
-
-    ratings = get_arranged_ratings(ratings, order, sort)
-
-    return render(request, 'ratings.html', {'user': user,
-                                            'rating_list': ratings,
-                                            })
+        ratings = get_ratings(user, tag_name, order, sort)
+        return render(request, 'ratings.html', {'user': user,
+                                                'rating_list': ratings,
+                                                })
 
 
 @login_required

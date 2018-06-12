@@ -88,6 +88,7 @@
             </div>
 
 
+            {% if rating_list %}
             <table class="table table-bordered bg-white">
                 <tr class="thead-dark">
                     <th class="align-middle text-center">#</th>
@@ -163,10 +164,39 @@
                 </tr>
                 {% endfor %}
             </table>
+            {% endif %}
+
+            {% if comparisons %}
+            <table class="table table-bordered bg-white">
+                <tr class="thead-dark">
+                    <th>#</th>
+                    <th>Item name</th>
+                    <th>Score 1</th>
+                    <th>Int 1</th>
+                    <th>Score 2</th>
+                    <th>Int 2</th>
+                    <th>Diff sco</th>
+                    <th>Avg sco</th>
+                    <th>Avg int</th>
+                </tr>
+                {% for comparison in comparisons %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'item' comparison.item.id %}">{{ comparison.item.name }}</a></td>
+                    <td>{{ comparison.rating1 }}</td>
+                    <td>{{ comparison.interest1 }}</td>
+                    <td>{{ comparison.rating2 }}</td>
+                    <td>{{ comparison.interest2 }}</td>
+                    <td>{{ comparison.rating_difference }}</td>
+                    <td>{{ comparison.avg_rating }}</td>
+                    <td>{{ comparison.avg_interest }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
 
 
         </div>
-
 
 
     </div>

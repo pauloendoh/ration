@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 
+
 def get_user_tag_list(self):
     user_tag_list = User_Tag.objects.filter(user=self).order_by('-item_count')
     return user_tag_list
@@ -105,8 +106,9 @@ def is_following(self, user_tag):
             return True
     return False
 
-def get_comparisons(user):
-    pass
+
+
+
 
 User.add_to_class("get_user_tag_list", get_user_tag_list)
 User.add_to_class("get_tag_list", get_tag_list)
@@ -116,7 +118,6 @@ User.add_to_class("get_updates_by_tag_name", get_updates_by_tag_name)
 User.add_to_class("get_followers", get_followers)
 User.add_to_class("get_all_updates", get_all_updates)
 User.add_to_class("is_following", is_following)
-User.add_to_class("get_comparisons", get_comparisons)
 
 
 class Profile(models.Model):

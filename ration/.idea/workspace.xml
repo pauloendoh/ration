@@ -13,32 +13,20 @@
     <splitter split-orientation="horizontal" split-proportion="0.49848256">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="ratings.html" pinned="false" current-in-tab="true">
+          <file leaf-file-name="ratings.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/ratings.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="574">
-                  <caret line="95" column="90" selection-start-line="95" selection-start-column="90" selection-end-line="95" selection-end-column="90" />
+                <state relative-caret-position="322">
+                  <caret line="184" column="65" selection-start-line="184" selection-start-column="65" selection-end-line="184" selection-end-column="65" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/core/templatetags/utils.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="574">
-                  <caret line="85" column="19" selection-start-line="85" selection-start-column="19" selection-end-line="85" selection-end-column="19" />
-                  <folding>
-                    <element signature="e#0#27#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="utils.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/utils.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="196">
-                  <caret line="80" column="34" lean-forward="true" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
+                <state relative-caret-position="476">
+                  <caret line="213" column="117" selection-start-line="213" selection-start-column="117" selection-end-line="213" selection-end-column="117" />
                 </state>
               </provider>
             </entry>
@@ -46,8 +34,8 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/core/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1">
-                  <caret line="140" column="14" selection-start-line="140" selection-start-column="6" selection-end-line="140" selection-end-column="14" />
+                <state relative-caret-position="-2324">
+                  <caret line="8" column="16" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="16" />
                   <folding>
                     <element signature="e#0#71#0" expanded="true" />
                   </folding>
@@ -62,11 +50,20 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="364">
-                  <caret line="145" selection-start-line="145" selection-end-line="145" />
+                <state relative-caret-position="224">
+                  <caret line="119" column="15" selection-start-line="119" selection-start-column="4" selection-end-line="119" selection-end-column="15" />
                   <folding>
                     <element signature="e#0#65#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/core/utils.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-561">
+                  <caret line="78" column="3" lean-forward="true" selection-start-line="78" selection-start-column="3" selection-end-line="78" selection-end-column="3" />
                 </state>
               </provider>
             </entry>
@@ -86,15 +83,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&lt;form</find>
-      <find>your score</find>
-      <find>avg-score</find>
-      <find>form</find>
-      <find>update_score</find>
-      <find>ratingValue</find>
-      <find>item.</find>
-      <find>&lt;h</find>
-      <find>selected</find>
       <find>message</find>
       <find>print(</find>
       <find>col-</find>
@@ -112,10 +100,19 @@
       <find>user.html</find>
       <find>see more</find>
       <find>search(</find>
-      <find>rating_list</find>
       <find>is_foll</find>
       <find>is_following</find>
+      <find>name</find>
+      <find>get_ratings_by_tag</find>
+      <find>get_ratings</find>
+      <find>get_ratings(</find>
       <find>user_tag</find>
+      <find>comparison</find>
+      <find>table</find>
+      <find>rating_list</find>
+      <find>count</find>
+      <find>sort</find>
+      <find>get_user_tag</find>
     </findStrings>
     <replaceStrings>
       <replace>ratings_queryset</replace>
@@ -159,7 +156,6 @@
         <option value="$PROJECT_DIR$/templates/edit_item.html" />
         <option value="$PROJECT_DIR$/static/styles/bootstrap.css" />
         <option value="$PROJECT_DIR$/core/user_methods.py" />
-        <option value="$PROJECT_DIR$/core/utils.py" />
         <option value="$PROJECT_DIR$/templates/home.html" />
         <option value="$PROJECT_DIR$/static/styles/main.css" />
         <option value="$PROJECT_DIR$/templates/item.html" />
@@ -181,6 +177,7 @@
         <option value="$PROJECT_DIR$/core/templatetags/utils.py" />
         <option value="$PROJECT_DIR$/core/views.py" />
         <option value="$PROJECT_DIR$/templates/ratings.html" />
+        <option value="$PROJECT_DIR$/core/utils.py" />
       </list>
     </option>
   </component>
@@ -593,37 +590,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
-          <caret line="140" column="14" selection-start-line="140" selection-start-column="6" selection-end-line="140" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="80" column="34" lean-forward="true" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/templatetags/utils.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="85" column="19" selection-start-line="85" selection-start-column="19" selection-end-line="85" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="587">
+          <caret line="77" column="24" selection-start-line="77" selection-start-column="12" selection-end-line="77" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="145" selection-start-line="145" selection-end-line="145" />
+        <state relative-caret-position="224">
+          <caret line="119" column="15" selection-start-line="119" selection-start-column="4" selection-end-line="119" selection-end-column="15" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
           </folding>
@@ -632,8 +609,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ratings.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="95" column="90" selection-start-line="95" selection-start-column="90" selection-end-line="95" selection-end-column="90" />
+        <state relative-caret-position="322">
+          <caret line="184" column="65" selection-start-line="184" selection-start-column="65" selection-end-line="184" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2324">
+          <caret line="8" column="16" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#71#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="213" column="117" selection-start-line="213" selection-start-column="117" selection-end-line="213" selection-end-column="117" />
         </state>
       </provider>
     </entry>

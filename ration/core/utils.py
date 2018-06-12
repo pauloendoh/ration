@@ -1,7 +1,7 @@
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 from core.forms import SignUpForm
 from core.models import User_Item, Tag, Update, User_Tag, Following, Item
@@ -76,6 +76,7 @@ def get_latest_users(n):
     return users
 
 
+'''
 class Comparison:
     def __init__(self, user_item, your_user, their_user):
         self.item = user_item.item
@@ -100,6 +101,7 @@ class Comparison:
                         if self.their_interest == other.their_interest:
                             return 1
         return 0
+'''
 
 
 def get_comparison_list(your_user, their_user):
@@ -121,6 +123,97 @@ def get_comparison_list(your_user, their_user):
 
     return comparison_list
 
+
+class Comparison:
+    def __init__(self, user_item, user1, user2):
+        self.item = user_item.item
+        self.user1 = user1
+        self.user2 = user2
+        self.rating1 = user_item.rating
+        self.interest1 = user_item.interest
+
+        if User_Item.objects.filter(user=user2, item=user_item.item).count() > 0:
+            user2_item = User_Item.objects.get(user=user2, item=user_item.item)
+            self.rating2 = user2_item.rating
+            self.interest2 = user2_item.interest
+            if self.rating1 != None and self.rating2 != None:
+                self.rating_difference = abs(self.rating1 - self.rating2)
+                self.avg_rating = (self.rating1 + self.rating2) / 2
+            else:
+                self.rating_difference = None
+                self.avg_rating = None
+            if self.interest1 != None and self.interest2 != None:
+                self.avg_interest = (self.interest1)
+            else:
+                self.avg_interest = None
+        else:
+            self.rating2 = None
+            self.interest2 = None
+            self.rating_difference = None
+            self.avg_rating = None
+            self.avg_interest = None
+
+
+def get_comparisons(user1, user2, tag_name, order, sort):
+    comparisons = []
+
+    user_items = User_Item.objects.filter(user=user1)
+
+    for user_item in user_items:
+        if tag_name == '':
+            comparison = Comparison(user_item, user1, user2)
+            comparisons.append(comparison)
+        else:
+            tag = get_object_or_404(Tag, name=tag_name)
+            if user_item.has_tag(tag):
+                comparison = Comparison(user_item, user1, user2)
+                comparisons.append(comparison)
+    comparisons = arrange_comparisons(comparisons, order, sort)
+    return comparisons
+
+def arrange_comparisons(comparisons, order, sort):
+    if order == 'name':
+        if sort == 'asc':
+            comparisons.sort(key=lambda x: x.item.name)
+        else:
+            comparisons.sort(key=lambda x: x.item.name, reverse=True)
+    if order == 'score' or order == 'score1':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.rating1 is None, x.rating1))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.rating1 is not None, x.rating1))
+    if order == 'interest1':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.interest1 is None, x.interest1))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.interest1 is not None, x.interest1))
+    if order == 'score2':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.rating2 is None, x.rating2))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.rating2 is not None, x.rating2))
+    if order == 'interest2':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.interest2 is None, x.interest2))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.interest2 is not None, x.interest2))
+    if order == 'sco_diff':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.rating_difference is None, x.rating_difference))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.rating_difference is not None, x.rating_difference))
+    if order == 'avg_sco':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.avg_rating is None, x.avg_rating))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.avg_rating is not None, x.avg_rating))
+    if order == 'avg_int':
+        if sort == 'asc':
+            comparisons = sorted(comparisons, key=lambda x: (x.avg_interest is None, x.avg_interest))
+        else:
+            comparisons = sorted(comparisons, reverse=True, key=lambda x: (x.avg_interest is not None, x.avg_interest))
+
+    return comparisons
 
 def get_arranged_ratings(ratings, order, sort):
     if order == 'name':
@@ -145,4 +238,21 @@ def get_arranged_ratings(ratings, order, sort):
         else:
             ratings = sorted(ratings, reverse=True, key=lambda x: (x.interest is not None, x.interest))
 
+    return ratings
+
+
+def get_ratings(user, tag_name, order, sort):
+    ratings = []
+    ratings_queryset = User_Item.objects.filter(user=user)
+
+    if tag_name == '':
+
+        for rating in ratings_queryset:
+            ratings.append(rating)
+    else:
+        tag = get_object_or_404(Tag, name=tag_name)
+        for rating in ratings_queryset:
+            if rating.has_tag(tag):
+                ratings.append(rating)
+    ratings = get_arranged_ratings(ratings, order, sort)
     return ratings

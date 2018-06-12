@@ -81,6 +81,9 @@ def user_is_following_user_tag(user, user_tag):
 
 @register.simple_tag
 def get_user_tag(user, tag_name):
-    tag = get_object_or_404(Tag, name=tag_name)
-    user_tag = User_Tag.objects.get(user=user, tag=tag)
+    if tag_name == '':
+        user_tag = False
+    else:
+        tag = get_object_or_404(Tag, name=tag_name)
+        user_tag = User_Tag.objects.get(user=user, tag=tag)
     return user_tag
