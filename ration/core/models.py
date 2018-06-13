@@ -172,6 +172,7 @@ class Item(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
     url = models.CharField(max_length=255, null=True, blank=True)
+    is_official = models.BooleanField(default=0)
     tags = models.ManyToManyField(Tag, related_name='items', blank=True)
 
     creator = models.ForeignKey(User, on_delete=models.CASCADE)

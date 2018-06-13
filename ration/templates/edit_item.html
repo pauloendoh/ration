@@ -49,6 +49,16 @@
             <input type="file" id="image" name="image" class="form-control-file">
         </div>
 
+        {% if request.user.is_superuser %}
+        <div>
+            <label>
+                <input name="is_official" type="checkbox"
+                {% if item.is_official %}checked{% endif %}
+                >Official item
+            </label>
+        </div>
+        {% endif %}
+
         <!-- Save -->
         <button type="submit" class="mr-3 mb-3 btn btn-primary">Save</button>
 

@@ -1,0 +1,15 @@
+<script>
+    $(function() {
+        $("#search-box").autocomplete({
+            source: "/ajax/get_search_results",
+            minLength: 2,
+            select: function(event, ui){
+                event.preventDefault();
+                window.location.href = "http://localhost:8080/" + ui.item.value
+            },
+            focus: function(event, ui){
+                event.preventDefault();
+            }
+        });
+    });
+</script>

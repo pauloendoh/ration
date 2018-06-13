@@ -1,8 +1,9 @@
 from django.contrib.auth import login as auth_login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+import json
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
@@ -141,9 +142,14 @@ def create_item(request):
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             user = request.user
+            if request.POST.get('is_official') == 'on':
+                is_official = True
+            else:
+                is_official = False
 
             item = form.save(commit=False)
             item.creator = user
+            item.is_official = is_official
             item.save()
 
             raw_tags = request.POST.get('tags').split(';')
@@ -177,6 +183,11 @@ def edit_item(request, item_id):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
+            if request.POST.get('is_official') == 'on':
+                is_official = True
+            else:
+                is_official = False
+            item.is_official = is_official
             item.save()
 
             item.tags.clear()
@@ -450,3 +461,39 @@ def hide_update(request, update_id):
         update.save()
 
     return redirect('user', update.user.username)
+
+def get_search_results(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        results = []
+
+        items = Item.objects.filter(name__icontains=q)
+        users = User.objects.filter(username__icontains=q)
+        tags = Tag.objects.filter(name__icontains=q)
+
+        for item in items:
+            item_json = {}
+            item_json['id'] = item.id
+            item_json['label'] = item.name
+            item_json['value'] = "item/" + str(item.id)
+            results.append(item_json)
+
+        for user in users:
+            user_json = {}
+            user_json['id'] = user.id
+            user_json['label'] = user.username
+            user_json['value'] = "user/" + user.username
+            results.append(user_json)
+
+        for tag in tags:
+            tag_json = {}
+            tag_json['id'] = tag.id
+            tag_json['label'] = "#" + tag.name
+            tag_json['value'] = "items?tag=" + tag.name
+            results.append(tag_json)
+
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
