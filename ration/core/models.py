@@ -133,6 +133,11 @@ class Profile(models.Model):
     location = models.TextField(null=True, blank=True)
     website = models.TextField(null=True, blank=True)
 
+class Timeline_Settings(models.Model):
+    user = models.OneToOneField(User, related_name='timeline_settings',
+                                on_delete=models.CASCADE,
+                                primary_key=True)
+
 
 class Tag(models.Model):
     name = models.TextField()
@@ -225,3 +230,4 @@ class Update(models.Model):
         if interest == 3:
             message = "very interested in:"
         return message
+
