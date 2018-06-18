@@ -30,7 +30,7 @@
                 <!-- Items -->
                 <div class="col-6">
                     <div class="align-self-center">
-                        <a class="nav-link text-center pl-0 pr-0"
+                        <a class="nav-link text-center pl-0 pr-0 {% if '/created' in request.path %}font-weight-bold{% endif %}"
                            href="{% url 'user_created_item_list' user.username %}">Created
                             <br>
                             <b>
@@ -43,7 +43,7 @@
                 <!-- Items -->
                 <div class="col-6">
                     <div class="align-self-center">
-                        <a class="nav-link text-center pl-0 pr-0"
+                        <a class="nav-link text-center pl-0 pr-0  {% if '/ratings' in request.path %}font-weight-bold{% endif %}"
                            href="{% url 'rating_list' user.username %}">Ratings<br><b>{{user.user_items.all|length}}</b>
                         </a>
                     </div>
@@ -51,13 +51,12 @@
 
             </div>
 
-            <!--  -->
             <div class="row">
 
                 <!-- Following  -->
                 <div class="col-6">
                     <div class="align-self-center">
-                        <a class="nav-link text-center pl-0 pr-0" href="{% url 'following_list' user.username %}">Following
+                        <a class="nav-link text-center pl-0 pr-0  {% if '/following' in request.path %}font-weight-bold{% endif %}" href="{% url 'following_list' user.username %}">Following
                             <br>
                             <b> {% get_following_count_by_user user %}</b>
                         </a>
@@ -67,7 +66,7 @@
                 <!-- Followers -->
                 <div class="col-6">
                     <div class="align-self-center">
-                        <a class="nav-link text-center pl-0 pr-0"
+                        <a class="nav-link text-center pl-0 pr-0  {% if '/followers' in request.path %}font-weight-bold{% endif %}"
                            href="{% url 'follower_list' user.username %}">Followers<br>
                             <b>{% get_follower_count_by_user user %}</b>
                         </a>
@@ -124,6 +123,11 @@
                                     </i>
 
                                     {% endif %}
+                                    {% user_is_following_user_tag request.user user_tag as is_following %}
+                                    {% if is_following %}
+                                    (following)
+                                    {% endif %}
+
                                 </div>
                                 <div class="col-1 text-center">
                                     {{ user_tag.item_count }}

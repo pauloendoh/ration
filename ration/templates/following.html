@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load utils %}
 
 
 {% block content %}
@@ -10,15 +11,51 @@
 
         <!-- Middle container -->
         <div class="col-10">
-            <h1>Following: </h1>
-            <ul>
-                {% for following in following_list %}
-                <li># {{ following.user_tag.tag.name }} (
-                    <a href="{% url 'user' following.user_tag.user.username %}">@{{following.user_tag.user.username}}</a>
-                    )
-                </li>
+            <h3 class="mt-2 font-weight-bold">Following: </h3>
+
+            <div class="row no-gutters">
+                {% for following in followings %}
+                <div class="col-4">
+                    <div class="bg-white mb-3 mr-3 rounded shadow-sm profile-card">
+                        <div class="container pt-2">
+                            <div class="row no-gutters">
+                                <div class="col-4">
+
+                                    <a href="{% url 'user' following.user_tag.user.username %}">
+                                        <img class="rounded-circle w-100"
+                                             src="/media/{{ following.user_tag.user.profile.picture }}"/>
+                                    </a>
+                                </div>
+                                <div class="col-8 pl-3 align-self-center text-center">
+                                    <button class="btn btn-primary">Following ({% get_following_user_tag_count request.user following.user_tag.user %})</button>
+                                </div>
+                            </div>
+
+                            <h5 class="font-weight-bold mt-2 mb-0">
+                                <a class="text-dark" href="{% url 'user' following.user_tag.user.username %}">
+                                    {{ following.user_tag.user.username }}
+                                </a>
+                                {%user_is_following_other_user following.user_tag.user request.user as is_following_back%}
+                                {% if is_following_back %}
+                                <span class="badge badge-light font-weight-normal">
+                                    <small>Follows you</small>
+                                </span>
+                                {% endif %}
+                            </h5>
+                            <small class="text-muted">{{ following.user_tag.user.profile.fullname }}</small>
+                            <br>
+                            <small>
+                                {{ following.user_tag.user.profile.bio }}
+                            </small>
+
+                        </div>
+
+                    </div>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
+
+
         </div>
     </div>
 </div>

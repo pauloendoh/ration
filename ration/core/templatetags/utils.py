@@ -41,7 +41,7 @@ def get_following_count_by_user(user):
             if following.user_tag.user.id == user_following.id:
                 inside_list= True
         if not inside_list:
-            user_followings.append(following.follower)
+            user_followings.append(following.user_tag.user)
 
     return len(user_followings)
 
@@ -80,6 +80,15 @@ def user_is_following_user_tag(user, user_tag):
     return False
 
 @register.simple_tag
+def user_is_following_other_user(user, other_user):
+    followings = Following.objects.filter(follower=user)
+    for following in followings:
+        if following.user_tag.user == other_user:
+            return True
+    return False
+
+
+@register.simple_tag
 def get_user_tag(user, tag_name):
     if tag_name == '':
         user_tag = False
@@ -87,3 +96,20 @@ def get_user_tag(user, tag_name):
         tag = get_object_or_404(Tag, name=tag_name)
         user_tag = User_Tag.objects.get(user=user, tag=tag)
     return user_tag
+
+@register.simple_tag
+def get_following_user_tag_count(follower, user):
+    followings = Following.objects.filter(follower=follower)
+    user_tags = []
+
+    for following in followings:
+        if following.user_tag.user == user:
+            user_tags.append(following.user_tag)
+    return len(user_tags)
+
+@register.simple_tag
+def get_interest_by_user_and_item(user, item):
+    if User_Item.objects.filter(user=user, item=item).count() > 0:
+        return User_Item.objects.get(user=user, item=item).interest
+    else:
+        return 0

@@ -1,34 +1,94 @@
 {% extends "base.html" %}
 
+{% load utils %}
 
 {% block content %}
+
+{% include 'js/rating_star.html' %}
+{% include 'js/interest_flame.html' %}
 
 <div class="mt-3 pb-2 container">
     <div class="row">
         {% include 'includes/left_container.html' %}
 
         <div class="col-10">
-            {% if request.GET.tag %}
-            <h1>#{{ request.GET.tag }}</h1>
-            {% else %}
-            <h1>All items</h1>
-            {% endif %}
-            <table class="table">
-                <tr>
+
+            <h3 class="mt-2 font-weight-bold">Created items: </h3>
+
+            <table class="table table-bordered bg-white">
+                <tr class="thead-dark">
+                    <th class="align-middle text-center">#</th>
                     <th class="align-middle">Name</th>
-                    <th class="align-middle">Tag</th>
-                    <th class="align-middle">Site Rating</th>
+                    <th class="align-middle text-center" style="width: 16%">Your score</th>
+                    <th class="align-middle text-center pl-0 pr-0" style="width: 12%">Your interest</th>
                 </tr>
                 {% for item in item_list %}
                 <tr>
+                    <td class="align-middle text-center">
+                        {{ forloop.counter }}
+                    </td>
                     <td class="align-middle">
                         <a href="{% url 'item' item.id %}">{{ item.name }}</a>
                         {% if item.url %}
                         <a href="{{ item.url }}" target="_blank"><i class="material-icons">link</i></a>
                         {% endif %}
                     </td>
-                    <td class="align-middle">{{ item.tag }}</td>
-                    <td class="align-middle">{{ item.avg_rating|floatformat }}</td>
+
+                    <!-- User score -->
+                    <td class="text-center align-middle">
+
+
+                        <div class="rating-stars text-center">
+                            <ul class="stars mb-0" data-value="{{ item.id}}">
+
+                                {%get_user_score_by_item request.user item as your_score%}
+
+                                <li class="star {% if your_score >= 1 %}selected{% endif %}"
+                                    title="Horrible" data-value="1">
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class="star {% if your_score >= 2 %}selected{% endif %}"
+                                    title="Bad" data-value="2">
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class="star {% if your_score >= 3 %}selected{% endif %}"
+                                    title="Normal" data-value="3">
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class="star {% if your_score >= 4 %}selected{% endif %}"
+                                    title="Good" data-value="4">
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                                <li class="star {% if your_score >= 5 %}selected{% endif %}"
+                                    title="Excellent" data-value="5">
+                                    <i class='fa fa-star fa-fw'></i>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </td>
+
+                    <!-- User interest -->
+                    {% get_interest_by_user_and_item request.user item as interest %}
+                    <td class="text-center align-middle">
+                        <div class="interest-flames text-center">
+                            <ul class="flames mb-0" data-value="{{ item.id }}">
+                                <li class="flame {% if interest >= 1 %}selected{% endif %}"
+                                    title="Not interested" data-value="1">
+                                    <i class="fas fa-fire"></i>
+                                </li>
+                                <li class="flame {% if interest >= 2 %}selected{% endif %}"
+                                    title="Interested" data-value="2">
+                                    <i class="fas fa-fire"></i>
+                                </li>
+                                <li class="flame {% if interest >= 3 %}selected{% endif %}"
+                                    title="Very interested!" data-value="3">
+                                    <i class="fas fa-fire"></i>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </td>
                 </tr>
                 {% endfor %}
             </table>

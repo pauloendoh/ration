@@ -11,14 +11,17 @@
 
         <!-- Middle container -->
         <div class="col-7 ">
-            <div class="container bg-white">
+            <div class="container">
 
-                {% if user_results == False and item_results == False and tag_results == False %}
-                <h3>No results</h3>
+                {% if user_results.count == 0 and item_results.count == 0 and tag_results.count == False %}
+                <h3 class="mt-2 font-weight-bold">No results for '{{ request.GET.q }}' </h3>
+                {% else %}
+                <h3 class="mt-2 font-weight-bold">Results for '{{ request.GET.q }}': </h3>
                 {% endif %}
 
                 <!-- User list -->
                 {% if user_results %}
+                <h5 class="mt-2 font-weight-bold">Users</h5>
                 <ul class="no-bullets pl-0 pt-4 border-bottom">
                     {% for user in user_results %}
                     <li class="pb-4">
@@ -69,6 +72,7 @@
 
                 <!-- Item list -->
                 {% if item_results %}
+                <h5 class="mt-2 font-weight-bold">Items</h5>
                 <ul class="no-bullets pl-0 pt-2 ">
                     {% for item in item_results %}
                     <li class="pb-4">
@@ -98,11 +102,14 @@
                                         <br>
 
                                         <!-- Tag -->
-                                        <a class="no-underline" href="">
+                                        {% for tag in item.tags.all %}
+                                        <a class="no-underline" href="{% url 'items' %}?tag={{ tag.name }}">
                                 <span class="badge badge-light font-weight-normal">
-                                    #{{ item.tag }}
+                                    #{{ tag.name }}
                                 </span>
                                         </a>
+                                        {% endfor %}
+
                                     </div>
                                     <div class="col-1">
                                         <span class="text-muted"><i class="material-icons">more_vert</i></span>
@@ -119,7 +126,7 @@
 
                 <!-- Tag results -->
                 {% if tag_results %}
-                <h5>Tag results:</h5>
+                <h5 class="mt-2 font-weight-bold">Tags</h5>
                 <ul>
                     {% for tag in tag_results %}
                     <li><a href="{% url 'items' %}?tag={{ tag.name }}">#{{ tag.name }}
@@ -132,20 +139,8 @@
             </div>
 
         </div>
-
         <!-- Right container -->
-        <div class="col-3 bg-white">
-            <!-- 10 latest items -->
-            <div class="list-group p-3">
-                <h3>Latest items</h3>
-                <ul>
-                    {% for item in latest_items %}
-                    <li><a href="{% url 'item' item.id %}">{{ item.name }}</a></li>
-                    {% endfor %}
-                </ul>
-            </div>
 
-        </div>
 
     </div>
 

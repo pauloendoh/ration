@@ -19,9 +19,11 @@
             <div class="row no-gutters">
                 <div class="col-9">
                     <h3 class="font-weight-bold d-inline">
-                        #{{ request.GET.tag }}
+                        {% if request.GET.tag %}
+                        #{{ request.GET.tag }}    ·
+                        {% endif %}
                     </h3>
-                    ·
+
                     <a href="{% url 'user' user.username %}?tag={{ request.GET.tag }}">
                         View timeline
                     </a>
@@ -93,31 +95,31 @@
             {% if rating_list %}
             <table class="table table-bordered bg-white">
                 <tr class="thead-dark">
-                    <th class="align-middle text-center">#</th>
-                    <th class="align-middle">
+                    <th class="align-middle text-center" style="width: 5%">#</th>
+
+                    <!-- Name column -->
+                    <th class="align-middle" >
                         <a class="text-white "
                            href="{% url 'rating_list' user.username %}?order=name&sort=asc&tag={{ request.GET.tag }}">
                             Name
                         </a>
                     </th>
-                    <th class="align-middle text-center">
-                        <a class="text-white "
-                           href="{% url 'rating_list' user.username %}?order=ration&sort=desc&tag={{ request.GET.tag }}">
-                            Ration
-                        </a>
-                    </th>
-                    <th class="align-middle text-center">
+
+                    <th class="align-middle text-center" style="width: 16%">
                         <a class="text-white "
                            href="{% url 'rating_list' user.username %}?order=score&sort=desc&tag={{ request.GET.tag }}">
                             Sco
                         </a>
                     </th>
-                    <th class="align-middle text-center">
+
+                    <!-- Interest column -->
+                    <th class="align-middle text-center" style="width: 8%">
                         <a class="text-white "
                            href="{% url 'rating_list' user.username %}?order=interest&sort=desc&tag={{ request.GET.tag }}">
                             Int
                         </a>
                     </th>
+
                 </tr>
 
                 {% for user_item in rating_list %}
@@ -128,23 +130,15 @@
 
                     <!-- Item name -->
                     <td>
-                        <a href="{% url 'item' user_item.item.id %}">{{ user_item.item.name }}</a>
+                        <a class=" "
+                                href="{% url 'item' user_item.item.id %}">{{ user_item.item.name }}</a>
                         {% if user_item.item.url %}
                         <a href="{{ user_item.item.url }}" target="_blank"><i
-                                class="material-icons">link</i></a>
+                                class="material-icons"><small><small>launch</small></small></i></a>
                         {% endif %}
                     </td>
 
-                    <!-- Ration score -->
-                    <td class="align-middle text-center">
-                        {% if user_item.item.avg_rating >= 4 %}
-                        <b>{{ user_item.item.avg_rating|floatformat }}</b>
-                        {% else %}
-                        {{ user_item.item.avg_rating|floatformat }}
-                        {% endif %}
 
-
-                    </td>
 
                     <!-- User score -->
                     <td class="text-center align-middle">
@@ -211,23 +205,23 @@
             {% if comparisons %}
             <table class="table table-bordered bg-white">
                 <tr class="thead-dark">
-                    <th>#</th>
-                    <th style="width: 30%">Item name</th>
-                    <th>Score 1</th>
-                    <th>Int 1</th>
-                    <th>Score 2</th>
-                    <th>Int 2</th>
-                    <th>Diff sco</th>
-                    <th>Avg sco</th>
-                    <th>Avg int</th>
+                    <th class="text-center align-middle">#</th>
+                    <th class=" align-middle" style="width: 30%">Item name</th>
+                    <th class="text-center align-middle" >Score 1</th>
+                    <th class="text-center align-middle" >Int 1</th>
+                    <th class="text-center align-middle">Score 2</th>
+                    <th class="text-center align-middle">Int 2</th>
+                    <th class="text-center align-middle">Diff sco</th>
+                    <th class="text-center align-middle">Avg sco</th>
+                    <th class="text-center align-middle">Avg int</th>
                 </tr>
                 {% for comparison in comparisons %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td><a href="{% url 'item' comparison.item.id %}">{{ comparison.item.name }}</a></td>
-                    <td>{{ comparison.rating1 }}</td>
-                    <td>{{ comparison.interest1 }}</td>
-                    <td>
+                    <td class="text-center align-middle">{{ forloop.counter }}</td>
+                    <td class=" align-middle"><a href="{% url 'item' comparison.item.id %}">{{ comparison.item.name }}</a></td>
+                    <td class="text-center align-middle">{{ comparison.rating1|floatformat }}</td>
+                    <td class="text-center align-middle">{{ comparison.interest1|floatformat }}</td>
+                    <td class="text-center align-middle">
                         <div class="rating-stars text-center">
                             <ul class="stars mb-0" data-value="{{ comparison.item.id}}">
 
@@ -256,7 +250,7 @@
                             </ul>
                         </div>
                     </td>
-                    <td>
+                    <td class="text-center align-middle">
                         <div class="interest-flames text-center">
                             <ul class="flames mb-0" data-value="{{ comparison.item.id }}">
                                 <li class="flame {% if comparison.interest2 >= 1 %}selected{% endif %}"
@@ -274,9 +268,9 @@
                             </ul>
                         </div>
                     </td>
-                    <td>{{ comparison.rating_difference }}</td>
-                    <td>{{ comparison.avg_rating }}</td>
-                    <td>{{ comparison.avg_interest }}</td>
+                    <td class="text-center align-middle">{{ comparison.rating_difference|floatformat }}</td>
+                    <td class="text-center align-middle">{{ comparison.avg_rating|floatformat }}</td>
+                    <td class="text-center align-middle">{{ comparison.avg_interest|floatformat }}</td>
                 </tr>
                 {% endfor %}
             </table>

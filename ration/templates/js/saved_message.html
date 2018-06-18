@@ -1,4 +1,13 @@
 function saved_message(message){
-    $('.saved-message').text(message);
-    $('.saved-message').fadeIn().delay(2000).fadeOut();
+    var is_visible =  $('.saved-message').is(':visible')
+    if (is_visible){
+        $('.saved-message').text(message);
+        clearTimeout(timeout);
+        timeout = setTimeout("$('.saved-message').fadeOut();", 2000);
+    } else {
+        $('.saved-message').text(message);
+        $('.saved-message').fadeIn();
+        timeout = setTimeout("$('.saved-message').fadeOut();", 2000);
+    }
+
 };

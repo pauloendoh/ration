@@ -105,7 +105,8 @@ def item(request, item_id):
                                              'latest_items': latest_items})
 
     else:
-        return render(request, 'item.html', {'item': item})
+        return render(request, 'item.html', {'item': item,
+                                             'latest_items': latest_items})
 
 
 def items(request):
@@ -300,9 +301,20 @@ def follow(request, user_tag_id):
 def following_list(request, username):
     user = get_object_or_404(User, username=username)
 
-    following_list = Following.objects.filter(follower=user)
+    following_queryset = Following.objects.filter(follower=user)
+    followings = []
 
-    return render(request, 'following.html', {'following_list': following_list,
+    for fq in following_queryset:
+        already_following = False
+
+        for f in followings:
+            if f.user_tag.user.id == fq.user_tag.user.id:
+                already_following = True
+        if already_following == False:
+            followings.append(fq)
+
+
+    return render(request, 'following.html', {'followings': followings,
                                               'user': user})
 
 
@@ -340,8 +352,8 @@ def update_score(request):
                 }
                 return JsonResponse(data)
 
-            user_item.rating = score
 
+        user_item.rating = score
         user_item.save()
         user_item.item.calc_average()
 

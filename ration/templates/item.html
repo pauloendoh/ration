@@ -98,7 +98,65 @@
                                 </div>
 
                                 <!-- Rating section -->
-                                <div class="container pl-0 pr-0 mt-2">
+                                <div class="container pl-0 pr-0 mt-4">
+
+                                    <!-- Trakt.tv rating UI -->
+                                    <div class="row no-gutters mb-4">
+                                        <div class="col-6">
+
+                                            <div class='rating-stars text-center rating-stars-hover '>
+                                                <ul class='stars' class="mb-0" data-value="{{ item.id }}">
+
+                                                    <li class='star
+{% if user_item.rating >= 1 %}
+selected
+{% endif %}' title='Horrible' data-value='1'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star
+{% if user_item.rating >= 2 %}
+selected
+{% endif %}
+' title='Bad' data-value='2'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star
+{% if user_item.rating >= 3 %}
+selected
+{% endif %}' title='Normal' data-value='3'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star
+{% if user_item.rating >= 4 %}
+selected
+{% endif %}' title='Good' data-value='4'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                    <li class='star
+{% if user_item.rating >= 5 %}
+selected
+{% endif %}' title='Excellent' data-value='5'>
+                                                        <i class='fa fa-star fa-fw'></i>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="summary-user-score" data-value="{{ item.id }}">
+
+
+                                                    <i class='fa fa-star'></i>
+                                                    <div class="rating">5</div>
+                                                    <div class="rating-message">Very good!</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="d-flex justify-content-center">
+                                                b
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="row no-gutters">
                                         <div class="col-6">
                                             <!-- Rating Stars Box -->

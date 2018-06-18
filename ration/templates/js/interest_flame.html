@@ -59,6 +59,9 @@ function update_interest(form_data){
 
         success : function(data){
             saved_message(data.message);
+        },
+        error : function(){
+            saved_message("Error while saving");
         }
     });
 };

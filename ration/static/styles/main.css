@@ -38,6 +38,46 @@ display:none;
 border: 3px solid white;
 }
 
+.summary-user-score{
+cursor: pointer;
+height: 30px;
+width: 100px;
+}
+
+.summary-user-score > .fa-star {
+font-size: 30px;
+}
+
+.summary-user-score > .rating{
+font-weight: bold;
+font-size: 18px;
+height: 18px;
+position: relative;
+left: 38px;
+bottom: 38px;
+}
+
+.rating-stars-hover{
+display: none;
+width: 250px;
+position: absolute;
+bottom: 20px;
+right: 54px;
+}
+
+.profile-card{
+height: 250px;
+}
+
+.summary-user-score > .rating-message{
+font-size: 12px;
+font-weight: bold;
+height: 12px;
+position: relative;
+left: 38px;
+bottom: 35px;
+}
+
 /* Rating Star Widgets Style */
 .rating-stars ul {
   list-style-type:none;

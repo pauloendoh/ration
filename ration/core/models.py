@@ -144,6 +144,8 @@ class Tag(models.Model):
     is_official = models.BooleanField(default=0)
 
 
+
+
 class User_Tag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

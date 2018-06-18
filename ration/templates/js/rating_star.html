@@ -1,6 +1,13 @@
 <script>
 $(document).ready(function(){
 
+    $('.summary-user-score').click(function(){
+        var item_id = parseInt($(this).data('value'), 10);
+        var parent_col = $(this).parent().parent();
+        var rating_stars_hover = parent_col.find('.rating-stars-hover')
+        rating_stars_hover.show();
+    });
+
     // 1. Visualizing things on Hover - See next part for action on click
     $('.stars li').on('mouseover', function(){
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
@@ -59,6 +66,10 @@ function update_rating(form_data){
 
         success : function(data){
             saved_message(data.message);
+        },
+
+        error : function(){
+            saved_message("Error while saving");
         }
     });
 };
