@@ -201,10 +201,9 @@ def edit_item(request, item_id):
             message = "edited an item: "
             user_item = user.get_or_create_user_item(item)
 
-            updates = Update.objects.filter(interaction=user_item)
-            for update in updates:
-                update.is_visible = False
-                update.save()
+            user.hide_all_updates_by_user_item(user_item)
+
+
 
             Update.objects.create(user=user,
                                   message=message,
@@ -357,10 +356,7 @@ def update_score(request):
         user_item.save()
         user_item.item.calc_average()
 
-        updates = Update.objects.filter(interaction=user_item)
-        for update in updates:
-            update.is_visible = False
-            update.save()
+        user.hide_all_updates_by_user_item(user_item)
 
         message = "scored "
 
@@ -417,10 +413,7 @@ def update_interest(request):
             user_item.save()
             user_item.item.calc_average()
 
-            updates = Update.objects.filter(interaction=user_item)
-            for update in updates:
-                update.is_visible = False
-                update.save()
+            user.hide_all_updates_by_user_item(user_item)
 
             message = Update.generate_message_by_interest(int(interest))
 

@@ -106,8 +106,12 @@ def is_following(self, user_tag):
             return True
     return False
 
-
-
+def hide_all_updates_by_user_item(self, user_item):
+    updates = Update.objects.filter(interaction=user_item)
+    for update in updates:
+        update.is_visible = False
+        update.save()
+    return
 
 
 User.add_to_class("get_user_tag_list", get_user_tag_list)
@@ -118,6 +122,7 @@ User.add_to_class("get_updates_by_tag_name", get_updates_by_tag_name)
 User.add_to_class("get_followers", get_followers)
 User.add_to_class("get_all_updates", get_all_updates)
 User.add_to_class("is_following", is_following)
+User.add_to_class("hide_all_updates_by_user_item", hide_all_updates_by_user_item)
 
 
 class Profile(models.Model):
