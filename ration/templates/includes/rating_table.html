@@ -54,56 +54,13 @@
         <td class="text-center align-middle">
 
 
-            <div class="rating-stars text-center">
-                <ul class="stars mb-0" data-value="{{ user_item.item.id}}">
-
-                    {%get_user_score_by_item request.user user_item.item as your_score%}
-
-                    <li class="star {% if your_score >= 1 %}selected{% endif %}"
-                        title="Horrible" data-value="1">
-                        <i class='fa fa-star fa-fw'></i>
-                    </li>
-                    <li class="star {% if your_score >= 2 %}selected{% endif %}"
-                        title="Bad" data-value="2">
-                        <i class='fa fa-star fa-fw'></i>
-                    </li>
-                    <li class="star {% if your_score >= 3 %}selected{% endif %}"
-                        title="Normal" data-value="3">
-                        <i class='fa fa-star fa-fw'></i>
-                    </li>
-                    <li class="star {% if your_score >= 4 %}selected{% endif %}"
-                        title="Good" data-value="4">
-                        <i class='fa fa-star fa-fw'></i>
-                    </li>
-                    <li class="star {% if your_score >= 5 %}selected{% endif %}"
-                        title="Excellent" data-value="5">
-                        <i class='fa fa-star fa-fw'></i>
-                    </li>
-                </ul>
-            </div>
+            {% include 'includes/rating_stars.html' %}
 
         </td>
 
         <!-- User interest -->
         <td class="text-center align-middle">
-
-            <div class="interest-flames text-center">
-                <ul class="flames mb-0" data-value="{{ user_item.item.id }}">
-                    <li class="flame {% if user_item.interest >= 1 %}selected{% endif %}"
-                        title="Not interested" data-value="1">
-                        <i class="fas fa-fire"></i>
-                    </li>
-                    <li class="flame {% if user_item.interest >= 2 %}selected{% endif %}"
-                        title="Interested" data-value="2">
-                        <i class="fas fa-fire"></i>
-                    </li>
-                    <li class="flame {% if user_item.interest >= 3 %}selected{% endif %}"
-                        title="Very interested!" data-value="3">
-                        <i class="fas fa-fire"></i>
-                    </li>
-                </ul>
-            </div>
-
+            {% include 'includes/interest_flames.html' %}
         </td>
 
 

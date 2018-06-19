@@ -1,0 +1,83 @@
+{% load utils %}
+
+{% if item %}
+<div class="interest-flames text-center">
+    <ul class="flames" class="mb-0" data-value="{{ item.id }}">
+        <li class="flame
+{% if user_item.interest >= 1 %}
+selected
+{% endif %}"
+            title="Not interested" data-value="1">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame
+{% if user_item.interest >= 2 %}
+selected
+{% endif %}"
+            title="Interested" data-value="2">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame
+{% if user_item.interest >= 3 %}
+selected
+{% endif %}"
+            title="Very interested" data-value="3">
+            <i class="fas fa-fire"></i>
+        </li>
+    </ul>
+</div>
+
+{% elif user_item %}
+<div class="interest-flames text-center">
+    <ul class="flames mb-0" data-value="{{ user_item.item.id }}">
+        <li class="flame {% if user_item.interest >= 1 %}selected{% endif %}"
+            title="Not interested" data-value="1">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame {% if user_item.interest >= 2 %}selected{% endif %}"
+            title="Interested" data-value="2">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame {% if user_item.interest >= 3 %}selected{% endif %}"
+            title="Very interested!" data-value="3">
+            <i class="fas fa-fire"></i>
+        </li>
+    </ul>
+</div>
+
+{% elif comparison %}
+<div class="interest-flames text-center">
+    <ul class="flames mb-0" data-value="{{ comparison.item.id }}">
+        <li class="flame {% if comparison.interest2 >= 1 %}selected{% endif %}"
+            title="Not interested" data-value="1">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame {% if comparison.interest2 >= 2 %}selected{% endif %}"
+            title="Interested" data-value="2">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame {% if comparison.interest2 >= 3 %}selected{% endif %}"
+            title="Very interested!" data-value="3">
+            <i class="fas fa-fire"></i>
+        </li>
+    </ul>
+</div>
+
+{% elif update %}
+<div class="interest-flames text-center">
+    <ul class="flames mb-0" data-value="{{ update.interaction.item.id }}">
+        <li class="flame {% if update.interaction.interest >= 1 %}selected{% endif %}"
+            title="Not interested" data-value="1">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame {% if update.interaction.interest >= 2 %}selected{% endif %}"
+            title="Interested" data-value="2">
+            <i class="fas fa-fire"></i>
+        </li>
+        <li class="flame {% if update.interaction.interest >= 3 %}selected{% endif %}"
+            title="Very interested!" data-value="3">
+            <i class="fas fa-fire"></i>
+        </li>
+    </ul>
+</div>
+{% endif %}
