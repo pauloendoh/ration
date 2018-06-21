@@ -13,55 +13,32 @@
     <splitter split-orientation="horizontal" split-proportion="0.49848256">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="rating_table.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/includes/rating_table.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="504">
-                  <caret line="62" selection-start-line="62" selection-end-line="63" />
-                  <folding>
-                    <element signature="n#style#0;n#th#0;n#tr#0;n#table#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#th#2;n#tr#0;n#table#0;n#!!top" expanded="true" />
-                    <element signature="n#style#0;n#th#3;n#tr#0;n#table#0;n#!!top" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="comparison_table.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/includes/comparison_table.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="350">
-                  <caret line="24" column="57" selection-start-line="24" selection-start-column="57" selection-end-line="24" selection-end-column="57" />
-                  <folding>
-                    <element signature="n#style#0;n#th#1;n#tr#0;n#table#0;n#!!top" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="update_list.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="420">
-                  <caret line="106" column="46" selection-start-line="106" selection-start-column="46" selection-end-line="106" selection-end-column="46" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="update_card_options.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/includes/update_card_options.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="280">
-                  <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="item.html" pinned="false" current-in-tab="true">
+          <file leaf-file-name="item.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/item.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="433">
-                  <caret line="169" column="85" selection-start-line="169" selection-start-column="85" selection-end-line="169" selection-end-column="85" />
+                <state relative-caret-position="259">
+                  <caret line="163" selection-start-line="163" selection-end-line="163" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/core/models.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="224">
+                  <caret line="150" column="25" lean-forward="true" selection-start-line="150" selection-start-column="25" selection-end-line="150" selection-end-column="25" />
+                  <folding>
+                    <element signature="e#0#71#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="rating_stars.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/includes/rating_stars.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="56">
+                  <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
                 </state>
               </provider>
             </entry>
@@ -70,11 +47,11 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-28">
-                  <caret line="172" column="37" selection-start-line="172" selection-start-column="28" selection-end-line="172" selection-end-column="37" />
+                <state relative-caret-position="294">
+                  <caret line="222" lean-forward="true" selection-start-line="222" selection-end-line="222" />
                   <folding>
                     <element signature="e#0#65#0" expanded="true" />
                   </folding>
@@ -85,26 +62,8 @@
           <file leaf-file-name="rating_star.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/templates/js/rating_star.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="714">
-                  <caret line="50" column="35" selection-start-line="70" selection-start-column="8" selection-end-line="72" selection-end-column="9" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="rating_stars.html" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/templates/includes/rating_stars.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="223">
-                  <caret line="97" column="7" selection-start-line="97" selection-start-column="7" selection-end-line="97" selection-end-column="7" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="interest_flames.html" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/templates/includes/interest_flames.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="377">
-                  <caret line="65" column="7" selection-start-line="65" selection-start-column="7" selection-end-line="65" selection-end-column="7" />
+                <state relative-caret-position="224">
+                  <caret line="32" column="19" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="19" />
                 </state>
               </provider>
             </entry>
@@ -115,11 +74,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>parent</find>
-      <find>class tag</find>
-      <find>following</find>
-      <find>is_following</find>
-      <find>get_following</find>
       <find>class following</find>
       <find>get_followers</find>
       <find>user_tag</find>
@@ -145,6 +99,11 @@
       <find>as</find>
       <find>us</find>
       <find>user_item</find>
+      <find>delete_item</find>
+      <find>is_last</find>
+      <find>item_id</find>
+      <find>item(</find>
+      <find>item_count</find>
     </findStrings>
     <replaceStrings>
       <replace>ratings_queryset</replace>
@@ -202,14 +161,14 @@
         <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/templates/user_created_item_list.html" />
         <option value="$PROJECT_DIR$/templates/ratings.html" />
-        <option value="$PROJECT_DIR$/core/models.py" />
-        <option value="$PROJECT_DIR$/core/views.py" />
         <option value="$PROJECT_DIR$/templates/includes/rating_table.html" />
         <option value="$PROJECT_DIR$/templates/includes/comparison_table.html" />
         <option value="$PROJECT_DIR$/templates/includes/update_list.html" />
-        <option value="$PROJECT_DIR$/templates/includes/rating_stars.html" />
         <option value="$PROJECT_DIR$/templates/includes/interest_flames.html" />
         <option value="$PROJECT_DIR$/templates/item.html" />
+        <option value="$PROJECT_DIR$/templates/includes/rating_stars.html" />
+        <option value="$PROJECT_DIR$/core/views.py" />
+        <option value="$PROJECT_DIR$/core/models.py" />
       </list>
     </option>
   </component>
@@ -594,16 +553,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-28">
-          <caret line="172" column="37" selection-start-line="172" selection-start-column="28" selection-end-line="172" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#65#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/includes/update_card_options.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -611,27 +560,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/js/rating_star.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="50" column="35" selection-start-line="70" selection-start-column="8" selection-end-line="72" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ratings.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="92">
           <caret line="62" column="22" lean-forward="true" selection-start-line="62" selection-start-column="22" selection-end-line="62" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1016">
-          <caret line="183" column="33" selection-start-line="183" selection-start-column="33" selection-end-line="183" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -664,24 +596,51 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/includes/rating_stars.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="97" column="7" selection-start-line="97" selection-start-column="7" selection-end-line="97" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/includes/interest_flames.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="65" column="7" selection-start-line="65" selection-start-column="7" selection-end-line="65" selection-end-column="7" />
+        <state relative-caret-position="419">
+          <caret line="68" column="54" lean-forward="true" selection-start-line="68" selection-start-column="54" selection-end-line="68" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/item.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="169" column="85" selection-start-line="169" selection-start-column="85" selection-end-line="169" selection-end-column="85" />
+        <state relative-caret-position="259">
+          <caret line="163" selection-start-line="163" selection-end-line="163" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/js/rating_star.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="32" column="19" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/rating_stars.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="222" lean-forward="true" selection-start-line="222" selection-end-line="222" />
+          <folding>
+            <element signature="e#0#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="150" column="25" lean-forward="true" selection-start-line="150" selection-start-column="25" selection-end-line="150" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#71#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

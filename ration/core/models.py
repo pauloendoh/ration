@@ -148,6 +148,8 @@ class Tag(models.Model):
     name = models.TextField()
     is_official = models.BooleanField(default=0)
 
+    def item_count(self):
+        return self.items.all().count()
 
 
 

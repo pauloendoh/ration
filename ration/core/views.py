@@ -128,7 +128,7 @@ def rating_list(request, username):
 
     if request.user.is_authenticated and request.user != user:
         comparisons = get_comparisons(user, request.user, tag_name, order, sort)
-        return render(request, 'ratings.html', {'user':user,
+        return render(request, 'ratings.html', {'user': user,
                                                 'comparisons': comparisons})
     else:
         ratings = get_ratings(user, tag_name, order, sort)
@@ -203,8 +203,6 @@ def edit_item(request, item_id):
 
             user.hide_all_updates_by_user_item(user_item)
 
-
-
             Update.objects.create(user=user,
                                   message=message,
                                   is_visible=True,
@@ -221,10 +219,14 @@ def edit_item(request, item_id):
 @login_required
 def delete_item(request, item_id):
     user = request.user
-    item = Item.objects.filter(id=item_id, creator=user)
+    item = Item.objects.get(id=item_id, creator=user)
 
-    if item != None:
-        item.delete()
+    for tag in item.tags.all():
+
+        if tag.item_count() == 1:
+            tag.delete()
+
+    item.delete()
 
     return redirect('home')
 
@@ -312,7 +314,6 @@ def following_list(request, username):
         if already_following == False:
             followings.append(fq)
 
-
     return render(request, 'following.html', {'followings': followings,
                                               'user': user})
 
@@ -350,7 +351,6 @@ def update_score(request):
                     'message': 'Score must be different.'
                 }
                 return JsonResponse(data)
-
 
         user_item.rating = score
         user_item.save()
@@ -466,6 +466,7 @@ def hide_update(request, update_id):
         update.save()
 
     return redirect('user', update.user.username)
+
 
 def get_search_results(request):
     if request.is_ajax():
