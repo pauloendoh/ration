@@ -168,6 +168,8 @@ def create_item(request):
                                   interaction=user_item)
 
             return redirect('item', item.id)
+        else:
+            return render(request, 'edit_item.html', {'form': form})
     else:
         form = ItemForm()
     return render(request, 'edit_item.html', {'form': form})
@@ -487,7 +489,7 @@ def get_search_results(request):
         for user in users:
             user_json = {}
             user_json['id'] = user.id
-            user_json['label'] = user.username
+            user_json['label'] = "@" + user.username
             user_json['value'] = "user/" + user.username
             results.append(user_json)
 

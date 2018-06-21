@@ -151,8 +151,6 @@ class Tag(models.Model):
     def item_count(self):
         return self.items.all().count()
 
-
-
 class User_Tag(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE)

@@ -18,14 +18,15 @@
         <!-- Name -->
         <div class="form-group">
             <label for="name">Name (required): </label>
-            <input id="name" name='name' type="text" class="form-control" value="{{ item.name }}" required autofocus>
+            <input id="name" name='name' type="text" class="form-control" value="{% if form.name.value %}{{form.name.value}}
+            {% endif %}{{ item.name }}" required autofocus>
         </div>
 
         <!-- Tags -->
         <div class="form-group">
             <label for="tags">Tags: </label>
             <input id="tags" name='tags' type="text" class="form-control"
-                   value="{% for tag in item.tags.all %}{{ tag.name }}; {% endfor %}"
+                   value="{% if form.tags.value %}{{form.tags.value}}{% endif %}{% for tag in item.tags.all %}{{ tag.name }}; {% endfor %}"
 
                    placeholder="Separate tags with ';'">
         </div>
@@ -33,14 +34,14 @@
         <!-- URL -->
         <div class="form-group">
             <label for="url">URL: </label>
-            <input id="url" name='url' type="text" class="form-control" value="{{ item.url|default_if_none:'' }}">
+            <input id="url" name='url' type="text" class="form-control" value="{% if form.url.value %}{{form.url.value}}{% endif %}{{ item.url|default_if_none:'' }}">
         </div>
 
         <!-- Description -->
         <div class="form-group">
             <label for="description">Description: </label>
             <textarea id="description" name="description" class="form-control"
-                      rows="3">{{ item.description }}</textarea>
+                      rows="3">{% if form.description.value %}{{ form.description.value }}{% endif %}{{ item.description }}</textarea>
         </div>
 
         <!-- Image -->
@@ -53,7 +54,7 @@
         <div>
             <label>
                 <input name="is_official" type="checkbox"
-                {% if item.is_official %}checked{% endif %}
+                       {% if item.is_official %}checked{% endif %}
                 >Official item
             </label>
         </div>
