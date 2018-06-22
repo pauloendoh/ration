@@ -352,8 +352,14 @@ def update_score(request):
             user_item = User_Item.objects.get(user=user, item=item)
 
             if user_item.rating != None and int(user_item.rating) == int(score):
+                user_item.rating = None
+                user_item.save()
+
+                if user_item.rating == None and user_item.interest == None:
+                    user_item.delete()
+
                 data = {
-                    'message': 'Score must be different.'
+                    'message': 'Score deleted.'
                 }
                 return JsonResponse(data)
 
@@ -404,12 +410,19 @@ def update_interest(request):
             user_item.user = user
             user_item.item = item
 
+
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
 
-                if user_item.interest == interest:
+
+
+                if int(user_item.interest) == int(interest):
+                    user_item.interest = None
+                    user_item.save()
+                    if user_item.rating == None and user_item.interest == None:
+                        user_item.delete()
                     data = {
-                        'message': 'Interest must be different.'
+                        'message': 'You removed an interest.'
                     }
                     return JsonResponse(data)
 

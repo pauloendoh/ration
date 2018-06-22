@@ -271,3 +271,4 @@ class Notification(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     is_new = models.BooleanField(default=True)
     was_new = models.BooleanField(default=False)
+

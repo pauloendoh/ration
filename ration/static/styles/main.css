@@ -20,7 +20,9 @@ z-index:1;
 top: 10px;
 }
 
-
+#gear-icon{
+vertical-align: middle;
+}
 
 .avg-score{
 opacity:0.8;

@@ -5,20 +5,37 @@
 <div class="mt-3 pb-2 container">
 
 
-
     <div class="row">
 
         {% include 'includes/left_container.html' %}
 
         <!-- Middle container -->
         <div class="col-7">
+            <div class="row no-gutters pt-2 pl-5">
+                <div class="col-6">
+                    <h5 class="font-weight-bold">FEED</h5>
+                </div>
+                <div class="col-6 ">
+                    <div class="float-right ">
+                        <div class="">
+                            <a class="no-underline text-dark" href="#">
+                                <i id="gear-icon" class="material-icons  ">
+                                    settings
+                                </i>
+                                <span class="mb-3">Customize</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
             <div>
                 {% include 'includes/update_list.html' %}
             </div>
         </div>
 
         <!-- Right container -->
-        <div class="col-3 pl-0 pr-0">
+        <div class="col-3 p-0">
             {% include 'includes/right_container.html' %}
         </div>
 
