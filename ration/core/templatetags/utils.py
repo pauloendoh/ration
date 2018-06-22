@@ -1,4 +1,5 @@
 from django import template
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
 from core.models import User_Item, Following, Item, Update, User_Tag, Tag
@@ -113,3 +114,11 @@ def get_interest_by_user_and_item(user, item):
         return User_Item.objects.get(user=user, item=item).interest
     else:
         return 0
+
+@register.simple_tag
+def get_all_users():
+    return User.objects.all()
+
+@register.simple_tag
+def get_following_users(user):
+    return user.get_following_users()

@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from core.forms import SignUpForm, ItemForm, UserItemForm, ProfileForm, UpdateScoreForm, UpdateInterestForm
-from core.models import Item, User_Item, Profile, Tag, Following, Update, User_Tag, Favorite_User_Tag
+from core.models import Item, User_Item, Profile, Tag, Following, Update, User_Tag, Favorite_User_Tag, Notification
 from core.utils import update_user_item, \
     get_latest_items, get_comparison_list, get_or_create_tag, \
     get_latest_users, update_user_tag, get_arranged_ratings, get_ratings, get_comparisons
@@ -289,14 +289,17 @@ def settings(request):
 
 @login_required
 def follow(request, user_tag_id):
-    user = request.user
-
     user_tag = get_object_or_404(User_Tag, id=user_tag_id)
+    user = user_tag.user
 
-    if Following.objects.filter(follower=user, user_tag=user_tag).count() > 0:
-        Following.objects.filter(follower=user, user_tag=user_tag).delete()
+
+    if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
+        Following.objects.filter(follower=request.user, user_tag=user_tag).delete()
     else:
-        Following.objects.create(follower=user, user_tag=user_tag)
+        Following.objects.create(follower=request.user, user_tag=user_tag)
+
+        message = "@" + request.user.username + " is following your '" + user_tag.tag.name + "' user tag!"
+        Notification.objects.create(user=user, message = message, is_new=True, was_new = False )
 
     return redirect(reverse('rating_list', kwargs={'username': user_tag.user.username}) + '?tag=' + user_tag.tag.name)
 
@@ -434,6 +437,24 @@ def update_interest(request):
 
 
 @login_required
+def recommend_item(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        user_id = request.POST.get('user_id')
+
+        item = Item.objects.get(id=item_id)
+        user = User.objects.get(id=user_id)
+
+        message = '@' + request.user.username + " recommended you: '" + item.name +"'"
+        Notification.objects.create(user=user, message=message)
+
+        data = {
+            'message': 'You recommended @' + user.username + ' an item!'
+        }
+
+        return JsonResponse(data)
+
+@login_required
 def private_user_tag(request, user_tag_id):
     user = request.user
     user_tag = User_Tag.objects.get(id=user_tag_id)
@@ -505,3 +526,18 @@ def get_search_results(request):
         data = 'fail'
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+
+@login_required
+def notifications(request):
+    notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
+    for notification in notifications:
+        if notification.was_new:
+            notification.was_new = False
+            notification.save()
+        if notification.is_new:
+            notification.is_new = False
+            notification.was_new = True
+            notification.save()
+
+
+    return render(request, 'notifications.html', {'notifications': notifications, })

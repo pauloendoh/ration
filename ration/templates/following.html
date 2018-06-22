@@ -28,8 +28,7 @@
                                 </div>
                                 <div class="col-8 pl-3 align-self-center text-center">
                                     {% if request.user.is_authenticated %}
-                                    <button class="btn btn-primary">Following ({% get_following_user_tag_count
-                                        request.user following.user_tag.user %})
+                                    <button class="btn btn-primary">Following ({% get_following_user_tag_count request.user following.user_tag.user %})
                                     </button>
                                     {% endif %}
                                 </div>

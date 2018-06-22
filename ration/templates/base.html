@@ -87,8 +87,20 @@
         </ul>
 
         <ul class="navbar-nav">
-
             {% if request.user.is_authenticated %}
+            <li class="nav-item pr-3">
+                <a class="nav-link p-0" href="{% url 'notifications' %}">
+                    <i class="material-icons pt-2 text-primary">
+                        {% if request.user.new_notifications_count == 0 %}
+                        notifications
+                        {% else %}
+                        notifications_active
+                        {% endif %}
+                    </i>
+                </a>
+            </li>
+
+
             <!-- Dropdown menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle text-primary" href="#" id="navbardrop"

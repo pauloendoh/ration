@@ -1,0 +1,33 @@
+<script>
+    $(document).ready(function(){
+        $('.user-recommendation-btn').click(function(event){
+            event.preventDefault();
+            var user_id = parseInt($(this).data('value'), 10);
+            console.log(user_id);
+
+            var form_data = {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                request_user_id: '{{ request.user.id }}',
+                item_id: '{{ item.id }}',
+                user_id: user_id
+            };
+
+            $.ajax({
+                url: "/ajax/recommend_item",
+                type: "POST",
+                data: form_data ,
+                dataType: 'json',
+
+                success : function(data){
+                    saved_message(data.message);
+                },
+
+                error : function(){
+                    saved_message("Error while recommending.");
+                }
+            });
+
+        });
+    });
+
+</script>

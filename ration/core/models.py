@@ -113,6 +113,31 @@ def hide_all_updates_by_user_item(self, user_item):
         update.save()
     return
 
+def new_notifications_count(self):
+    count = 0
+    notifications = Notification.objects.filter(user=self)
+
+    for notification in notifications:
+        if notification.is_new:
+            count += 1
+
+    return count
+
+def get_following_users(self):
+    followings = Following.objects.filter(follower=self)
+
+    following_users = []
+
+    for following in followings:
+        user_already_in_list = False
+        for following_user in following_users:
+            if following.user_tag.user == following_user:
+                user_already_in_list = True
+        if user_already_in_list == False:
+            following_users.append(following.user_tag.user)
+
+    return following_users
+
 
 User.add_to_class("get_user_tag_list", get_user_tag_list)
 User.add_to_class("get_tag_list", get_tag_list)
@@ -123,6 +148,8 @@ User.add_to_class("get_followers", get_followers)
 User.add_to_class("get_all_updates", get_all_updates)
 User.add_to_class("is_following", is_following)
 User.add_to_class("hide_all_updates_by_user_item", hide_all_updates_by_user_item)
+User.add_to_class("new_notifications_count", new_notifications_count)
+User.add_to_class("get_following_users", get_following_users)
 
 
 class Profile(models.Model):
@@ -238,3 +265,9 @@ class Update(models.Model):
             message = "very interested in:"
         return message
 
+class Notification(models.Model):
+    user = models.ForeignKey(User, related_name='notifications', on_delete=models.CASCADE)
+    message = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_new = models.BooleanField(default=True)
+    was_new = models.BooleanField(default=False)

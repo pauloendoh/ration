@@ -13,11 +13,80 @@
     <splitter split-orientation="horizontal" split-proportion="0.49848256">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="edit_item.html" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/templates/edit_item.html">
+          <file leaf-file-name="base.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/base.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="43" column="98" selection-start-line="43" selection-start-column="98" selection-end-line="43" selection-end-column="98" />
+                <state relative-caret-position="334">
+                  <caret line="139" selection-start-line="139" selection-end-line="139" />
+                  <folding>
+                    <element signature="n#style#0;n#div#0;n#form#0;n#li#1;n#ul#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="item.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/item.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="112">
+                  <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/ration/urls.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="545">
+                  <caret line="55" column="74" selection-start-line="55" selection-start-column="74" selection-end-line="55" selection-end-column="74" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/core/models.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="601">
+                  <caret line="272" column="47" selection-start-line="272" selection-start-column="47" selection-end-line="272" selection-end-column="47" />
+                  <folding>
+                    <element signature="e#0#71#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="update_list.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="517">
+                  <caret line="117" column="10" lean-forward="true" selection-start-line="117" selection-start-column="10" selection-end-line="117" selection-end-column="10" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="recommend_item_modal.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/includes/recommend_item_modal.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="238">
+                  <caret line="17" column="49" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="76" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="rating_star.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/js/rating_star.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="349">
+                  <caret line="60" column="12" selection-start-line="76" selection-end-line="76" selection-end-column="37" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="user_recommendation_button.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/templates/js/user_recommendation_button.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="266">
+                  <caret line="19" selection-start-line="19" selection-end-line="19" />
                 </state>
               </provider>
             </entry>
@@ -29,10 +98,31 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="616">
-                  <caret line="186" column="66" selection-start-line="186" selection-start-column="62" selection-end-line="186" selection-end-column="66" />
+                <state relative-caret-position="336">
+                  <caret line="445" column="19" selection-start-line="445" selection-start-column="19" selection-end-line="445" selection-end-column="19" />
                   <folding>
                     <element signature="e#0#65#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/core/templatetags/utils.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="616">
+                  <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/core/models.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="378">
+                  <caret line="138" column="26" selection-start-line="138" selection-start-column="26" selection-end-line="138" selection-end-column="26" />
+                  <folding>
+                    <element signature="e#0#71#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -44,36 +134,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>create item</find>
-      <find>follow</find>
-      <find>followers</find>
-      <find>created</find>
-      <find>&lt;i</find>
-      <find>tag</find>
-      <find>&lt;form</find>
-      <find>tags</find>
-      <find>table</find>
-      <find>h3</find>
-      <find>saved</find>
-      <find>'js/interest_flame.html'</find>
-      <find>rating_list(request</find>
-      <find>score 1</find>
-      <find>&lt;table</find>
-      <find>hide</find>
-      <find>edit_item</find>
-      <find>as</find>
-      <find>us</find>
-      <find>user_item</find>
       <find>delete_item</find>
       <find>is_last</find>
       <find>item_id</find>
       <find>item(</find>
       <find>item_count</find>
-      <find>following</find>
       <find>button</find>
       <find>following_list</find>
       <find>is_following</find>
       <find>request.user</find>
+      <find>value</find>
+      <find>follow</find>
+      <find />
+      <find>started foll</find>
+      <find>started following</find>
+      <find>timestamp</find>
+      <find>notifications</find>
+      <find>align-self-</find>
+      <find>follow(request</find>
+      <find>navbar</find>
+      <find>trakt</find>
+      <find>align-self-center</find>
+      <find>self-align</find>
+      <find>history</find>
+      <find>modal</find>
+      <find>users</find>
+      <find>this</find>
+      <find>_id</find>
+      <find>following</find>
+      <find>ajax</find>
+      <find>json</find>
     </findStrings>
     <replaceStrings>
       <replace>ratings_queryset</replace>
@@ -88,10 +178,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/ration/settings.py" />
-        <option value="$PROJECT_DIR$/static/js/rating.js" />
-        <option value="$PROJECT_DIR$/templates/user_items.html" />
-        <option value="$PROJECT_DIR$/templates/includes/your_user_left_container.html" />
         <option value="$PROJECT_DIR$/static/js/test.js" />
         <option value="$PROJECT_DIR$/templates/user_list.html" />
         <option value="$PROJECT_DIR$/templates/items.html" />
@@ -111,34 +197,38 @@
         <option value="$PROJECT_DIR$/templates/ajax/rating_star.html" />
         <option value="$PROJECT_DIR$/templates/ajax/view_more.html" />
         <option value="$PROJECT_DIR$/templates/includes/right_container.html" />
-        <option value="$PROJECT_DIR$/templates/includes/update_card_options.html" />
         <option value="$PROJECT_DIR$/core/forms.py" />
         <option value="$PROJECT_DIR$/templates/user.html" />
         <option value="$PROJECT_DIR$/core/utils.py" />
-        <option value="$PROJECT_DIR$/ration/urls.py" />
         <option value="$PROJECT_DIR$/templates/js/search_autocomplete.html" />
         <option value="$PROJECT_DIR$/static/styles/jquery-ui.css" />
         <option value="$PROJECT_DIR$/static/styles/main.css" />
         <option value="$PROJECT_DIR$/templates/followers.html" />
         <option value="$PROJECT_DIR$/templates/includes/left_container.html" />
-        <option value="$PROJECT_DIR$/core/templatetags/utils.py" />
         <option value="$PROJECT_DIR$/templates/search.html" />
         <option value="$PROJECT_DIR$/templates/js/rating_star.html" />
         <option value="$PROJECT_DIR$/templates/js/interest_flame.html" />
         <option value="$PROJECT_DIR$/templates/js/saved_message.html" />
-        <option value="$PROJECT_DIR$/templates/base.html" />
         <option value="$PROJECT_DIR$/templates/user_created_item_list.html" />
         <option value="$PROJECT_DIR$/templates/ratings.html" />
         <option value="$PROJECT_DIR$/templates/includes/rating_table.html" />
         <option value="$PROJECT_DIR$/templates/includes/comparison_table.html" />
         <option value="$PROJECT_DIR$/templates/includes/update_list.html" />
-        <option value="$PROJECT_DIR$/templates/includes/interest_flames.html" />
-        <option value="$PROJECT_DIR$/templates/item.html" />
-        <option value="$PROJECT_DIR$/templates/includes/rating_stars.html" />
-        <option value="$PROJECT_DIR$/core/models.py" />
-        <option value="$PROJECT_DIR$/templates/following.html" />
-        <option value="$PROJECT_DIR$/core/views.py" />
         <option value="$PROJECT_DIR$/templates/edit_item.html" />
+        <option value="$PROJECT_DIR$/templates/following.html" />
+        <option value="$PROJECT_DIR$/templates/notifications.html" />
+        <option value="$PROJECT_DIR$/templates/base.html" />
+        <option value="$PROJECT_DIR$/templates/includes/rating_stars.html" />
+        <option value="$PROJECT_DIR$/templates/includes/interest_flames.html" />
+        <option value="$PROJECT_DIR$/templates/includes/update_card_options.html" />
+        <option value="$PROJECT_DIR$/core/templatetags/utils.py" />
+        <option value="$PROJECT_DIR$/templates/includes/recommendItemModal.html" />
+        <option value="$PROJECT_DIR$/templates/includes/recommend_item_modal.html" />
+        <option value="$PROJECT_DIR$/templates/item.html" />
+        <option value="$PROJECT_DIR$/templates/js/user_recommendation_button.html" />
+        <option value="$PROJECT_DIR$/ration/urls.py" />
+        <option value="$PROJECT_DIR$/core/models.py" />
+        <option value="$PROJECT_DIR$/core/views.py" />
       </list>
     </option>
   </component>
@@ -290,21 +380,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/migrations/0033_auto_20180520_1420.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/test.js" />
-    <entry file="file://$PROJECT_DIR$/templates/user_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/items.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
@@ -368,13 +443,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/includes/rating.html" />
-    <entry file="file://$PROJECT_DIR$/templates/includes/rating_history_modal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/forms.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -408,13 +476,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="428">
           <caret line="65" column="39" lean-forward="true" selection-start-line="63" selection-start-column="32" selection-end-line="65" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ration/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="45" column="16" selection-start-line="45" selection-start-column="10" selection-end-line="45" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -453,13 +514,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/styles/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -474,16 +528,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="41" column="4" lean-forward="true" selection-start-line="41" selection-start-column="4" selection-end-line="41" selection-end-column="42" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#form#0;n#li#1;n#ul#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/user_created_item_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="56">
@@ -492,13 +536,6 @@
             <element signature="n#style#0;n#th#2;n#tr#0;n#table#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#th#3;n#tr#0;n#table#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/includes/update_card_options.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="20" column="26" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -531,41 +568,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="106" column="46" selection-start-line="106" selection-start-column="46" selection-end-line="106" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/includes/interest_flames.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="419">
-          <caret line="68" column="54" lean-forward="true" selection-start-line="68" selection-start-column="54" selection-end-line="68" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/js/rating_star.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="32" column="19" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/includes/rating_stars.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="4" column="55" selection-start-line="4" selection-start-column="55" selection-end-line="4" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/item.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="163" selection-start-line="163" selection-end-line="163" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -573,44 +575,138 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/edit_item.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="43" column="52" selection-start-line="43" selection-start-column="52" selection-end-line="43" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/following.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="18" selection-start-line="19" selection-start-column="8" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/notifications.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="16" column="85" selection-start-line="16" selection-start-column="85" selection-end-line="16" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/rating_stars.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="8" column="30" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/interest_flames.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="56">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="334">
+          <caret line="139" selection-start-line="139" selection-end-line="139" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#form#0;n#li#1;n#ul#0;n#div#0;n#nav#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/update_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="117" column="10" lean-forward="true" selection-start-line="117" selection-start-column="10" selection-end-line="117" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/update_card_options.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="83">
+          <caret line="7" column="16" lean-forward="true" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/rating_history_modal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="10" column="21" selection-end-line="36" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/templatetags/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/item.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="8" column="46" selection-start-line="8" selection-start-column="46" selection-end-line="8" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/js/rating_star.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="349">
+          <caret line="60" column="12" selection-start-line="76" selection-end-line="76" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ration/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="55" column="74" selection-start-line="55" selection-start-column="74" selection-end-line="55" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/js/user_recommendation_button.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/includes/recommend_item_modal.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="49" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="92" column="31" selection-start-line="92" selection-start-column="31" selection-end-line="92" selection-end-column="31" />
+        <state relative-caret-position="378">
+          <caret line="138" column="26" selection-start-line="138" selection-start-column="26" selection-end-line="138" selection-end-column="26" />
           <folding>
             <element signature="e#0#71#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/templatetags/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="582">
-          <caret line="110" column="33" selection-start-line="110" selection-start-column="4" selection-end-line="110" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/following.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="41" column="99" selection-start-line="41" selection-start-column="99" selection-end-line="41" selection-end-column="99" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="186" column="66" selection-start-line="186" selection-start-column="62" selection-end-line="186" selection-end-column="66" />
+        <state relative-caret-position="336">
+          <caret line="445" column="19" selection-start-line="445" selection-start-column="19" selection-end-line="445" selection-end-column="19" />
           <folding>
             <element signature="e#0#65#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/edit_item.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="43" column="98" selection-start-line="43" selection-start-column="98" selection-end-line="43" selection-end-column="98" />
         </state>
       </provider>
     </entry>

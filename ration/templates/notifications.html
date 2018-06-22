@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="mt-3 pb-2 container">
+    <div class="row">
+        {% include 'includes/left_container.html' %}
+
+        <!-- Middle -->
+        <div class="col-7">
+            <h3 class="font-weight-bold">Notifications: </h3>
+            <ul>
+                {% for notification in notifications %}
+                <li>{% if notification.is_new %}New - {% endif %}
+                    {% if notification.was_new %}Was new - {% endif %}
+                    {{ notification.message }} ({{ notification.timestamp|naturaltime }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Right container -->
+        <div class="col-3 pl-0 pr-0">
+            {% include 'includes/right_container.html' %}
+        </div>
+
+
+    </div>
+</div>
+
+{% endblock %}
