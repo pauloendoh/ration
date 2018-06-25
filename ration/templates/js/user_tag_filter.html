@@ -1,0 +1,18 @@
+<script>
+    $(document).ready(function(){
+        $('.user-tag-filter').keyup(function(){
+            var val = $(this).val().toLowerCase();
+
+            $(this).parent().parent().find('li').each(function(e){
+
+                var tag = $(this).find('.col-11').text();
+
+                if (tag.indexOf(val) < 0){
+                    $(this).css("display", "none");
+                }else{
+                    $(this).css("display", "");
+                }
+            });
+        });
+    });
+</script>

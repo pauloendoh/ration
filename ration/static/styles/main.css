@@ -20,6 +20,11 @@ z-index:1;
 top: 10px;
 }
 
+.user-tag-filter{
+height: 25px;
+font-size: 12px;
+}
+
 #gear-icon{
 vertical-align: middle;
 }
