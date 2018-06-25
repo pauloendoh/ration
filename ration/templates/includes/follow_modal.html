@@ -1,0 +1,44 @@
+{% load utils %}
+
+
+<div class="modal fade" id="followModal{{user.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title font-weight-bold" id="exampleModalLabel">
+                    {{user.username}}'s user tags:
+                </h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% get_user_tags_by_user user as user_tags %}
+
+                <div class="row no-gutters">
+                    {% for user_tag in user_tags %}
+                    {% if user_tag.is_private == False %}
+                    <div class="col-4">
+                        <input class="user-tag-input"
+                                {% user_is_following_user_tag request.user user_tag as is_following %}
+                                {% if is_following %}
+                                checked
+                                {% endif %}
+                                type="checkbox" data-value="{{user_tag.id}}"/>
+
+                        <a target="_blank" href="{% url 'user' user.username %}/ratings?tag={{ user_tag.tag.name }}">
+                            #{{ user_tag.tag.name }}
+                        </a>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary save-following-btn">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

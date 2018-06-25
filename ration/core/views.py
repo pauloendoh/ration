@@ -554,3 +554,27 @@ def notifications(request):
 
 
     return render(request, 'notifications.html', {'notifications': notifications, })
+
+@login_required
+def update_following(request):
+    list = request.POST.getlist('list[]',[])
+
+    for x in list:
+        y = json.loads(x)
+        user_tag_id = y['user_tag_id']
+
+        user_tag = User_Tag.objects.get(id=user_tag_id)
+
+
+        if y['is_following']== True:
+            if request.user.is_following(user_tag) == False:
+                Following.objects.create(follower=request.user, user_tag=user_tag)
+        else:
+            if request.user.is_following(user_tag) == True:
+                Following.objects.get(follower=request.user, user_tag=user_tag).delete()
+
+
+    data = {
+        'message': 'Success!'
+    }
+    return JsonResponse(data)

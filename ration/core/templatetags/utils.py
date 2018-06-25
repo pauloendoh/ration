@@ -122,3 +122,8 @@ def get_all_users():
 @register.simple_tag
 def get_following_users(user):
     return user.get_following_users()
+
+@register.simple_tag
+def get_user_tags_by_user(user):
+    user_tags = User_Tag.objects.filter(user=user)
+    return user_tags

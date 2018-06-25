@@ -1,0 +1,46 @@
+<script>
+    $(document).ready(function(){
+        $('.save-following-btn').click(function(event){
+            var list = [];
+            $(this).parent().parent().find('.user-tag-input').each(function(e){
+                var dict = {
+                    user_tag_id: $(this).data('value'),
+                    is_following: $(this).is(':checked')
+                };
+                list.push(JSON.stringify(dict));
+            });
+
+            console.log(list);
+
+            var form_data = {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                list: list,
+                follower_id: "{{ request.user.id }}",
+                user_id: "{{ user.id }}"
+            };
+
+            update_following(form_data);
+
+        });
+    });
+
+    function update_following(form_data){
+        $.ajax({
+            url: "/ajax/update_following",
+            type: "POST",
+            data: form_data ,
+            dataType: 'json',
+
+            success : function(data){
+                saved_message(data.message);
+            },
+
+            error : function(){
+                saved_message("Error while saving");
+            }
+        });
+    };
+
+    {% include 'js/saved_message.html' %}
+
+</script>

@@ -54,6 +54,7 @@ urlpatterns = [
     path('hide_update/<int:update_id>', views.hide_update, name='hide_update'),
     path('notifications/', views.notifications, name='notifications'),
     path('ajax/recommend_item', views.recommend_item, name='recommend_item'),
+    path('ajax/update_following', views.update_following, name='update_following'),
 
 ]
 
