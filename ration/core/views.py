@@ -288,20 +288,26 @@ def settings(request):
 
 
 @login_required
-def follow(request, user_tag_id):
-    user_tag = get_object_or_404(User_Tag, id=user_tag_id)
-    user = user_tag.user
+def follow(request):
+    if request.POST:
+        user_tag_id = request.POST.get('user_tag_id')
+        user_tag = get_object_or_404(User_Tag, id=user_tag_id)
 
+        if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
+            Following.objects.filter(follower=request.user, user_tag=user_tag).delete()
+            data = {
+                'message': 'Follow'
+            }
+        else:
+            Following.objects.create(follower=request.user, user_tag=user_tag)
 
-    if Following.objects.filter(follower=request.user, user_tag=user_tag).count() > 0:
-        Following.objects.filter(follower=request.user, user_tag=user_tag).delete()
-    else:
-        Following.objects.create(follower=request.user, user_tag=user_tag)
+            message = "@" + request.user.username + " is following your '" + user_tag.tag.name + "' user tag!"
+            Notification.objects.create(user=user_tag.user, message=message, is_new=True, was_new=False)
+            data = {
+                'message': 'Unfollow'
+            }
 
-        message = "@" + request.user.username + " is following your '" + user_tag.tag.name + "' user tag!"
-        Notification.objects.create(user=user, message = message, is_new=True, was_new = False )
-
-    return redirect(reverse('rating_list', kwargs={'username': user_tag.user.username}) + '?tag=' + user_tag.tag.name)
+        return JsonResponse(data)
 
 
 def following_list(request, username):
@@ -410,11 +416,8 @@ def update_interest(request):
             user_item.user = user
             user_item.item = item
 
-
             if User_Item.objects.filter(user=user, item=item).count() > 0:
                 user_item = User_Item.objects.get(user=user, item=item)
-
-
 
                 if int(user_item.interest) == int(interest):
                     user_item.interest = None
@@ -458,7 +461,7 @@ def recommend_item(request):
         item = Item.objects.get(id=item_id)
         user = User.objects.get(id=user_id)
 
-        message = '@' + request.user.username + " recommended you: '" + item.name +"'"
+        message = '@' + request.user.username + " recommended you: '" + item.name + "'"
         Notification.objects.create(user=user, message=message)
 
         data = {
@@ -466,6 +469,7 @@ def recommend_item(request):
         }
 
         return JsonResponse(data)
+
 
 @login_required
 def private_user_tag(request, user_tag_id):
@@ -540,6 +544,7 @@ def get_search_results(request):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+
 @login_required
 def notifications(request):
     notifications = Notification.objects.filter(user=request.user).order_by('-timestamp')
@@ -552,12 +557,12 @@ def notifications(request):
             notification.was_new = True
             notification.save()
 
-
     return render(request, 'notifications.html', {'notifications': notifications, })
+
 
 @login_required
 def update_following(request):
-    list = request.POST.getlist('list[]',[])
+    list = request.POST.getlist('list[]', [])
 
     for x in list:
         y = json.loads(x)
@@ -565,14 +570,12 @@ def update_following(request):
 
         user_tag = User_Tag.objects.get(id=user_tag_id)
 
-
-        if y['is_following']== True:
+        if y['is_following'] == True:
             if request.user.is_following(user_tag) == False:
                 Following.objects.create(follower=request.user, user_tag=user_tag)
         else:
             if request.user.is_following(user_tag) == True:
                 Following.objects.get(follower=request.user, user_tag=user_tag).delete()
-
 
     data = {
         'message': 'Success!'

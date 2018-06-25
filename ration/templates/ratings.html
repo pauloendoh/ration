@@ -29,7 +29,9 @@
                     {% if request.user.is_authenticated  and request.user != user_tag.user %}
                     {% if user_tag %}
                     ·
-                    <a href="{% url 'follow' user_tag.id %}">
+
+                    {% include 'js/follow-button.html' %}
+                    <a class="follow-btn" href="#">
                         {% user_is_following_user_tag request.user user_tag as is_following %}
                         {% if is_following %}
                         Unfollow

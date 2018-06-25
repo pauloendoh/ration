@@ -27,7 +27,7 @@
         {% get_following_user_tags request.user update.interaction as following_user_tags %}
         {% for user_tag in following_user_tags %}
         <a class="dropdown-item"
-           href="{% url 'follow' user_tag.id %}">
+           href="#">
             {% user_is_following_user_tag request.user user_tag as is_following %}
             {% if is_following %}
             Unfollow #{{ user_tag.tag.name }}
