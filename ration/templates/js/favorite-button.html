@@ -1,0 +1,27 @@
+<script>
+    $(document).ready(function(){
+        $('.favorite-btn').click(function(event){
+            event.preventDefault();
+
+            var form_data = {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                user_tag_id: {{ user_tag.id }}
+            }
+
+            $.ajax({
+                url: "/ajax/favorite",
+                type: "POST",
+                data: form_data,
+                dataType: 'json',
+
+                success : function(data){
+                    $('.favorite-btn').text(data.message);
+                },
+                error : function(){
+                    saved_message("Error while saving");
+                }
+            });
+
+        });
+    });
+</script>

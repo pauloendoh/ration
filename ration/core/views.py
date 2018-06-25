@@ -485,16 +485,28 @@ def private_user_tag(request, user_tag_id):
 
 
 @login_required
-def favorite_user_tag(request, user_tag_id):
-    user = request.user
-    user_tag = User_Tag.objects.get(id=user_tag_id)
+def favorite_user_tag(request):
 
-    try:
-        Favorite_User_Tag.objects.get(user=user, user_tag=user_tag).delete()
-    except:
-        Favorite_User_Tag.objects.create(user=user, user_tag=user_tag)
+    if request.POST:
+        user_tag_id = request.POST.get('user_tag_id')
+        user_tag = get_object_or_404(User_Tag, id=user_tag_id)
 
-    return redirect(reverse('rating_list', kwargs={'username': user.username}) + '?tag=' + user_tag.tag.name)
+        if Favorite_User_Tag.objects.filter(user=request.user, user_tag=user_tag).count() > 0:
+            Favorite_User_Tag.objects.filter(user=request.user, user_tag=user_tag).delete()
+            data = {
+                'message': 'Favorite'
+            }
+        else:
+            Favorite_User_Tag.objects.create(user=request.user, user_tag=user_tag)
+
+            data = {
+                'message': 'Unfavorite'
+            }
+
+        return JsonResponse(data)
+
+
+
 
 
 @login_required

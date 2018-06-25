@@ -2,7 +2,7 @@ from django import template
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-from core.models import User_Item, Following, Item, Update, User_Tag, Tag
+from core.models import User_Item, Following, Item, Update, User_Tag, Tag, Favorite_User_Tag
 
 register = template.Library()
 
@@ -86,6 +86,13 @@ def user_is_following_other_user(user, other_user):
     for following in followings:
         if following.user_tag.user == other_user:
             return True
+    return False
+
+
+@register.simple_tag
+def is_favorite(user, user_tag):
+    if Favorite_User_Tag.objects.filter(user=user, user_tag=user_tag).count() > 0:
+        return True
     return False
 
 

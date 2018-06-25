@@ -77,6 +77,25 @@
 
             </div>
 
+            {% if user == request.user and user.favorite_user_tags.count > 0 %}
+
+            <!-- Divider -->
+            <div class="mt-2 mb-3 container border-top"></div>
+
+            Favorite user tags
+            <ul class="no-bullets pl-0 pb-3">
+                {% for favorite_user_tag in user.favorite_user_tags.all %}
+                <li>
+                    <small>
+                        #{{ favorite_user_tag.user_tag.tag.name }} -
+                        {{ favorite_user_tag.user_tag.user.username }}
+                    </small>
+                </li>
+                {% endfor %}
+            </ul>
+
+            {% endif %}
+
             <!-- Divider -->
             <div class="mt-2 mb-3 container border-top"></div>
 
@@ -89,6 +108,7 @@
                 <div class="form-group mb-1">
                     <input class="form-control user-tag-filter" type="text" placeholder="Search #tag"/>
                 </div>
+
 
                 {% for user_tag in user.get_user_tag_list %}
 

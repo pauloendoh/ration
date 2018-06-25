@@ -51,6 +51,7 @@ urlpatterns = [
     path('ajax/get_search_results', views.get_search_results, name='get_search_results'),
     path('private_user_tag/<int:user_tag_id>', views.private_user_tag, name='private_user_tag'),
     path('favorite_user_tag/<int:user_tag_id>', views.favorite_user_tag, name='favorite_user_tag'),
+    path('ajax/favorite', views.favorite_user_tag, name='favorite_user_tag'),
     path('hide_update/<int:update_id>', views.hide_update, name='hide_update'),
     path('notifications/', views.notifications, name='notifications'),
     path('ajax/recommend_item', views.recommend_item, name='recommend_item'),

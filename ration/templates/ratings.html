@@ -26,7 +26,7 @@
 
                     <!-- Follow/unfollow -->
                     {% get_user_tag user request.GET.tag as user_tag %}
-                    {% if request.user.is_authenticated  and request.user != user_tag.user %}
+                    {% if request.user.is_authenticated and request.user != user_tag.user %}
                     {% if user_tag %}
                     ·
 
@@ -46,7 +46,10 @@
                     {% if request.user.is_authenticated %}
                     {% if user_tag %}
                     ·
-                    <a href="{% url 'favorite_user_tag' user_tag.id %}">
+
+                    {% include 'js/favorite-button.html' %}
+                    <a class="favorite-btn" href="#">
+                        {% is_favorite request.user user_tag as is_favorite %}
                         {% if is_favorite %}
                         Unfavorite
                         {% else %}
