@@ -1,6 +1,9 @@
 {% load utils %}
 
 {% if item %}
+{% if user_item == None %}
+{% get_user_item request.user item as user_item %}
+{% endif %}
 <div class='rating-stars text-center'>
     <ul class="stars mb-0" data-value="{{ item.id }}">
         <li class='star

@@ -134,3 +134,10 @@ def get_following_users(user):
 def get_user_tags_by_user(user):
     user_tags = User_Tag.objects.filter(user=user)
     return user_tags
+
+@register.simple_tag
+def get_user_item(user, item):
+    if User_Item.objects.filter(user=user, item=item).count() > 0:
+        return User_Item.objects.get(user=user, item=item)
+    else:
+        return None

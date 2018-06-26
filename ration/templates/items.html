@@ -10,27 +10,49 @@
         {% include 'includes/left_container.html' %}
 
         <div class="col-10">
-            {% if request.GET.tag %}
-            <h1>#{{ request.GET.tag }}</h1>
-            {% else %}
-            <h1>All items</h1>
-            {% endif %}
-            <table class="table">
-                <tr>
+            <h3 class="font-weight-bold d-inline">
+                {% if request.GET.tag %}
+                #{{ request.GET.tag }}
+                {% else %}
+                All items
+                {% endif %}
+            </h3>
+            <table class="table table-bordered bg-white">
+                <tr class="thead-dark">
+                    <th class="align-middle text-center" style="width: 5%">#</th>
                     <th class="align-middle">Name</th>
-                    <th class="align-middle">Tag</th>
-                    <th class="align-middle">Site Rating</th>
+                    <th class="align-middle text-center" style="width: 8%">Ration</th>
+                    <th class="align-middle text-center" style="width: 16%">
+                        Sco
+                    </th>
+                    <th class="align-middle text-center" style="width: 8%">
+                        Int
+                    </th>
                 </tr>
                 {% for item in items %}
                 <tr>
+                    <td class="align-middle text-center">
+                        {{ forloop.counter }}
+                    </td>
                     <td class="align-middle">
                         <a href="{% url 'item' item.id %}">{{ item.name }}</a>
                         {% if item.url %}
                         <a href="{{ item.url }}" target="_blank"><i class="material-icons">link</i></a>
                         {% endif %}
                     </td>
-                    <td class="align-middle">{{ item.tag }}</td>
-                    <td class="align-middle">{{ item.avg_rating|floatformat }}</td>
+                    <td class="align-middle text-center">{{ item.avg_rating|floatformat }}</td>
+                    <!-- User score -->
+                    <td class="text-center align-middle">
+
+
+                        {% include 'includes/rating_stars.html' %}
+
+                    </td>
+
+                    <!-- User interest -->
+                    <td class="text-center align-middle">
+                        {% include 'includes/interest_flames.html' %}
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
