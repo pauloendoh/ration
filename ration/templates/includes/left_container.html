@@ -81,14 +81,20 @@
 
             <!-- Divider -->
             <div class="mt-2 mb-3 container border-top"></div>
-
-            Favorite user tags
-            <ul class="no-bullets pl-0 pb-3">
+                <small class="font-weight-bold">
+                                                Favorite User Tag{{ user.favorite_user_tags.count|pluralize }}
+                </small>
+            <ul class="no-bullets pl-0 pb-1 mb-0">
                 {% for favorite_user_tag in user.favorite_user_tags.all %}
                 <li>
                     <small>
-                        #{{ favorite_user_tag.user_tag.tag.name }} -
-                        {{ favorite_user_tag.user_tag.user.username }}
+                        <a href="{% url 'user' favorite_user_tag.user_tag.user.username %}">
+                            {{ favorite_user_tag.user_tag.user.username }}
+                        </a>
+                        -
+                        <a href="{% url 'rating_list' favorite_user_tag.user_tag.user.username  %}?tag={{ favorite_user_tag.user_tag.tag.name }}">
+                            #{{ favorite_user_tag.user_tag.tag.name }}
+                        </a>
                     </small>
                 </li>
                 {% endfor %}
