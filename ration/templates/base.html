@@ -102,12 +102,9 @@
 
             <!-- Dropdown menu -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle text-primary" href="#" id="navbardrop"
+                <a class="nav-link text-primary p-0" href="#" id="navbardrop"
                    data-toggle="dropdown">
-                    {{ request.user.username }}
-                    {% if request.user.is_superuser %}
-                    (admin)
-                    {% endif %}
+                    <img class="rounded-circle mt-1 ml-3 mr-3" src="/media/{{ request.user.profile.picture }}"  width="30px"/>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="{% url 'user' request.user.username %}">
