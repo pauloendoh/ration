@@ -486,7 +486,6 @@ def private_user_tag(request, user_tag_id):
 
 @login_required
 def favorite_user_tag(request):
-
     if request.POST:
         user_tag_id = request.POST.get('user_tag_id')
         user_tag = get_object_or_404(User_Tag, id=user_tag_id)
@@ -504,9 +503,6 @@ def favorite_user_tag(request):
             }
 
         return JsonResponse(data)
-
-
-
 
 
 @login_required
@@ -585,6 +581,9 @@ def update_following(request):
         if y['is_following'] == True:
             if request.user.is_following(user_tag) == False:
                 Following.objects.create(follower=request.user, user_tag=user_tag)
+                message = "@" + request.user.username + " is following your '" + user_tag.tag.name + "' user tag!"
+                Notification.objects.create(user=user_tag.user, message=message, is_new=True, was_new=False)
+
         else:
             if request.user.is_following(user_tag) == True:
                 Following.objects.get(follower=request.user, user_tag=user_tag).delete()

@@ -10,13 +10,26 @@
         <!-- Middle -->
         <div class="col-7">
             <h3 class="font-weight-bold">Notifications: </h3>
-            <ul>
+
+            <div class="bg-white rounded shadow-sm pt-1 pb-1 ">
                 {% for notification in notifications %}
-                <li>{% if notification.is_new %}New - {% endif %}
-                    {% if notification.was_new %}Was new - {% endif %}
-                    {{ notification.message }} ({{ notification.timestamp|naturaltime }})</li>
-                {% endfor %}
-            </ul>
+            <div class="container pt-2 pb-2 border-bottom
+                    {% if notification.was_new %}
+                    bg-light
+                    {% else %}
+                    bg-white
+                    {% endif %}
+                    "
+            >
+                <p class="mb-0">{{ notification.message }} - {{ notification.timestamp|naturaltime }}</p>
+            </div>
+            {% endfor %}
+            </div>
+
+
+
+
+
         </div>
 
         <!-- Right container -->
