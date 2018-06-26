@@ -1,8 +1,11 @@
 <script>
 $(document).ready(function(){
 
+    var before_hover;
+
     // 1. Visualizing things on Hover
     $(".flames li").on('mouseover', function(){
+        before_hover = parseInt($(this).parent().children('li.selected').last().data('value'), 10);
         var onFlame = parseInt($(this).data('value'),10);
 
             // Now highlight all that's not after the current hovered flame
@@ -11,13 +14,22 @@ $(document).ready(function(){
 
             $(this).addClass('hover');
             } else {
-                $(this).removeClass('hover');
+                $(this).removeClass('selected');
             }
         });
 
+    }).on('click', function(){
+        before_hover =  parseInt($(this).data('value'), 10);
     }).on('mouseout', function(){
         $(this).parent().children('li.flame').each(function(e){
             $(this).removeClass('hover');
+        });
+        $(this).parent().children('li.flame').each(function(e){
+            if (e < before_hover){
+                $(this).addClass('selected');
+            } else {
+                $(this).removeClass('selected');
+            }
         });
     });
 

@@ -1,4 +1,6 @@
 <script>
+
+
 $(document).ready(function(){
 
     $('.summary-user-score').click(function(){
@@ -8,22 +10,35 @@ $(document).ready(function(){
         rating_stars_hover.show();
     });
 
+    var before_hover;
+
+
     // 1. Visualizing things on Hover - See next part for action on click
     $('.stars li').on('mouseover', function(){
-    var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+        before_hover = parseInt($(this).parent().children('li.selected').last().data('value'), 10);
+        var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
 
-    // Now highlight all the stars that's not after the current hovered star
-    $(this).parent().children('li.star').each(function(e){
-        if (e < onStar) {
-            $(this).addClass('hover');
-        } else {
-            $(this).removeClass('hover');
-        }
-    });
+        // Now highlight all the stars that's not after the current hovered star
+        $(this).parent().children('li.star').each(function(e){
+            if (e < onStar) {
+                $(this).addClass('hover');
+            } else {
+                $(this).removeClass('selected');
+            }
+        });
 
+    }).on('click', function(){
+        before_hover =  parseInt($(this).data('value'), 10);
     }).on('mouseout', function(){
         $(this).parent().children('li.star').each(function(e){
             $(this).removeClass('hover');
+        });
+        $(this).parent().children('li.star').each(function(e){
+            if (e < before_hover){
+                $(this).addClass('selected');
+            } else {
+                $(this).removeClass('selected');
+            }
         });
     });
 
@@ -66,6 +81,7 @@ function update_rating(form_data){
 
         success : function(data){
             saved_message(data.message);
+
         },
 
         error : function(){
