@@ -14,10 +14,11 @@
 
             <table class="table table-bordered bg-white">
                 <tr class="thead-dark">
-                    <th class="align-middle text-center">#</th>
+                    <th class="align-middle text-center" style="width: 5%">#</th>
                     <th class="align-middle">Name</th>
                     <th class="align-middle text-center" style="width: 16%">Your score</th>
                     <th class="align-middle text-center pl-0 pr-0" style="width: 12%">Your interest</th>
+                    <th class="align-middle text-center" style="width: 13%">Created at</th>
                 </tr>
                 {% for item in item_list %}
                 <tr>
@@ -85,6 +86,10 @@
                             </ul>
                         </div>
 
+                    </td>
+
+                    <td class="text-center align-middle">
+                        {{ item.created_at|date:'Y-m-d' }}
                     </td>
                 </tr>
                 {% endfor %}
