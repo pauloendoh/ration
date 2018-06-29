@@ -108,6 +108,8 @@
 	top: 0;
 	left: 0;
 	cursor: default;
+    z-index:1031 !important;
+    /* navbar has z-index 1030  */
 }
 .ui-menu {
 	list-style: none;

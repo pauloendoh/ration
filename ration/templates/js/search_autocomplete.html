@@ -1,11 +1,32 @@
 <script>
+
+    $(document).keydown(function(event){
+        if(event.which=="17")
+            cntrlIsPressed = true;
+    });
+
+    $(document).keyup(function(){
+        cntrlIsPressed = false;
+    });
+
+    var cntrlIsPressed = false;
+
     $(function() {
         $("#search-box").autocomplete({
             source: "/ajax/get_search_results",
             minLength: 2,
+
             select: function(event, ui){
                 event.preventDefault();
-                window.location.href = "http://localhost:8080/" + ui.item.value
+
+                if(cntrlIsPressed){
+                    window.open(
+                        "http://localhost:8080/" + ui.item.value,
+                        '_blank'
+                    );
+                } else {
+                    window.location.href = "http://localhost:8080/" + ui.item.value
+                }
             },
             focus: function(event, ui){
                 event.preventDefault();
