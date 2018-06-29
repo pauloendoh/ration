@@ -93,11 +93,20 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="jquery-ui.css" pinned="false" current-in-tab="true">
+          <file leaf-file-name="jquery-ui.css" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/static/styles/jquery-ui.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="315">
-                  <caret line="111" column="18" selection-start-line="111" selection-start-column="18" selection-end-line="111" selection-end-column="18" />
+                <state relative-caret-position="343">
+                  <caret line="113" column="10" selection-start-line="113" selection-start-column="10" selection-end-line="113" selection-end-column="10" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="item.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/templates/item.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="238">
+                  <caret line="58" column="77" selection-start-line="58" selection-start-column="77" selection-end-line="58" selection-end-column="77" />
                 </state>
               </provider>
             </entry>
@@ -108,7 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>divid</find>
       <find>follow(req</find>
       <find>is_favorite</find>
       <find>rating_list</find>
@@ -136,8 +144,9 @@
       <find>rating</find>
       <find>search</find>
       <find>console.log</find>
-      <find>ui-autocomplete</find>
       <find>open: func</find>
+      <find>ui-autocomplete</find>
+      <find>&lt;i</find>
     </findStrings>
     <replaceStrings>
       <replace>ratings_queryset</replace>
@@ -174,7 +183,6 @@
         <option value="$PROJECT_DIR$/templates/includes/update_card_options.html" />
         <option value="$PROJECT_DIR$/templates/includes/recommendItemModal.html" />
         <option value="$PROJECT_DIR$/templates/includes/recommend_item_modal.html" />
-        <option value="$PROJECT_DIR$/templates/item.html" />
         <option value="$PROJECT_DIR$/templates/js/user_recommendation_button.html" />
         <option value="$PROJECT_DIR$/core/models.py" />
         <option value="$PROJECT_DIR$/templates/includes/update_list.html" />
@@ -203,6 +211,7 @@
         <option value="$PROJECT_DIR$/templates/js/search_autocomplete.html" />
         <option value="$PROJECT_DIR$/static/js/jquery-ui.js" />
         <option value="$PROJECT_DIR$/static/styles/jquery-ui.css" />
+        <option value="$PROJECT_DIR$/templates/item.html" />
       </list>
     </option>
   </component>
@@ -561,13 +570,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/item.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ratings.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="139">
@@ -706,9 +708,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/js/search_autocomplete.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/jquery-ui.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="245">
@@ -716,10 +715,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/js/search_autocomplete.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/static/styles/jquery-ui.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="111" column="18" selection-start-line="111" selection-start-column="18" selection-end-line="111" selection-end-column="18" />
+        <state relative-caret-position="343">
+          <caret line="113" column="10" selection-start-line="113" selection-start-column="10" selection-end-line="113" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/item.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="58" column="77" selection-start-line="58" selection-start-column="77" selection-end-line="58" selection-end-column="77" />
         </state>
       </provider>
     </entry>
